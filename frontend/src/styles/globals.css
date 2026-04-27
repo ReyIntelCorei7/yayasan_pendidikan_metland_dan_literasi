@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --lime: #008C95;
+    --charcoal: #111111;
+    --transition-page: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-charcoal antialiased bg-white overflow-x-hidden;
+  }
+
+  ::selection {
+    background: #008C95;
+    color: #111;
+  }
+
+  :focus-visible {
+    outline: 2px solid #008C95;
+    outline-offset: 2px;
+  }
+
+  /* Lenis smooth scroll */
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
