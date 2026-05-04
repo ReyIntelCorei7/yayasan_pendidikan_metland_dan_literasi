@@ -61,7 +61,7 @@ export default function ImpactSpotlight() {
             <p className="text-2xl lg:text-3xl font-bold text-white mb-2">Pandu Gunandito</p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
-            <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase mb-4">Ketua Yayasan Metland</p>
+            <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase mb-4">Ketua Yayasan Pendidikan Metland</p>
           </ScrollReveal>
 
           <WordReveal
