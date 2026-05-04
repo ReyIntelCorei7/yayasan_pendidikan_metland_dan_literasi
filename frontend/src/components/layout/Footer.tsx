@@ -86,7 +86,7 @@ export default function Footer() {
               yayasanpendidikanmetland@gmail.com
             </p>
             <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
-              021 2072 0829
+              021 877 2072 0829
             </p>
             <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
               M Gold Tower, Lantai 15
