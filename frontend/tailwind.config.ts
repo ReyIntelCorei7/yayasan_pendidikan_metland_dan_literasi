@@ -18,10 +18,10 @@ const config: Config = {
     extend: {
       colors: {
         lime: {
-          DEFAULT: '#008C95',
-          hover: '#007A82',
-          dark: '#006670',
-          light: '#B3DFE3',
+          DEFAULT: '#228bcb',
+          hover: '#1b78b3',
+          dark: '#15659a',
+          light: '#B3D9F0',
         },
         charcoal: {
           DEFAULT: '#111111',
@@ -38,7 +38,7 @@ const config: Config = {
         '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
       },
       animation: {
-        marquee: 'marquee 28s linear infinite',
+        marquee: 'marquee 40s linear infinite',
         'marquee-reverse': 'marquee-reverse 28s linear infinite',
         float: 'float 6s ease-in-out infinite',
         'float-slow': 'float-slow 8s ease-in-out infinite',

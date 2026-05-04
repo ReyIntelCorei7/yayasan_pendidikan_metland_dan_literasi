@@ -23,7 +23,7 @@ const impactRows = [
 
 export default function ImpactNumbers() {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-[#FCFCFC] py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
           <p className="text-xs text-lime uppercase tracking-[0.2em] mb-4">By The Numbers</p>

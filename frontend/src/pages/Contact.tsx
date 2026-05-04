@@ -36,7 +36,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Grid */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16">
           {/* Form */}
           <ScrollReveal direction="left">
@@ -82,7 +82,7 @@ export default function Contact() {
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02, backgroundColor: '#007A82' }}
+                whileHover={{ scale: 1.02, backgroundColor: '#1b78b3' }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-lime text-charcoal px-8 py-4 rounded-lg text-sm font-medium w-full sm:w-auto"
               >

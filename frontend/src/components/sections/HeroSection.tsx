@@ -51,16 +51,22 @@ export default function HeroSection() {
       />
 
       {/* Content */}
-      <div className="absolute bottom-[8%] right-[6%] max-w-[55%] text-right">
+      <div className="absolute top-1/2 left-[6%] -translate-y-1/2 max-w-[55%] text-left">
         <WordReveal
-          text="Building Africa's future. One person, one community, one purpose at a time."
+          text="Membangun Generasi Unggul Melalui Pendidikan dan Literasi"
           tag="h1"
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.08] tracking-tight justify-end"
+          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.08] tracking-tight"
           delay={0.3}
         />
 
-    
-         
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="font-georgia mx-16 mt-6 text-base md:text-xl font-bold text-white max-w-lg leading-relaxed drop-shadow-2xl"
+        >
+          Yayasan Pendidikan Metland berkomitmen menciptakan lingkungan belajar yang inovatif dan berkarakter untuk masa depan Indonesia.
+        </motion.p>
       </div>
 
       {/* Welcome Label */}
@@ -74,12 +80,7 @@ export default function HeroSection() {
         <span className="text-sm text-white/70">Selamat Datang</span>
       </motion.div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-px h-12 bg-white/60 origin-top"
-        animate={{ scaleY: [1, 0.3, 1], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-      />
+
     </section>
   );
 }

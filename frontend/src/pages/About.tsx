@@ -23,7 +23,7 @@ export default function About() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-16">
           <ScrollReveal direction="left">
             <h2 className="text-3xl font-light mb-6">Our Mission</h2>
@@ -70,7 +70,7 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <WordReveal text="Our Leadership Team" tag="h2" className="text-4xl font-light text-charcoal mb-16" />
           <StaggerGrid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">

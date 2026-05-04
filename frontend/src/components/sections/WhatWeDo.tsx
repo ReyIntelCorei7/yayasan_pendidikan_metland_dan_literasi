@@ -10,7 +10,7 @@ const featured = programs.filter((p) => p.isFeatured).slice(0, 3);
 
 export default function WhatWeDo() {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-[#FCFCFC] py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
           <p className="text-xs text-lime uppercase tracking-[0.2em] mb-4">Our Focus Areas</p>
@@ -29,7 +29,7 @@ export default function WhatWeDo() {
                 key={program.id}
                 whileHover={{ y: -6, boxShadow: '0 20px 60px -10px rgba(0,0,0,0.12)' }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-white border border-gray-100 rounded-2xl p-8 relative overflow-hidden group"
+                className="bg-[#FCFCFC] border border-gray-100 rounded-2xl p-8 relative overflow-hidden group"
               >
                 {/* Top border accent */}
                 <motion.div

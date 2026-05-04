@@ -9,40 +9,40 @@ const schools = [
     name: 'TK Tunas Metropolitan',
     level: 'Taman Kanak-Kanak',
     tagline: 'Menanamkan cinta belajar sejak dini',
-    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80',
-    color: '#FDE68A',
+    image: '/src/assets/tk_sdmetropolitan.jpeg',
+    color: '#228bcb',
   },
   {
     slug: 'sd-tunas-metropolitan',
     name: 'SD Tunas Metropolitan',
     level: 'Sekolah Dasar',
     tagline: 'Fondasi kokoh untuk masa depan cerah',
-    image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80',
-    color: '#BBF7D0',
+    image: '/src/assets/tk_sdmetropolitan.jpeg',
+    color: '#228bcb',
   },
   {
     slug: 'smk-pariwisata-metland-school',
     name: 'SMK Pariwisata Metland School',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-    color: '#BFDBFE',
+    image: '/src/assets/sekolahsmkmetland.png',
+    color: '#228bcb',
   },
   {
     slug: 'smk-metland',
     name: 'SMK Metland',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80',
-    color: '#FED7AA',
+    image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
+    color: '#228bcb',
   },
   {
     slug: 'metland-college',
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
-    color: '#E9D5FF',
+    image: '/src/assets/sekolahsmkmetland.png',
+    color: '#228bcb',
   },
 ];
 
@@ -52,12 +52,12 @@ export default function OurSchool() {
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&q=80"
-          alt=""
+          src="/src/assets/sekolahsmkmetland.png"
+          alt="foto sekolah smk metland"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 text-center px-6">
-          <p className="text-lime text-sm tracking-widest uppercase mb-4">Unit Pendidikan</p>
+          <p className="text-[#228bcb] text-sm tracking-widest uppercase mb-4">Unit Pendidikan</p>
           <WordReveal text="Our School" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p
             initial={{ opacity: 0 }}
@@ -71,7 +71,7 @@ export default function OurSchool() {
       </section>
 
       {/* Schools Grid */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {schools.map((school, i) => (
@@ -98,31 +98,6 @@ export default function OurSchool() {
                   </span>
                 </Link>
               </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="bg-charcoal py-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: '5', label: 'Unit Pendidikan', suffix: '' },
-              { value: '2.860+', label: 'Siswa & Mahasiswa', suffix: '' },
-              { value: '247', label: 'Tenaga Pendidik', suffix: '' },
-              { value: '19+', label: 'Tahun Pengalaman', suffix: '' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <div className="text-4xl font-extralight text-white">{stat.value}</div>
-                <p className="text-sm text-white/50 mt-2">{stat.label}</p>
-              </motion.div>
             ))}
           </div>
         </div>

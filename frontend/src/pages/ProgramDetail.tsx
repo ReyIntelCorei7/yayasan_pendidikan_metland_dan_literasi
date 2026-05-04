@@ -49,7 +49,7 @@ export default function ProgramDetail() {
       </section>
 
       {/* Description */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <p className="text-gray-500 leading-relaxed text-lg">{program.description}</p>
