@@ -1,5 +1,4 @@
 import HeroSection from '../components/sections/HeroSection';
-import StatsBar from '../components/sections/StatsBar';
 import WhatWeDo from '../components/sections/WhatWeDo';
 import ImpactSpotlight from '../components/sections/ImpactSpotlight';
 import ProgramsGrid from '../components/sections/ProgramsGrid';
@@ -13,15 +12,10 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <StatsBar />
-      <WhatWeDo />
+      <NewsInsights />
       <ImpactSpotlight />
       <ProgramsGrid />
-      <ImpactNumbers />
-      <ScholarStories />
-      <NewsInsights />
       <PartnerLogos />
-      <CTABanner />
     </>
   );
 }
