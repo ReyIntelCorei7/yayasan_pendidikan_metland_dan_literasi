@@ -38,7 +38,7 @@ const config: Config = {
         '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
       },
       animation: {
-        marquee: 'marquee 28s linear infinite',
+        marquee: 'marquee 40s linear infinite',
         'marquee-reverse': 'marquee-reverse 28s linear infinite',
         float: 'float 6s ease-in-out infinite',
         'float-slow': 'float-slow 8s ease-in-out infinite',

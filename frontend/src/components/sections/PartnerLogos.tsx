@@ -13,39 +13,63 @@ export default function PartnerLogos() {
 
       {/* Infinite Marquee */}
       <div className="relative group">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-offwhite to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-offwhite to-transparent z-10 pointer-events-none" />
+
         <div className="flex animate-marquee group-hover:[animation-play-state:paused] will-change-transform">
           {/* First set */}
-          <div className="flex shrink-0">
+          <div className="flex shrink-0 items-center">
             {activePartners.map((partner) => (
               <a
                 key={partner.id}
                 href={partner.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-10 flex items-center shrink-0"
+                className="mx-8 flex items-center shrink-0"
+                title={partner.name}
               >
-                <div className="w-[120px] h-[50px] flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300">
-                  <span className="text-sm font-medium text-gray-500 hover:text-charcoal whitespace-nowrap">
-                    {partner.name}
-                  </span>
+                <div className="w-[160px] h-[60px] flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300">
+                  {partner.logo && !partner.logo.includes('placeholder') ? (
+                    <img
+                      src={partner.logo}
+                      alt={partner.name}
+                      className="max-w-full max-h-full object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-sm font-medium text-gray-500 hover:text-charcoal whitespace-nowrap">
+                      {partner.name}
+                    </span>
+                  )}
                 </div>
               </a>
             ))}
           </div>
           {/* Duplicate set for seamless loop */}
-          <div className="flex shrink-0">
+          <div className="flex shrink-0 items-center">
             {activePartners.map((partner) => (
               <a
                 key={`dup-${partner.id}`}
                 href={partner.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mx-10 flex items-center shrink-0"
+                className="mx-8 flex items-center shrink-0"
+                title={partner.name}
               >
-                <div className="w-[120px] h-[50px] flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300">
-                  <span className="text-sm font-medium text-gray-500 hover:text-charcoal whitespace-nowrap">
-                    {partner.name}
-                  </span>
+                <div className="w-[160px] h-[60px] flex items-center justify-center grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300">
+                  {partner.logo && !partner.logo.includes('placeholder') ? (
+                    <img
+                      src={partner.logo}
+                      alt={partner.name}
+                      className="max-w-full max-h-full object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-sm font-medium text-gray-500 hover:text-charcoal whitespace-nowrap">
+                      {partner.name}
+                    </span>
+                  )}
                 </div>
               </a>
             ))}

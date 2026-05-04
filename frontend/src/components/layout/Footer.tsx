@@ -82,20 +82,16 @@ export default function Footer() {
           {/* Column 4: Newsletter */}
           <div>
             <h4 className="text-xs uppercase tracking-widest text-gray-500 mb-4">Tetap Terhubung</h4>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Alamat email Anda"
-                className="w-full bg-white/5 border border-white/10 rounded text-white placeholder-gray-600 px-4 py-3 text-sm focus:border-lime/50 focus:outline-none transition-colors"
-              />
-              <button
-                type="submit"
-                className="bg-lime text-charcoal w-full mt-2 py-3 rounded text-sm font-medium hover:bg-lime-hover transition-colors"
-              >
-                Berlangganan
-              </button>
-            </form>
-
+            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
+              yayasanpendidikanmetland@gmail.com
+            </p>
+            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
+              021 2072 0829
+            </p>
+            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
+              M Gold Tower, Lantai 15
+                JI. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148 - Indonesia
+            </p>
             {/* Social Icons */}
             <div className="flex gap-3 mt-6">
               {socialIcons.map(({ icon, href, label }) => (
@@ -105,7 +101,7 @@ export default function Footer() {
                   aria-label={label}
                   whileHover={{ scale: 1.12 }}
                   whileTap={{ scale: 0.92 }}
-                  className="w-9 h-9 border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:border-lime hover:bg-lime/10 hover:text-lime transition-colors"
+                  className="w-9 h-9 border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:border-[#228bcb] hover:bg-[#228bcb]/10 hover:text-[#228bcb] transition-colors"
                 >
                   {icon}
                 </motion.a>
