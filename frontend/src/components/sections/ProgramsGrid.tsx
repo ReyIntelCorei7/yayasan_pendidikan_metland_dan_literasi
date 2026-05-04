@@ -10,7 +10,7 @@ const schools = [
     level: 'Taman Kanak-Kanak',
     tagline: 'Menanamkan cinta belajar sejak dini',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#FDE68A',
+    color: '#228bcb',
   },
   {
     slug: 'sd-tunas-metropolitan',
@@ -18,7 +18,7 @@ const schools = [
     level: 'Sekolah Dasar',
     tagline: 'Fondasi kokoh untuk masa depan cerah',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#BBF7D0',
+    color: '#228bcb',
   },
   {
     slug: 'smk-pariwisata-metland-school',
@@ -26,7 +26,7 @@ const schools = [
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
     image: '/src/assets/sekolahsmkmetland.png',
-    color: '#BFDBFE',
+    color: '#228bcb',
   },
   {
     slug: 'smk-metland',
@@ -34,7 +34,7 @@ const schools = [
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
     image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
-    color: '#FED7AA',
+    color: '#228bcb',
   },
   {
     slug: 'metland-college',
@@ -42,7 +42,7 @@ const schools = [
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
     image: '/src/assets/sekolahsmkmetland.png',
-    color: '#E9D5FF',
+    color: '#228bcb',
   },
 ];
 
