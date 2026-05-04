@@ -91,7 +91,8 @@ class BookResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->disk('public')
                     ->label('Cover')
-                    ->square(),
+                    ->square()
+                    ->size(48),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable()
@@ -108,8 +109,10 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Dibuat'),
+                    ->label('Dibuat')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultPaginationPageOption(10)
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options([

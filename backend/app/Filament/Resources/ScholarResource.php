@@ -34,7 +34,7 @@ class ScholarResource extends Resource
                 TextInput::make('country')->required(),
                 TextInput::make('flag')->required()->maxLength(10)->label('Flag Emoji'),
                 Textarea::make('quote')->required()->rows(3),
-                FileUpload::make('photo')->image()->directory('scholars')->avatar(),
+                FileUpload::make('photo')->image()->disk('public')->directory('scholars')->avatar(),
                 TextInput::make('program')->required(),
                 TextInput::make('graduation_year')->numeric()->required(),
                 Toggle::make('is_featured')->default(false),
@@ -50,10 +50,11 @@ class ScholarResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('country')->searchable(),
                 Tables\Columns\TextColumn::make('program')->searchable(),
-                Tables\Columns\TextColumn::make('graduation_year')->sortable(),
+                Tables\Columns\TextColumn::make('graduation_year')->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
             ])
             ->filters([Tables\Filters\TernaryFilter::make('is_featured')])
+            ->defaultPaginationPageOption(10)
             ->actions([EditAction::make(), DeleteAction::make()])
             ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }

@@ -26,7 +26,7 @@ class ApiController extends Controller
                 'category' => $p->category,
                 'tagline' => $p->tagline,
                 'description' => $p->description,
-                'image' => $p->image ? asset('storage/' . $p->image) : $p->image,
+                'image' => $this->storageUrl($p->image),
                 'stats' => $p->stats->map(fn ($s) => [
                     'label' => $s->label,
                     'value' => $s->value,
@@ -49,7 +49,7 @@ class ApiController extends Controller
             'category' => $program->category,
             'tagline' => $program->tagline,
             'description' => $program->description,
-            'image' => $program->image ? asset('storage/' . $program->image) : $program->image,
+            'image' => $this->storageUrl($program->image),
             'stats' => $program->stats->map(fn ($s) => [
                 'label' => $s->label,
                 'value' => $s->value,
@@ -85,7 +85,7 @@ class ApiController extends Controller
             'country' => $s->country,
             'flag' => $s->flag,
             'quote' => $s->quote,
-            'photo' => $s->photo ? asset('storage/' . $s->photo) : $s->photo,
+            'photo'          => $this->storageUrl($s->photo),
             'program' => $s->program,
             'graduationYear' => $s->graduation_year,
             'isFeatured' => $s->is_featured,
@@ -99,7 +99,7 @@ class ApiController extends Controller
         $partners = Partner::where('is_active', true)->get()->map(fn ($p) => [
             'id' => (string) $p->id,
             'name' => $p->name,
-            'logo' => $p->logo ? asset('storage/' . $p->logo) : $p->logo,
+            'logo'           => $this->storageUrl($p->logo),
             'websiteUrl' => $p->website_url,
             'isActive' => $p->is_active,
         ]);
@@ -129,7 +129,7 @@ class ApiController extends Controller
             'title' => $t->title,
             'department' => $t->department,
             'bio' => $t->bio,
-            'photo' => $t->photo ? asset('storage/' . $t->photo) : $t->photo,
+            'photo'      => $this->storageUrl($t->photo),
             'order' => $t->order,
             'social' => [
                 'linkedin' => $t->linkedin,
@@ -175,21 +175,31 @@ class ApiController extends Controller
         ]);
     }
 
+    private function storageUrl(?string $path): ?string
+    {
+        if (!$path) return null;
+        // Already a full URL (e.g. old Unsplash links stored in DB)
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+        return asset('storage/' . $path);
+    }
+
     private function formatPost(Post $p): array
     {
         return [
-            'id' => (string) $p->id,
-            'title' => $p->title,
-            'slug' => $p->slug,
-            'excerpt' => $p->excerpt,
-            'body' => $p->body,
-            'featuredImage' => $p->featured_image ? asset('storage/' . $p->featured_image) : $p->featured_image,
-            'category' => $p->category,
-            'publishedAt' => $p->published_at?->format('Y-m-d'),
-            'readingTime' => $p->reading_time,
-            'author' => [
-                'name' => $p->author_name,
-                'photo' => $p->author_photo ? asset('storage/' . $p->author_photo) : $p->author_photo,
+            'id'           => (string) $p->id,
+            'title'        => $p->title,
+            'slug'         => $p->slug,
+            'excerpt'      => $p->excerpt,
+            'body'         => $p->body,
+            'featuredImage'=> $this->storageUrl($p->featured_image),
+            'category'     => $p->category,
+            'publishedAt'  => $p->published_at?->format('Y-m-d'),
+            'readingTime'  => $p->reading_time,
+            'author'       => [
+                'name'  => $p->author_name,
+                'photo' => $this->storageUrl($p->author_photo),
                 'title' => $p->author_title,
             ],
             'tags' => $p->tags->pluck('tag')->toArray(),

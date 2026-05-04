@@ -39,7 +39,7 @@ class TeamMemberResource extends Resource
                         'Communications' => 'Communications', 'Operations' => 'Operations',
                     ])->required(),
                 Textarea::make('bio')->required()->rows(3),
-                FileUpload::make('photo')->image()->directory('team')->avatar(),
+                FileUpload::make('photo')->image()->disk('public')->directory('team')->avatar(),
                 TextInput::make('order')->numeric()->default(0),
             ])->columns(2),
             Section::make('Social Media')->schema([
@@ -57,9 +57,10 @@ class TeamMemberResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('department')->badge(),
-                Tables\Columns\TextColumn::make('order')->sortable(),
+                Tables\Columns\TextColumn::make('order')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('order')
+            ->defaultPaginationPageOption(10)
             ->actions([EditAction::make(), DeleteAction::make()])
             ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])
             ->reorderable('order');

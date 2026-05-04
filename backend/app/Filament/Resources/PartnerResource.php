@@ -30,7 +30,7 @@ class PartnerResource extends Resource
         return $schema->components([
             Section::make('Partner Details')->schema([
                 TextInput::make('name')->required()->maxLength(255),
-                FileUpload::make('logo')->image()->directory('partners'),
+                FileUpload::make('logo')->image()->disk('public')->directory('partners'),
                 TextInput::make('website_url')->url(),
                 Toggle::make('is_active')->default(true),
             ])->columns(2),

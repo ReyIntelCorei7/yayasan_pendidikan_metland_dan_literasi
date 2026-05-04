@@ -15,7 +15,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\EditAction;
@@ -48,13 +48,13 @@ class PostResource extends Resource
                     ])->required(),
                 Textarea::make('excerpt')->required()->rows(3),
                 RichEditor::make('body')->required()->columnSpanFull(),
-                FileUpload::make('featured_image')->image()->directory('posts'),
+                FileUpload::make('featured_image')->image()->disk('public')->directory('posts'),
             ])->columns(2),
 
             Section::make('Author & Publishing')->schema([
                 TextInput::make('author_name')->required(),
                 TextInput::make('author_title'),
-                FileUpload::make('author_photo')->image()->directory('authors')->avatar(),
+                FileUpload::make('author_photo')->image()->disk('public')->directory('authors')->avatar(),
                 DatePicker::make('published_at')->default(now()),
                 TextInput::make('reading_time')->numeric()->default(5)->suffix('min'),
                 Toggle::make('is_published')->default(true),
@@ -72,14 +72,15 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('featured_image')->label('Image')->circular(),
+                Tables\Columns\ImageColumn::make('featured_image')->label('Image')->circular()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('title')->searchable()->sortable()->limit(40),
                 Tables\Columns\TextColumn::make('category')->badge(),
                 Tables\Columns\TextColumn::make('author_name')->label('Author')->searchable(),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
                 Tables\Columns\TextColumn::make('published_at')->date()->sortable(),
-                Tables\Columns\TextColumn::make('reading_time')->suffix(' min')->sortable(),
+                Tables\Columns\TextColumn::make('reading_time')->suffix(' min')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultPaginationPageOption(10)
             ->defaultSort('published_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('category'),

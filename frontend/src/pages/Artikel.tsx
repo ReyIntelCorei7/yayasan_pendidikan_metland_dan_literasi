@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search } from 'lucide-react';
+import { Search, AlertCircle } from 'lucide-react';
 import WordReveal from '../components/animations/WordReveal';
 import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
-import { posts } from '../data/posts';
-
-const categories = ['All', ...new Set(posts.map((p) => p.category))];
+import { usePosts } from '../hooks/usePosts';
 
 export default function Artikel() {
+  const { posts, loading, error } = usePosts();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filtered = posts
-    .filter((p) => activeCategory === 'All' || p.category === activeCategory)
-    .filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Derive categories from fetched posts
+  const categories = useMemo(
+    () => ['All', ...new Set(posts.map((p) => p.category))],
+    [posts]
+  );
+
+  const filtered = useMemo(
+    () =>
+      posts
+        .filter((p) => activeCategory === 'All' || p.category === activeCategory)
+        .filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())),
+    [posts, activeCategory, searchQuery]
+  );
 
   return (
     <>
@@ -31,61 +40,93 @@ export default function Artikel() {
 
       <section className="bg-white py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Offline / error notice */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg px-4 py-3 mb-8 text-sm"
+            >
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{error}</span>
+            </motion.div>
+          )}
+
           {/* Filter bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                    activeCategory === cat
-                      ? 'bg-lime text-charcoal'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat}
-                </button>
+          {!loading && (
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-2 text-sm rounded-full transition-colors ${
+                      activeCategory === cat
+                        ? 'bg-lime text-charcoal'
+                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Cari artikel..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-lime/50 w-full md:w-64"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Loading skeleton */}
+          {loading && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-[16/10] bg-gray-200 rounded-xl" />
+                  <div className="h-4 w-20 bg-gray-200 rounded-full mt-4" />
+                  <div className="h-5 w-3/4 bg-gray-200 rounded mt-3" />
+                  <div className="h-4 w-full bg-gray-100 rounded mt-2" />
+                  <div className="h-3 w-1/3 bg-gray-100 rounded mt-3" />
+                </div>
               ))}
             </div>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Cari artikel..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-lime/50 w-full md:w-64"
-              />
-            </div>
-          </div>
+          )}
 
-          <AnimatePresence mode="wait">
-            <motion.div key={activeCategory + searchQuery} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filtered.map((post) => (
-                  <motion.div key={post.id} variants={staggerItemVariants}>
-                    <Link to={`/artikel/${post.slug}`} className="group block">
-                      <div className="aspect-[16/10] overflow-hidden rounded-xl">
-                        <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                      </div>
-                      <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">{post.category}</span>
-                      <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors">{post.title}</h3>
-                      <p className="text-sm text-gray-400 mt-2 line-clamp-2">{post.excerpt}</p>
-                      <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
-                        <span>{post.author.name}</span>
-                        <span>·</span>
-                        <span>{new Date(post.publishedAt).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </StaggerGrid>
-              {filtered.length === 0 && (
-                <p className="text-center text-gray-400 py-12">Tidak ada artikel ditemukan.</p>
-              )}
-            </motion.div>
-          </AnimatePresence>
+          {/* Posts grid */}
+          {!loading && (
+            <AnimatePresence mode="wait">
+              <motion.div key={activeCategory + searchQuery} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filtered.map((post) => (
+                    <motion.div key={post.id} variants={staggerItemVariants}>
+                      <Link to={`/artikel/${post.slug}`} className="group block">
+                        <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
+                          <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                        </div>
+                        <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">{post.category}</span>
+                        <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors">{post.title}</h3>
+                        <p className="text-sm text-gray-400 mt-2 line-clamp-2">{post.excerpt}</p>
+                        <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
+                          <span>{post.author.name}</span>
+                          <span>·</span>
+                          <span>{new Date(post.publishedAt).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </StaggerGrid>
+                {filtered.length === 0 && (
+                  <p className="text-center text-gray-400 py-12">Tidak ada artikel ditemukan.</p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       </section>
     </>

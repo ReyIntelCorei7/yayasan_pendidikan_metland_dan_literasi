@@ -13,7 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\EditAction;
@@ -44,7 +44,7 @@ class ProgramResource extends Resource
                     ->required(),
                 TextInput::make('tagline')->required()->maxLength(255),
                 Textarea::make('description')->required()->rows(4),
-                FileUpload::make('image')->image()->directory('programs'),
+                FileUpload::make('image')->image()->disk('public')->directory('programs'),
                 Toggle::make('is_featured')->default(false),
                 TextInput::make('order')->numeric()->default(0),
             ])->columns(2),
@@ -66,9 +66,10 @@ class ProgramResource extends Resource
                 Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('category')->badge(),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
-                Tables\Columns\TextColumn::make('order')->sortable(),
+                Tables\Columns\TextColumn::make('order')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('order')
+            ->defaultPaginationPageOption(10)
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options(['education' => 'Education', 'health' => 'Health', 'livelihoods' => 'Livelihoods']),

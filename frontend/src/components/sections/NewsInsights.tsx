@@ -1,13 +1,15 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import StaggerGrid, { staggerItemVariants } from '../animations/StaggerGrid';
-import { posts } from '../../data/posts';
-
-const displayPosts = posts.slice(0, 6);
+import { usePosts } from '../../hooks/usePosts';
 
 export default function NewsInsights() {
+  const { posts, loading } = usePosts();
+  const displayPosts = useMemo(() => posts.slice(0, 6), [posts]);
+
   return (
     <section className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -23,7 +25,7 @@ export default function NewsInsights() {
             />
           </div>
           <Link
-            to="/news"
+            to="/artikel"
             className="text-sm font-medium text-charcoal hover:text-lime transition-colors mt-4 md:mt-0 group"
           >
             View All
@@ -31,50 +33,69 @@ export default function NewsInsights() {
           </Link>
         </div>
 
-        <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayPosts.map((post) => (
-            <motion.div key={post.id} variants={staggerItemVariants}>
-              <Link to={`/news/${post.slug}`} className="group block">
-                {/* Image */}
-                <div className="aspect-[16/10] overflow-hidden rounded-xl">
-                  <motion.img
-                    src={post.featuredImage}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.06 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                    loading="lazy"
-                  />
-                </div>
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[16/10] bg-gray-200 rounded-xl" />
+                <div className="h-4 w-20 bg-gray-200 rounded-full mt-4" />
+                <div className="h-5 w-3/4 bg-gray-200 rounded mt-3" />
+                <div className="h-3 w-1/3 bg-gray-100 rounded mt-3" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayPosts.map((post) => (
+              <motion.div key={post.id} variants={staggerItemVariants}>
+                <Link to={`/artikel/${post.slug}`} className="group block">
+                  {/* Image */}
+                  <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
+                    <motion.img
+                      src={post.featuredImage}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.06 }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                      loading="lazy"
+                    />
+                  </div>
 
-                {/* Category */}
-                <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">
-                  {post.category}
-                </span>
+                  {/* Category */}
+                  <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">
+                    {post.category}
+                  </span>
 
-                {/* Title */}
-                <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors duration-200">
-                  {post.title}
-                </h3>
+                  {/* Title */}
+                  <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors duration-200">
+                    {post.title}
+                  </h3>
 
-                {/* Meta */}
-                <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
-                  <img
-                    src={post.author.photo}
-                    alt={post.author.name}
-                    className="w-6 h-6 rounded-full object-cover"
-                    loading="lazy"
-                  />
-                  <span>{post.author.name}</span>
-                  <span>·</span>
-                  <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                  <span>·</span>
-                  <span>{post.readingTime} min read</span>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </StaggerGrid>
+                  {/* Meta */}
+                  <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
+                    {post.author.photo && (
+                      <img
+                        src={post.author.photo}
+                        alt={post.author.name}
+                        className="w-6 h-6 rounded-full object-cover"
+                        loading="lazy"
+                      />
+                    )}
+                    <span>{post.author.name}</span>
+                    <span>·</span>
+                    <span>{new Date(post.publishedAt).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    {post.readingTime && (
+                      <>
+                        <span>·</span>
+                        <span>{post.readingTime} mnt baca</span>
+                      </>
+                    )}
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </StaggerGrid>
+        )}
       </div>
     </section>
   );

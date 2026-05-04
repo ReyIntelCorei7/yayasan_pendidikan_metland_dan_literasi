@@ -1,7 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { ArrowLeft, Share2 } from 'lucide-react';
-import { posts } from '../data/posts';
+import { ArrowLeft, Share2, Loader2 } from 'lucide-react';
+import { usePost, usePosts } from '../hooks/usePosts';
+import { useMemo } from 'react';
 
 const shareIcons = [
   { label: 'X', svg: <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
@@ -11,9 +12,26 @@ const shareIcons = [
 
 export default function NewsDetail() {
   const { slug } = useParams();
-  const post = posts.find((p) => p.slug === slug);
+  const { post, loading } = usePost(slug);
+  const { posts: allPosts } = usePosts();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const related = useMemo(
+    () => (post ? allPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3) : []),
+    [post, allPosts]
+  );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-8 h-8 text-lime animate-spin" />
+          <p className="text-sm text-gray-400">Loading article...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -26,7 +44,7 @@ export default function NewsDetail() {
     );
   }
 
-  const related = posts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3);
+  const bodyIsHtml = /<[a-z][\s\S]*>/i.test(post.body);
 
   return (
     <>
@@ -42,46 +60,63 @@ export default function NewsDetail() {
           <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-4">{post.category}</span>
           <h1 className="text-3xl lg:text-5xl font-light leading-tight">{post.title}</h1>
           <div className="flex items-center gap-4 mt-6 text-sm text-gray-400">
-            <img src={post.author.photo} alt={post.author.name} className="w-10 h-10 rounded-full object-cover" />
+            {post.author.photo && (
+              <img src={post.author.photo} alt={post.author.name} className="w-10 h-10 rounded-full object-cover" />
+            )}
             <div>
               <p className="text-charcoal font-medium">{post.author.name}</p>
-              <p>{post.author.title}</p>
+              {post.author.title && <p>{post.author.title}</p>}
             </div>
             <span>·</span>
             <span>{new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-            <span>·</span>
-            <span>{post.readingTime} min read</span>
+            {post.readingTime && (
+              <>
+                <span>·</span>
+                <span>{post.readingTime} min read</span>
+              </>
+            )}
           </div>
         </div>
       </section>
 
       {/* Featured Image */}
-      <div className="max-w-5xl mx-auto px-6 lg:px-8 mb-16">
-        <img src={post.featuredImage} alt={post.title} className="w-full aspect-[21/9] object-cover rounded-2xl" />
-      </div>
+      {post.featuredImage && (
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 mb-16">
+          <img src={post.featuredImage} alt={post.title} className="w-full aspect-[21/9] object-cover rounded-2xl" />
+        </div>
+      )}
 
       {/* Body */}
       <article className="max-w-3xl mx-auto px-6 lg:px-8 pb-24">
-        <div className="prose prose-lg max-w-none text-gray-600 leading-relaxed">
-          <p>{post.excerpt}</p>
-          <p className="mt-6">{post.body}</p>
-          <p className="mt-6">
-            The impact of this work extends far beyond the immediate beneficiaries. When one person gains access
-            to education or healthcare, the effects ripple through families, communities, and entire regions.
-            This is the power of investing in human potential.
-          </p>
-          <p className="mt-6">
-            As we look ahead, our commitment remains unwavering. We will continue to expand our reach,
-            deepen our impact, and work alongside communities to build a brighter future for Africa.
-          </p>
-        </div>
+        {bodyIsHtml ? (
+          <div
+            className="prose prose-lg max-w-none text-gray-600 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: post.body }}
+          />
+        ) : (
+          <div className="prose prose-lg max-w-none text-gray-600 leading-relaxed">
+            <p>{post.excerpt}</p>
+            <p className="mt-6">{post.body}</p>
+            <p className="mt-6">
+              The impact of this work extends far beyond the immediate beneficiaries. When one person gains access
+              to education or healthcare, the effects ripple through families, communities, and entire regions.
+              This is the power of investing in human potential.
+            </p>
+            <p className="mt-6">
+              As we look ahead, our commitment remains unwavering. We will continue to expand our reach,
+              deepen our impact, and work alongside communities to build a brighter future for Africa.
+            </p>
+          </div>
+        )}
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-12">
-          {post.tags.map((tag) => (
-            <span key={tag} className="text-xs bg-gray-100 text-gray-500 rounded-full px-3 py-1">#{tag}</span>
-          ))}
-        </div>
+        {post.tags && post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-12">
+            {post.tags.map((tag) => (
+              <span key={tag} className="text-xs bg-gray-100 text-gray-500 rounded-full px-3 py-1">#{tag}</span>
+            ))}
+          </div>
+        )}
 
         {/* Share */}
         <div className="flex items-center gap-4 mt-8 pt-8 border-t border-gray-100">
@@ -105,7 +140,7 @@ export default function NewsDetail() {
             <div className="grid md:grid-cols-3 gap-8">
               {related.map((p) => (
                 <Link key={p.id} to={`/news/${p.slug}`} className="group block">
-                  <div className="aspect-[16/10] overflow-hidden rounded-xl">
+                  <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
                     <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   </div>
                   <h3 className="text-base font-medium mt-4 group-hover:text-lime transition-colors">{p.title}</h3>
