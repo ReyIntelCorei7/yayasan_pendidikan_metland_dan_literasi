@@ -127,7 +127,7 @@ export default function Navbar() {
             {/* Desktop CTA */}
             <Link to="/contact" className="hidden lg:block">
               <motion.span
-                className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#008C95]"
+                className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#228bcb]"
                 whileTap={{ scale: 0.97 }}
               >
                 <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>

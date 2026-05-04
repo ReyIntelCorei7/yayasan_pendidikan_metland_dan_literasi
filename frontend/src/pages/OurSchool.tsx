@@ -41,7 +41,7 @@ const schools = [
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
+    image: '/src/assets/sekolahsmkmetland.png',
     color: '#E9D5FF',
   },
 ];
@@ -71,7 +71,7 @@ export default function OurSchool() {
       </section>
 
       {/* Schools Grid */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {schools.map((school, i) => (

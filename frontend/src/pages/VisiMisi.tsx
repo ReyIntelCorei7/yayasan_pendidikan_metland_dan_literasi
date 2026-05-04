@@ -34,7 +34,7 @@ export default function VisiMisi() {
       </section>
 
       {/* Visi */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
           <ScrollReveal direction="left">
             <div className="w-12 h-[3px] bg-lime mb-6" />
@@ -87,7 +87,7 @@ export default function VisiMisi() {
       </section>
 
       {/* Nilai-Nilai */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <WordReveal text="Nilai-Nilai Kami" tag="h2" className="text-4xl font-light text-charcoal mb-12 justify-center text-center" />

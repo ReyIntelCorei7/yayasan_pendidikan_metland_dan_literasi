@@ -9,12 +9,12 @@ const displayPosts = posts.slice(0, 6);
 
 export default function NewsInsights() {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-[#FCFCFC] py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <ScrollReveal>
-              <p className="text-xs text-lime uppercase tracking-[0.2em] mb-4">Latest Updates</p>
+              <p className="text-xs text-[#228bcb] uppercase tracking-[0.2em] mb-4">Gallery</p>
             </ScrollReveal>
             <WordReveal
               text="News & Insights"
@@ -24,9 +24,9 @@ export default function NewsInsights() {
           </div>
           <Link
             to="/news"
-            className="text-sm font-medium text-charcoal hover:text-lime transition-colors mt-4 md:mt-0 group"
+            className="text-sm font-medium text-charcoal hover:text-[#228bcb] transition-colors mt-4 md:mt-0 group"
           >
-            View All
+            Lihat Semua
             <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
@@ -36,7 +36,7 @@ export default function NewsInsights() {
             <motion.div key={post.id} variants={staggerItemVariants}>
               <Link to={`/news/${post.slug}`} className="group block">
                 {/* Image */}
-                <div className="aspect-[16/10] overflow-hidden rounded-xl">
+                <div className="aspect-[16/10] overflow-hidden rounded-xl ">
                   <motion.img
                     src={post.featuredImage}
                     alt={post.title}
@@ -48,12 +48,12 @@ export default function NewsInsights() {
                 </div>
 
                 {/* Category */}
-                <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">
+                <span className="text-xs text-black /10 rounded-full px-3 py-1 inline-block mb-3 mt-4">
                   {post.category}
                 </span>
 
                 {/* Title */}
-                <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors duration-200">
+                <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-[#228bcb] transition-colors duration-200">
                   {post.title}
                 </h3>
 

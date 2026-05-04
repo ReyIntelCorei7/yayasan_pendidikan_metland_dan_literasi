@@ -29,7 +29,7 @@ export default function Artikel() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Filter bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">

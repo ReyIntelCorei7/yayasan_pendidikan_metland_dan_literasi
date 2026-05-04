@@ -255,7 +255,7 @@ export default function Literasi() {
       {/* ═══════════════════════════════════════════════════════════════
           Section 3 — TENTANG LITERASI (dua kolom, putih)
           ═══════════════════════════════════════════════════════════════ */}
-      <section className="bg-white py-24 lg:py-32">
+      <section className="bg-[#FCFCFC] py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-center">
             {/* Left column — text */}
@@ -523,7 +523,7 @@ export default function Literasi() {
       {/* ═══════════════════════════════════════════════════════════════
           Section 6.5 — KOLEKSI BUKU DIGITAL (background putih)
           ═══════════════════════════════════════════════════════════════ */}
-      <section id="koleksi-buku" className="bg-white py-24 lg:py-32">
+      <section id="koleksi-buku" className="bg-[#FCFCFC] py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Header */}
           <ScrollReveal>

@@ -63,7 +63,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="font-georgia mx-14 mt-6 text-base md:text-xl font-bold text-white max-w-lg leading-relaxed drop-shadow-2xl"
+          className="font-georgia mx-16 mt-6 text-base md:text-xl font-bold text-white max-w-lg leading-relaxed drop-shadow-2xl"
         >
           Yayasan Pendidikan Metland berkomitmen menciptakan lingkungan belajar yang inovatif dan berkarakter untuk masa depan Indonesia.
         </motion.p>

@@ -34,7 +34,7 @@ export default function NewsDetail() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-lime z-[60] origin-left" style={{ scaleX }} />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white">
+      <section className="pt-32 pb-16 bg-[#FCFCFC]">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <Link to="/news" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-charcoal mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to News

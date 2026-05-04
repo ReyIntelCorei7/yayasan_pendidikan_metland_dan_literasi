@@ -22,7 +22,7 @@ export default function Impact() {
       </section>
 
       {/* Interactive Stats Overview */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {impactStats.map((stat, i) => (
@@ -79,7 +79,7 @@ export default function Impact() {
       <ScholarStories />
 
       {/* Annual Reports */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <WordReveal text="Annual Reports" tag="h2" className="text-4xl font-light text-charcoal mb-12" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

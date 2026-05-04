@@ -54,7 +54,7 @@ export default function StrukturOrganisasi() {
       </section>
 
       {/* Org Chart Visual */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <div className="flex flex-col items-center gap-0">

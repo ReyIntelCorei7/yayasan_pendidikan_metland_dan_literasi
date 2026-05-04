@@ -114,7 +114,7 @@ export default function SchoolDetail() {
       </section>
 
       {/* Description & Features */}
-      <section className="bg-white py-24">
+      <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start">
           <ScrollReveal direction="left">
             <div className="w-12 h-[2px] bg-lime mb-6" />
