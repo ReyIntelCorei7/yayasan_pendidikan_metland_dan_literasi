@@ -19,8 +19,8 @@ export default function VisiMisi() {
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&q=80"
-          alt=""
+          src="/src/assets/sekolahsmkmetlandcibitung.jpg"
+          alt="foto sekolah smk metland cibitung"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 text-center px-6">

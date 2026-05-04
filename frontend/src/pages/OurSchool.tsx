@@ -52,8 +52,8 @@ export default function OurSchool() {
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&q=80"
-          alt=""
+          src="/src/assets/sekolahsmkmetland.png"
+          alt="foto sekolah smk metland"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 text-center px-6">
