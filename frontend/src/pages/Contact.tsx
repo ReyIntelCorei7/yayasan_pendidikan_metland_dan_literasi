@@ -26,11 +26,13 @@ export default function Contact() {
     <>
       {/* Hero */}
       <section className="relative h-[50vh] min-h-[350px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <img src="/src/assets/sekolahsmkmetland.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative z-10 text-center px-6">
+          <p className="text-[#228bcb] text-sm tracking-widest uppercase mb-4">Kontak</p>
           <WordReveal text="Get In Touch" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-400 mt-4">
-            We'd love to hear from you. Let's build Africa's future together.
+            Untuk informasi lebih lanjut mengenai
+            Yayasan Pendidikan Metland
           </motion.p>
         </div>
       </section>
@@ -84,7 +86,7 @@ export default function Contact() {
                 type="submit"
                 whileHover={{ scale: 1.02, backgroundColor: '#1b78b3' }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-lime text-charcoal px-8 py-4 rounded-lg text-sm font-medium w-full sm:w-auto"
+                className="bg-lime text-charcoal px-8 py-4 rounded-lg text-sm font-medium w-full sm:w-auto text-white"
               >
                 Send Message →
               </motion.button>
@@ -96,9 +98,7 @@ export default function Contact() {
             <h2 className="text-3xl font-light mb-8">Our Offices</h2>
             <div className="space-y-8">
               {[
-                { city: 'Harare, Zimbabwe', address: '123 Samora Machel Avenue, Harare', phone: '+263 242 700 000', email: 'harare@higherlife.org' },
-                { city: 'Lagos, Nigeria', address: '45 Broad Street, Lagos Island', phone: '+234 1 234 5678', email: 'lagos@higherlife.org' },
-                { city: 'Accra, Ghana', address: '78 Independence Avenue, Accra', phone: '+233 30 277 0000', email: 'accra@higherlife.org' },
+                { city: 'Bekasi, Indonesia', address: 'Jl. Cikarang Barat, Cibarusah No.12, Sukaresmi, Kec. Cikarang Selatan, Kabupaten Bekasi, Jawa Barat 17530', phone: '+62 21 8989 8989', email: 'yayasanpendidikanmetland@gmail.com' },
               ].map((office) => (
                 <div key={office.city} className="p-6 rounded-2xl border border-gray-100 hover:border-lime/30 transition-colors">
                   <h3 className="font-medium text-charcoal mb-3">{office.city}</h3>
@@ -111,38 +111,6 @@ export default function Contact() {
               ))}
             </div>
           </ScrollReveal>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="bg-offwhite py-24">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <WordReveal text="Frequently Asked Questions" tag="h2" className="text-4xl font-light text-charcoal mb-12 justify-center text-center" />
-          <div className="space-y-4">
-            {faqs.map((faq, i) => (
-              <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full flex items-center justify-between p-5 text-left"
-                  >
-                    <span className="text-sm font-medium text-charcoal pr-4">{faq.q}</span>
-                    <motion.div animate={{ rotate: openFaq === i ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                      <ChevronDown className="w-5 h-5 text-gray-400 shrink-0" />
-                    </motion.div>
-                  </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: openFaq === i ? 'auto' : 0, opacity: openFaq === i ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="px-5 pb-5 text-sm text-gray-500 leading-relaxed">{faq.a}</p>
-                  </motion.div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
       </section>
     </>

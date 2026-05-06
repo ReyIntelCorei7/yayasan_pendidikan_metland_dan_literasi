@@ -83,7 +83,6 @@ export default function NewsInsights() {
               </motion.div>
             ))}
           </StaggerGrid>
-        )}
       </div>
     </section>
   );
