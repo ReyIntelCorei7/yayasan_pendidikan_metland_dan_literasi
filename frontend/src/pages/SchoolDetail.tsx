@@ -1,6 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CTABanner from '../components/sections/CTABanner';
 
@@ -35,7 +34,7 @@ const schools = [
     description: 'SMK Pariwisata Metland School mempersiapkan siswa menjadi tenaga profesional di bidang pariwisata, perhotelan, dan kuliner. Dengan fasilitas praktik bertaraf industri dan kemitraan dengan hotel berbintang, lulusan kami siap bersaing di tingkat nasional dan internasional.',
     image: '/src/assets/sekolahsmkmetland.png',
     color: '#BFDBFE',
-    features: ['Jurusan Perhotelan', 'Jurusan Tata Boga', 'Jurusan Wisata & Tour', 'Prakerin di Hotel Bintang 5'],
+    features: ['Jurusan Perhotelan', 'Jurusan Kuliner', 'Jurusan Akuntansi', 'Jurusan DKV', 'Jurusan PPLG'],
     stats: [{ value: '650+', label: 'Siswa Aktif' }, { value: '55', label: 'Tenaga Pengajar' }, { value: '2012', label: 'Tahun Berdiri' }],
   },
   {
@@ -46,7 +45,7 @@ const schools = [
     description: 'SMK Metland berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.',
     image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
     color: '#FED7AA',
-    features: ['Teknik Komputer & Jaringan', 'Akuntansi & Keuangan', 'Teknik Otomotif', 'Program Magang Industri'],
+    features: ['Jurusan Perhotelan', 'Jurusan Kuliner', 'Jurusan Akuntansi', 'Jurusan DKV', 'Jurusan PPLG'],
     stats: [{ value: '720+', label: 'Siswa Aktif' }, { value: '60', label: 'Tenaga Pengajar' }, { value: '2015', label: 'Tahun Berdiri' }],
   },
   {
@@ -82,34 +81,18 @@ export default function SchoolDetail() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[65vh] min-h-[450px] flex items-end bg-charcoal overflow-hidden">
-        <img src={school.image} alt={school.name} className="absolute inset-0 w-full h-full object-cover opacity-50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pb-16 w-full">
-          <span className="text-xs px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-4" style={{ background: school.color + '33', color: school.color }}>
-            {school.level}
-          </span>
-          <WordReveal text={school.name} tag="h1" className="text-4xl lg:text-6xl font-light text-white mt-2" delay={0.2} />
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-white/70 mt-3 text-lg"
+      <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+        <img src={school.image} alt={school.name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+        <div className="relative z-10 text-center px-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white"
           >
-            {school.tagline}
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="bg-charcoal py-12 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-3 gap-8">
-          {school.stats.map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl font-light text-white">{stat.value}</div>
-              <div className="text-sm text-white/50 mt-1">{stat.label}</div>
-            </div>
-          ))}
+            {school.name}
+          </motion.h1>
         </div>
       </section>
 
@@ -126,7 +109,6 @@ export default function SchoolDetail() {
             <div className="space-y-3">
               {school.features.map((f, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-offwhite rounded-xl border border-gray-100">
-                  <div className="w-2 h-2 rounded-full bg-lime shrink-0" />
                   <span className="text-sm text-charcoal font-medium">{f}</span>
                 </div>
               ))}
@@ -142,7 +124,7 @@ export default function SchoolDetail() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {others.slice(0, 4).map((s) => (
               <Link key={s.slug} to={`/our-school/${s.slug}`} className="group block">
-                <div className="aspect-[4/3] overflow-hidden rounded-2xl relative mb-4">
+                <div className="aspect-[4/3] overflow-hidden relative mb-4">
                   <img src={s.image} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
@@ -155,8 +137,6 @@ export default function SchoolDetail() {
           </div>
         </div>
       </section>
-
-      <CTABanner />
     </>
   );
 }
