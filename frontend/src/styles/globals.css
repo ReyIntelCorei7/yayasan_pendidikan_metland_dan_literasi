@@ -42,3 +42,51 @@
     text-wrap: balance;
   }
 }
+
+/* ================================================
+   CUSTOM SCROLLBAR — di luar @layer agar pasti jalan
+   Hanya warna solid, tanpa track, tanpa panah
+================================================ */
+
+/* Sembunyikan scrollbar default pada semua elemen */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #228bcb transparent;
+}
+
+/* Webkit: Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #228bcb !important;
+  border-radius: 999px;
+  border: none !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e7ab8 !important;
+}
+
+/* Sembunyikan tombol panah atas/bawah sepenuhnya */
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:start,
+::-webkit-scrollbar-button:end,
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
