@@ -40,7 +40,16 @@ class TeamMemberResource extends Resource
                         'Communications' => 'Communications', 'Operations' => 'Operations',
                     ])->required(),
                 Textarea::make('bio')->required()->rows(3),
-                FileUpload::make('photo')->image()->disk('public')->directory('team')->avatar(),
+                FileUpload::make('photo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('team')
+                    ->avatar()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(512) // Max 512KB for avatar
+                    ->imageResizeTargetWidth('300')
+                    ->imageResizeTargetHeight('300')
+                    ->imageResizeMode('cover'),
                 TextInput::make('order')->numeric()->default(0),
             ])->columns(2),
             Section::make('Social Media')->schema([
@@ -62,6 +71,7 @@ class TeamMemberResource extends Resource
             ])
             ->defaultSort('order')
             ->defaultPaginationPageOption(10)
+            ->searchDebounce('750ms')
             ->actions([EditAction::make(), DeleteAction::make()])
             ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])
             ->reorderable('order');

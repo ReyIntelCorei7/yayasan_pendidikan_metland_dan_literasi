@@ -48,13 +48,30 @@ class PostResource extends Resource
                     ])->required(),
                 Textarea::make('excerpt')->required()->rows(3),
                 RichEditor::make('body')->required()->columnSpanFull(),
-                FileUpload::make('featured_image')->image()->disk('public')->directory('posts'),
+                FileUpload::make('featured_image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(2048) // Max 2MB
+                    ->imageResizeTargetWidth('1200')
+                    ->imageResizeTargetHeight('800')
+                    ->imageResizeMode('cover'),
             ])->columns(2),
 
             Section::make('Author & Publishing')->schema([
                 TextInput::make('author_name')->required(),
                 TextInput::make('author_title'),
-                FileUpload::make('author_photo')->image()->disk('public')->directory('authors')->avatar(),
+                FileUpload::make('author_photo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('authors')
+                    ->avatar()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(512) // Max 512KB for avatar
+                    ->imageResizeTargetWidth('200')
+                    ->imageResizeTargetHeight('200')
+                    ->imageResizeMode('cover'),
                 DatePicker::make('published_at')->default(now()),
                 TextInput::make('reading_time')->numeric()->default(5)->suffix('min'),
                 Toggle::make('is_published')->default(true),
@@ -82,6 +99,7 @@ class PostResource extends Resource
             ])
             ->defaultPaginationPageOption(10)
             ->defaultSort('published_at', 'desc')
+            ->searchDebounce('750ms') // Avoid query spam while typing
             ->filters([
                 Tables\Filters\SelectFilter::make('category'),
                 Tables\Filters\TernaryFilter::make('is_published'),

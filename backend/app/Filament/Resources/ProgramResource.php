@@ -45,7 +45,15 @@ class ProgramResource extends Resource
                     ->required(),
                 TextInput::make('tagline')->required()->maxLength(255),
                 Textarea::make('description')->required()->rows(4),
-                FileUpload::make('image')->image()->disk('public')->directory('programs'),
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('programs')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(2048) // Max 2MB
+                    ->imageResizeTargetWidth('1200')
+                    ->imageResizeTargetHeight('800')
+                    ->imageResizeMode('cover'),
                 Toggle::make('is_featured')->default(false),
                 TextInput::make('order')->numeric()->default(0),
             ])->columns(2),
@@ -71,6 +79,7 @@ class ProgramResource extends Resource
             ])
             ->defaultSort('order')
             ->defaultPaginationPageOption(10)
+            ->searchDebounce('750ms')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options(['education' => 'Education', 'health' => 'Health', 'livelihoods' => 'Livelihoods']),

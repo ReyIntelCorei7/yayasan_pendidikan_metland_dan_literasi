@@ -63,11 +63,16 @@ class BookResource extends Resource
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->directory('covers')
                     ->disk('public')
+                    ->maxSize(2048) // Max 2MB
+                    ->imageResizeTargetWidth('800')
+                    ->imageResizeTargetHeight('1100')
+                    ->imageResizeMode('cover')
                     ->label('Cover Buku'),
                 FileUpload::make('pdf_file')
                     ->acceptedFileTypes(['application/pdf'])
                     ->directory('books')
                     ->disk('public')
+                    ->maxSize(20480) // Max 20MB for PDFs
                     ->required()
                     ->label('File PDF'),
             ])->columns(2),
@@ -113,6 +118,7 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultPaginationPageOption(10)
+            ->searchDebounce('750ms') // Avoid query spam while typing
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options([

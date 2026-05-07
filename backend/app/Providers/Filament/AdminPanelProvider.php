@@ -32,6 +32,8 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Violet,
             ])
             ->brandName('Yayasan Pendidikan Metland dan Literasi')
+            ->spa() // Enable SPA mode for instant navigation between pages
+            ->databaseNotifications(false) // Disable polling for notifications
             ->renderHook(
                 'panels::head.end',
                 fn () => '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=1">'
@@ -41,9 +43,8 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
+                AccountWidget::class, // Only load AccountWidget, skip auto-discovery
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -31,7 +31,12 @@ class PartnerResource extends Resource
         return $schema->components([
             Section::make('Partner Details')->schema([
                 TextInput::make('name')->required()->maxLength(255),
-                FileUpload::make('logo')->image()->disk('public')->directory('partners'),
+                FileUpload::make('logo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('partners')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                    ->maxSize(1024), // Max 1MB
                 TextInput::make('website_url')->url(),
                 Toggle::make('is_active')->default(true),
             ])->columns(2),
@@ -47,6 +52,8 @@ class PartnerResource extends Resource
                 Tables\Columns\TextColumn::make('website_url')->limit(30),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
+            ->defaultPaginationPageOption(10)
+            ->searchDebounce('750ms')
             ->actions([EditAction::make(), DeleteAction::make()])
             ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
