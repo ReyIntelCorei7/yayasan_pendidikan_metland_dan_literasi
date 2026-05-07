@@ -77,7 +77,7 @@ export default function OurSchool() {
             {schools.map((school, i) => (
               <ScrollReveal key={school.slug} delay={i * 0.1}>
                 <Link to={`/our-school/${school.slug}`} className="group block">
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-5">
+                  <div className="relative aspect-[16/10] overflow-hidden mb-5">
                     <img
                       src={school.image}
                       alt={school.name}

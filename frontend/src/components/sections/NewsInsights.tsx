@@ -38,7 +38,7 @@ export default function NewsInsights() {
             <motion.div key={post.id} variants={staggerItemVariants}>
               <Link to={`/news/${post.slug}`} className="group block">
                 {/* Image */}
-                <div className="aspect-[16/10] overflow-hidden rounded-xl ">
+                <div className="aspect-[16/10] overflow-hidden ">
                   <motion.img
                     src={post.featuredImage}
                     alt={post.title}
