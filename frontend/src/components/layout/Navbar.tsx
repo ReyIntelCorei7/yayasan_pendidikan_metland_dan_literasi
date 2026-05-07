@@ -37,13 +37,21 @@ export default function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
 
+  // Pages where the hero has a light/white background — navbar text must be dark from start
+  const isLightHero = ['/literasi'].includes(location.pathname);
+  const useDarkText = isScrolled || isLightHero;
+
   return (
     <>
       <motion.nav
         className="fixed top-0 left-0 w-full z-50"
         animate={{
-          backgroundColor: isScrolled ? 'rgba(255,255,255,0.96)' : 'rgba(0,0,0,0)',
-          backdropFilter: isScrolled ? 'blur(12px)' : 'blur(0px)',
+          backgroundColor: isScrolled
+            ? 'rgba(255,255,255,0.96)'
+            : isLightHero
+            ? 'rgba(255,255,255,0.85)'
+            : 'rgba(0,0,0,0)',
+          backdropFilter: (isScrolled || isLightHero) ? 'blur(12px)' : 'blur(0px)',
         }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
@@ -62,7 +70,7 @@ export default function Navbar() {
               </motion.div>
               <motion.span
                 className="font-semibold text-lg tracking-tight"
-                animate={{ color: isScrolled ? '#111111' : '#ffffff' }}
+                animate={{ color: useDarkText ? '#111111' : '#ffffff' }}
                 transition={{ duration: 0.4 }}
               >
                 Yayasan Pendidikan Metland
@@ -81,7 +89,7 @@ export default function Navbar() {
                   <Link to={item.href}>
                     <motion.span
                       className="px-4 py-2 text-sm font-medium inline-flex items-center gap-1 cursor-pointer"
-                      animate={{ color: isScrolled ? '#111111' : '#ffffff' }}
+                      animate={{ color: useDarkText ? '#111111' : '#ffffff' }}
                       whileHover={{ opacity: 0.7 }}
                       transition={{ duration: 0.3 }}
                     >
@@ -148,7 +156,7 @@ export default function Navbar() {
                   </motion.div>
                 ) : (
                   <motion.div key="menu" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.2 }}>
-                    <Menu className="w-6 h-6" style={{ color: isScrolled ? '#111' : '#fff' }} />
+                    <Menu className="w-6 h-6" style={{ color: useDarkText ? '#111' : '#fff' }} />
                   </motion.div>
                 )}
               </AnimatePresence>
