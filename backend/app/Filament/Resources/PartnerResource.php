@@ -20,6 +20,7 @@ use Filament\Actions\BulkActionGroup;
 class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-building-office'; }
     public static function getNavigationGroup(): ?string { return 'Content'; }

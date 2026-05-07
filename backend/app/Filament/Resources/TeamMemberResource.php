@@ -21,6 +21,7 @@ use Filament\Actions\BulkActionGroup;
 class TeamMemberResource extends Resource
 {
     protected static ?string $model = TeamMember::class;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-users'; }
     public static function getNavigationGroup(): ?string { return 'Content'; }

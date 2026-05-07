@@ -21,6 +21,7 @@ use Filament\Actions\BulkActionGroup;
 class ScholarResource extends Resource
 {
     protected static ?string $model = Scholar::class;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-user-group'; }
     public static function getNavigationGroup(): ?string { return 'Content'; }

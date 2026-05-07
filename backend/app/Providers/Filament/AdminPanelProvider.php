@@ -27,9 +27,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->darkMode(false)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Violet,
             ])
+            ->brandName('Yayasan Pendidikan Metland dan Literasi')
+            ->renderHook(
+                'panels::head.end',
+                fn () => '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=1">'
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
