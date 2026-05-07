@@ -253,7 +253,7 @@ export default function Navbar() {
                 <Link
                   to="/contact"
                   onClick={() => setIsMobileOpen(false)}
-                  className="block w-full bg-lime text-charcoal text-center py-4 rounded-md font-medium text-sm mt-6"
+                  className="block w-full text-white bg-[#228bcb] text-center py-4 rounded-md font-medium text-sm mt-6"
                 >
                   → Contact
                 </Link>
