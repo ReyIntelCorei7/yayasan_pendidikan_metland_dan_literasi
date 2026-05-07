@@ -7,7 +7,7 @@ import StaggerGrid, { staggerItemVariants } from '../animations/StaggerGrid';
 import { usePosts } from '../../hooks/usePosts';
 
 export default function NewsInsights() {
-  const { posts, loading } = usePosts();
+  const { posts } = usePosts();
   const displayPosts = useMemo(() => posts.slice(0, 6), [posts]);
 
   return (
@@ -83,7 +83,6 @@ export default function NewsInsights() {
               </motion.div>
             ))}
           </StaggerGrid>
-        )}
       </div>
     </section>
   );

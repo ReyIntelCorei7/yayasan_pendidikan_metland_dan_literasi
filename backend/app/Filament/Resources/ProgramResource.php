@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 class ProgramResource extends Resource
 {
     protected static ?string $model = Program::class;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-academic-cap'; }
     public static function getNavigationGroup(): ?string { return 'Content'; }
