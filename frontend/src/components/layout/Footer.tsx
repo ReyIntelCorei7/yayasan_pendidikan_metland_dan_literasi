@@ -112,7 +112,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">© {new Date().getFullYear()} Yayasan Pendidikan Metland. Hak cipta dilindungi.</p>
+          <p className="text-xs text-gray-600">© {new Date().getFullYear()} Yayasan Pendidikan Metland. By Reynara Rehan Rhadit.</p>
           <div className="flex gap-6">
             <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Kebijakan Privasi</a>
             <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Syarat & Ketentuan</a>
