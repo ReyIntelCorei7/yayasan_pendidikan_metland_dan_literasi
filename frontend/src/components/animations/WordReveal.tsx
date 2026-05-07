@@ -19,9 +19,9 @@ export default function WordReveal({ text, className, tag = 'h2', delay = 0 }: W
   }
 
   return (
-    <Tag className={cn('flex flex-wrap', className)}>
+    <Tag className={cn('flex flex-wrap gap-y-0', className)}>
       {words.map((word, i) => (
-        <span key={i} className="overflow-hidden inline-block mr-[0.3em]">
+        <span key={i} className="overflow-hidden inline-flex mr-[0.3em]">
           <motion.span
             className="inline-block"
             initial={{ y: '110%' }}
