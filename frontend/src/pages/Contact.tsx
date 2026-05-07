@@ -28,7 +28,7 @@ export default function Contact() {
       <section className="relative h-[50vh] min-h-[350px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img src="/src/assets/sekolahsmkmetland.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative z-10 text-center px-6">
-          <p className="text-[#228bcb] text-sm tracking-widest uppercase mb-4">Kontak</p>
+          <p className="text-[#228bcb] text-base font-semibold tracking-widest uppercase mb-4">Kontak</p>
           <WordReveal text="Get In Touch" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-400 mt-4">
             Untuk informasi lebih lanjut mengenai

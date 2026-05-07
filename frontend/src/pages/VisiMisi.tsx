@@ -24,7 +24,7 @@ export default function VisiMisi() {
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 text-center px-6">
-          <p className="text-[#228bcb] text-sm tracking-widest uppercase mb-4">Profil Yayasan</p>
+          <p className="text-[#228bcb] text-base font-semibold tracking-widest uppercase mb-4">Profil Yayasan</p>
           <WordReveal text="Visi & Misi" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p
             initial={{ opacity: 0 }}
