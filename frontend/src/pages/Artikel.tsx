@@ -106,7 +106,7 @@ export default function Artikel() {
                   {filtered.map((post) => (
                     <motion.div key={post.id} variants={staggerItemVariants}>
                       <Link to={`/artikel/${post.slug}`} className="group block">
-                        <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
+                        <div className="aspect-[16/10] overflow-hidden bg-gray-100">
                           <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                         </div>
                         <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">{post.category}</span>
