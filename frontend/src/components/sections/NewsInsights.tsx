@@ -16,7 +16,7 @@ export default function NewsInsights() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <ScrollReveal>
-              <p className="text-xs text-[#228bcb] uppercase tracking-[0.2em] mb-4">Gallery</p>
+              <p className="text-xs text-[#228bcb] uppercase tracking-[0.2em] mb-4">Artikel</p>
             </ScrollReveal>
             <WordReveal
               text="News & Insights"

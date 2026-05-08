@@ -55,26 +55,41 @@ export default function ArtikelDetail() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-lime z-[60] origin-left" style={{ scaleX }} />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-[#FCFCFC]">
+      <section className="pt-28 pb-16 bg-[#FCFCFC]">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <Link to="/artikel" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-charcoal mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Kembali ke Artikel
+          {/* Back link */}
+          <Link
+            to="/artikel"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-charcoal hover:bg-gray-100 rounded-full px-3 py-1.5 -ml-3 transition-all duration-200"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali ke Artikel</span>
           </Link>
-          <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-4">{post.category}</span>
-          <h1 className="text-3xl lg:text-5xl font-light leading-tight">{post.title}</h1>
-          <div className="flex items-center gap-4 mt-6 text-sm text-gray-400">
+
+          {/* Category badge */}
+          <div className="mt-6 mb-5">
+            <span className="text-xs font-medium text-[#228bcb] bg-[#228bcb]/10 rounded-full px-3 py-1">
+              {post.category}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1 className="text-3xl lg:text-5xl font-light leading-tight text-charcoal">{post.title}</h1>
+
+          {/* Author & Meta */}
+          <div className="flex items-center gap-4 mt-8 text-sm text-gray-400">
             {post.author.photo && (
-              <img src={post.author.photo} alt={post.author.name} className="w-10 h-10 rounded-full object-cover" />
+              <img src={post.author.photo} alt={post.author.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100" />
             )}
             <div>
               <p className="text-charcoal font-medium">{post.author.name}</p>
-              {post.author.title && <p>{post.author.title}</p>}
+              {post.author.title && <p className="text-gray-400">{post.author.title}</p>}
             </div>
-            <span>·</span>
+            <span className="text-gray-300">·</span>
             <span>{new Date(post.publishedAt).toLocaleDateString('id-ID', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
             {post.readingTime && (
               <>
-                <span>·</span>
+                <span className="text-gray-300">·</span>
                 <span>{post.readingTime} mnt baca</span>
               </>
             )}
@@ -85,7 +100,7 @@ export default function ArtikelDetail() {
       {/* Featured Image */}
       {post.featuredImage && (
         <div className="max-w-5xl mx-auto px-6 lg:px-8 mb-16">
-          <img src={post.featuredImage} alt={post.title} className="w-full aspect-[21/9] object-cover rounded-2xl" />
+          <img src={post.featuredImage} alt={post.title} className="w-full aspect-[21/9] object-cover" />
         </div>
       )}
 
@@ -145,7 +160,7 @@ export default function ArtikelDetail() {
             <div className="grid md:grid-cols-3 gap-8">
               {related.map((p) => (
                 <Link key={p.id} to={`/artikel/${p.slug}`} className="group block">
-                  <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
+                  <div className="aspect-[16/10] overflow-hidden bg-gray-100">
                     <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   </div>
                   <h3 className="text-base font-medium mt-4 group-hover:text-lime transition-colors">{p.title}</h3>
