@@ -48,7 +48,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
   const skipRef      = useRef(-1);
   const rafRef       = useRef(0);
   const touchX       = useRef(0);
-  const tasks        = useRef<Map<string, any>>(new Map());
+  const tasks        = useRef<Map<HTMLCanvasElement, any>>(new Map());
 
   const leftRef  = useRef<HTMLCanvasElement>(null);
   const rightRef = useRef<HTMLCanvasElement>(null);
@@ -127,9 +127,8 @@ export default function FlipbookReader({ book, onClose }: Props) {
     const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     if (!pdfRef.current || pageNum < 1 || pageNum > pdfRef.current.numPages) return;
-    const key = `${pageNum}`;
-    const prev = tasks.current.get(key);
-    if (prev) { try { prev.cancel(); } catch (_) {} tasks.current.delete(key); }
+    const prev = tasks.current.get(canvas);
+    if (prev) { try { prev.cancel(); } catch (_) {} tasks.current.delete(canvas); }
     try {
       const page = await pdfRef.current.getPage(pageNum);
       const vp = page.getViewport({ scale: 1 });
@@ -139,8 +138,8 @@ export default function FlipbookReader({ book, onClose }: Props) {
       const oy = Math.round((canvas.height - sv.height) / 2);
       ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
       const task = page.render({ canvasContext: ctx, viewport: sv, transform: [1, 0, 0, 1, ox, oy] });
-      tasks.current.set(key, task);
-      await task.promise; tasks.current.delete(key);
+      tasks.current.set(canvas, task);
+      await task.promise; tasks.current.delete(canvas);
     } catch (e: any) { if (e?.name !== 'RenderingCancelledException') console.error(e); }
   }, []);
 
