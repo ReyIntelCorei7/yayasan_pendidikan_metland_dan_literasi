@@ -25,7 +25,7 @@ export default function NewsInsights() {
             />
           </div>
           <Link
-            to="/news"
+            to="/artikel"
             className="text-sm font-medium text-charcoal hover:text-[#228bcb] transition-colors mt-4 md:mt-0 group"
           >
             Lihat Semua
@@ -36,7 +36,7 @@ export default function NewsInsights() {
         <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayPosts.map((post) => (
             <motion.div key={post.id} variants={staggerItemVariants}>
-              <Link to={`/news/${post.slug}`} className="group block">
+              <Link to={`/artikel/${post.slug}`} className="group block">
                 {/* Image */}
                 <div className="aspect-[16/10] overflow-hidden ">
                   <motion.img

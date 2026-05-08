@@ -29,7 +29,7 @@ export default function ScrollReveal({ children, delay = 0, direction = 'up', cl
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ margin: '-80px' }}
       variants={{
         hidden: variants.hidden,
         visible: {
