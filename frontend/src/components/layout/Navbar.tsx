@@ -181,7 +181,8 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 h-full w-80 bg-white z-50 shadow-2xl lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 h-full w-80 bg-white z-50 shadow-2xl lg:hidden overflow-y-auto scrollbar-hide"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               <div className="pt-24 px-6 pb-8 flex flex-col h-full">
                 <motion.div
@@ -253,7 +254,7 @@ export default function Navbar() {
                 <Link
                   to="/contact"
                   onClick={() => setIsMobileOpen(false)}
-                  className="block w-full bg-lime text-charcoal text-center py-4 rounded-md font-medium text-sm mt-6"
+                  className="block w-full text-white bg-[#228bcb] text-center py-4 rounded-md font-medium text-sm mt-6"
                 >
                   → Contact
                 </Link>

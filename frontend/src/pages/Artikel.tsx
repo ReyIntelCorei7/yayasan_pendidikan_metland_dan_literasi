@@ -28,9 +28,9 @@ export default function Artikel() {
   return (
     <>
       <section className="relative h-[50vh] min-h-[350px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1504711434969-e33886168d8c?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <img src="/src/assets/sekolahsmkmetlandcibitung.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
         <div className="relative z-10 text-center px-6">
-          <p className="text-lime text-sm tracking-widest uppercase mb-4">Berita & Informasi</p>
+          <p className="text-[#228bcb] text-base font-semibold tracking-widest uppercase mb-4">Berita & Informasi</p>
           <WordReveal text="Artikel" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-400 mt-4">
             Berita, cerita, dan informasi terkini dari Yayasan Pendidikan Metland.
