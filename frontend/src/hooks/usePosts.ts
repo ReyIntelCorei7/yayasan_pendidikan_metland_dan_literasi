@@ -46,7 +46,7 @@ function fetchWithTimeout(timeoutMs = 5000): Promise<Post[]> {
 // ─── usePosts ─────────────────────────────────────────────────────────────────
 
 export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>(cachedPosts ?? []);
+  const [posts, setPosts] = useState<Post[]>(cachedPosts ?? staticPosts as Post[]);
   const [loading, setLoading] = useState(!isCacheValid());
   const [error, setError] = useState<string | null>(null);
 

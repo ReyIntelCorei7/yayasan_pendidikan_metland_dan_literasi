@@ -38,7 +38,11 @@ export default function Navbar() {
   const location = useLocation();
 
   // Pages where the hero has a light/white background — navbar text must be dark from start
-  const isLightHero = ['/literasi'].includes(location.pathname);
+  const lightHeroExact = ['/literasi'];
+  const lightHeroPrefixes = ['/artikel/'];
+  const isLightHero =
+    lightHeroExact.includes(location.pathname) ||
+    lightHeroPrefixes.some((prefix) => location.pathname.startsWith(prefix));
   const useDarkText = isScrolled || isLightHero;
 
   return (
