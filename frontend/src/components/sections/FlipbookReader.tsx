@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Download, Loader2, ZoomIn, ZoomOut } from 'lucide-react';
 import type { Book } from '../../hooks/useBooks';
 import * as pdfjsLib from 'pdfjs-dist';
+import { drawIdle, drawCurlFrame, drawCornerCurl } from '../../lib/curlEngine';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -11,76 +12,80 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 
 interface Props { book: Book; onClose: () => void; }
 
-function PageStack({ side }: { side: 'left' | 'right' }) {
-  const colors = ['#ede5d5', '#e2d9c8', '#d7cfbc', '#ccc5b0'];
-  return (
-    <div style={{ position: 'relative', width: 8, alignSelf: 'stretch', flexShrink: 0 }}>
-      {colors.map((c, i) => (
-        <div key={i} style={{
-          position: 'absolute', top: `${i * 2}%`, bottom: `${i * 2}%`,
-          [side === 'left' ? 'right' : 'left']: 0,
-          width: 3 - i * 0.4, background: c,
-          borderRadius: side === 'left' ? '2px 0 0 2px' : '0 2px 2px 0',
-        }} />
-      ))}
-    </div>
-  );
+type FlipState = 'idle' | 'animating' | 'dragging';
+
+// Easing: ease-in-out cubic
+function ease(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 export default function FlipbookReader({ book, onClose }: Props) {
-  const [spread,   setSpread]   = useState(1);
+  const [spread, setSpread]     = useState(1);
   const [numPages, setNumPages] = useState(0);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(false);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState(false);
   const [isDouble, setDouble]   = useState(window.innerWidth >= 900);
-  const [scale,    setScale]    = useState(1);
-  const [dims,     setDims]     = useState({ w: 380, h: 537 });
-  const [flipSide, setFlipSide] = useState<'left'|'right'|null>(null);
-  const [flipDir,  setFlipDir]  = useState<'next'|'prev'>('next');
+  const [scale, setScale]       = useState(1);
 
-  const pdfRef       = useRef<pdfjsLib.PDFDocumentProxy|null>(null);
+  const pdfRef       = useRef<pdfjsLib.PDFDocumentProxy | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const spreadRef    = useRef(1);
-  const npRef        = useRef(0);
-  const dblRef       = useRef(isDouble);
-  const dimsRef      = useRef(dims);
-  const animRef      = useRef(false);
-  const skipRef      = useRef(-1);
-  const rafRef       = useRef(0);
-  const touchX       = useRef(0);
-  const tasks        = useRef<Map<HTMLCanvasElement, any>>(new Map());
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
 
-  const leftRef  = useRef<HTMLCanvasElement>(null);
-  const rightRef = useRef<HTMLCanvasElement>(null);
-  const frontRef = useRef<HTMLCanvasElement>(null);
-  const backRef  = useRef<HTMLCanvasElement>(null);
-  const flipRef  = useRef<HTMLDivElement>(null);
-  const curlRef  = useRef<HTMLDivElement>(null);
+  // Pre-rendered page cache: pageNum → offscreen canvas
+  const pageCache = useRef<Map<number, HTMLCanvasElement>>(new Map());
+  const renderingPages = useRef<Set<number>>(new Set());
 
+  // Animation state refs
+  const flipState = useRef<FlipState>('idle');
+  const flipDir   = useRef<'next' | 'prev'>('next');
+  const flipProg  = useRef(0);
+  const flipStart = useRef(0);
+  const rafId     = useRef(0);
+  const spreadRef = useRef(1);
+  const npRef     = useRef(0);
+  const dblRef    = useRef(isDouble);
+
+  // Drag state
+  const dragStartX = useRef(0);
+  const dragCurX   = useRef(0);
+  const isDragging = useRef(false);
+
+  // Corner hover
+  const hoverCorner = useRef<'br' | 'bl' | null>(null);
+  const hoverAmt    = useRef(0);
+
+  // Page dimensions
+  const [dims, setDims] = useState({ w: 380, h: 537 });
+  const dimsRef = useRef(dims);
+
+  // Sync refs
   useEffect(() => { spreadRef.current = spread; }, [spread]);
   useEffect(() => { npRef.current = numPages; }, [numPages]);
   useEffect(() => { dblRef.current = isDouble; }, [isDouble]);
   useEffect(() => { dimsRef.current = dims; }, [dims]);
 
+  // Responsive
   useEffect(() => {
     const fn = () => setDouble(window.innerWidth >= 900);
     window.addEventListener('resize', fn);
     return () => window.removeEventListener('resize', fn);
   }, []);
 
+  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
+  // Compute page dimensions
   const computeDims = useCallback(() => {
     if (!containerRef.current) return;
-    const cw = containerRef.current.clientWidth - 64;
-    const ch = containerRef.current.clientHeight - 32;
+    const cw = containerRef.current.clientWidth - 48;
+    const ch = containerRef.current.clientHeight - 24;
     const ratio = 0.707;
     let pH = ch * 0.88, pW = pH * ratio;
     if (dblRef.current) {
-      const mx = (cw - 30) / 2;
+      const mx = (cw - 20) / 2;
       if (pW > mx) { pW = mx; pH = pW / ratio; }
     } else {
       if (pW > cw) { pW = cw; pH = pW / ratio; }
@@ -97,9 +102,11 @@ export default function FlipbookReader({ book, onClose }: Props) {
     return () => ro.disconnect();
   }, [computeDims, isDouble]);
 
+  // Load PDF
   useEffect(() => {
     let cancelled = false;
-    setLoading(true); setError(false); pdfRef.current = null;
+    setLoading(true); setError(false);
+    pdfRef.current = null; pageCache.current.clear();
     const path = book.pdfUrl.replace(/^https?:\/\/[^/]+/, '');
     pdfjsLib.getDocument({
       url: path,
@@ -114,242 +121,350 @@ export default function FlipbookReader({ book, onClose }: Props) {
     return () => { cancelled = true; };
   }, [book.pdfUrl]);
 
-  // Render page into canvas, always filling w×h with centered content
-  const renderPage = useCallback(async (
-    pageNum: number, canvas: HTMLCanvasElement | null, d?: { w: number; h: number }
-  ) => {
-    if (!canvas) return;
-    const { w, h } = d ?? dimsRef.current;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-    const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Render a PDF page to an offscreen canvas
+  const renderPageToCache = useCallback(async (pageNum: number) => {
     if (!pdfRef.current || pageNum < 1 || pageNum > pdfRef.current.numPages) return;
-    const prev = tasks.current.get(canvas);
-    if (prev) { try { prev.cancel(); } catch (_) {} tasks.current.delete(canvas); }
+    if (pageCache.current.has(pageNum) || renderingPages.current.has(pageNum)) return;
+    renderingPages.current.add(pageNum);
     try {
+      const { w, h } = dimsRef.current;
       const page = await pdfRef.current.getPage(pageNum);
       const vp = page.getViewport({ scale: 1 });
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rs = Math.min((w * dpr) / vp.width, (h * dpr) / vp.height);
       const sv = page.getViewport({ scale: rs });
-      const ox = Math.round((canvas.width - sv.width) / 2);
-      const oy = Math.round((canvas.height - sv.height) / 2);
-      ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const task = page.render({ canvasContext: ctx, viewport: sv, transform: [1, 0, 0, 1, ox, oy] });
-      tasks.current.set(canvas, task);
-      await task.promise; tasks.current.delete(canvas);
-    } catch (e: any) { if (e?.name !== 'RenderingCancelledException') console.error(e); }
+      const c = document.createElement('canvas');
+      c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+      const ctx = c.getContext('2d')!;
+      ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, c.width, c.height);
+      const ox = Math.round((c.width - sv.width) / 2);
+      const oy = Math.round((c.height - sv.height) / 2);
+      await page.render({ canvasContext: ctx, viewport: sv, transform: [1, 0, 0, 1, ox, oy] }).promise;
+      pageCache.current.set(pageNum, c);
+    } catch (e: any) {
+      if (e?.name !== 'RenderingCancelledException') console.error(e);
+    }
+    renderingPages.current.delete(pageNum);
   }, []);
 
-  // Copy one canvas to another synchronously (for glitch-free swap at transitionend)
-  const copyCanvas = (src: HTMLCanvasElement | null, dst: HTMLCanvasElement | null) => {
-    if (!src || !dst) return;
-    dst.width = src.width; dst.height = src.height;
-    dst.style.width = src.style.width; dst.style.height = src.style.height;
-    const ctx = dst.getContext('2d')!;
-    ctx.drawImage(src, 0, 0);
-  };
+  // Pre-render current spread pages (awaited) + nearby pages (fire-and-forget)
+  const prerender = useCallback(async () => {
+    const sp = spreadRef.current;
+    const np = npRef.current;
+    // Must await current spread pages
+    const critical = [sp];
+    if (dblRef.current && sp + 1 <= np) critical.push(sp + 1);
+    await Promise.all(critical.map(p => renderPageToCache(p)));
+    // Pre-fetch nearby pages in background (don't await)
+    const nearby = [sp - 1, sp - 2, sp + 2, sp + 3];
+    nearby.forEach(p => { if (p >= 1 && p <= np) renderPageToCache(p); });
+  }, [renderPageToCache]);
 
-  // Re-render static pages when spread/dims changes
+  // Track previous dims to know when to clear cache
+  const prevDimsRef = useRef(dims);
+
+  // Re-render when spread/dims change
   useEffect(() => {
     if (loading || numPages === 0) return;
-    if (skipRef.current === spread) { skipRef.current = -1; return; }
-    renderPage(spread, leftRef.current);
-    if (isDouble) renderPage(spread + 1, rightRef.current);
-  }, [spread, numPages, loading, isDouble, dims, scale, renderPage]);
+    // Only clear cache when dimensions change (zoom/resize)
+    if (prevDimsRef.current.w !== dims.w || prevDimsRef.current.h !== dims.h) {
+      pageCache.current.clear();
+      renderingPages.current.clear();
+      prevDimsRef.current = dims;
+    }
+    prerender().then(redraw);
+  }, [spread, numPages, loading, isDouble, dims, prerender]);
 
-  const doFlip = useCallback(async (dir: 'next' | 'prev') => {
-    if (animRef.current) return;
-    const sp  = spreadRef.current;
-    const np  = npRef.current;
+  // Get cached page canvas
+  const getPage = (n: number) => pageCache.current.get(n) ?? null;
+
+  // Redraw the main canvas (idle state)
+  const redraw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const { w, h } = dimsRef.current;
     const dbl = dblRef.current;
-    const stp = dbl ? 2 : 1;
-    if (dir === 'next' && sp + stp > np) return;
-    if (dir === 'prev' && sp <= 1) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const totalW = dbl ? w * 2 : w;
+    canvas.width = Math.round(totalW * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = totalW + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+    const sp = spreadRef.current;
+    drawIdle(ctx, dbl ? getPage(sp) : null, getPage(dbl ? sp + 1 : sp), w, h, dbl);
+    // Corner curl preview
+    if (hoverCorner.current && hoverAmt.current > 0 && flipState.current === 'idle') {
+      drawCornerCurl(ctx, w, h, dbl, hoverCorner.current, hoverAmt.current);
+    }
+  }, []);
 
-    animRef.current = true;
-    setFlipDir(dir);
+  // --- FLIP ANIMATION ---
+  const FLIP_DURATION = 700; // ms
 
-    const nextSp = dir === 'next' ? Math.min(sp + stp, np) : Math.max(sp - stp, 1);
-    const d = dimsRef.current;
+  const animateFlip = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const { w, h } = dimsRef.current;
+    const dbl = dblRef.current;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const totalW = dbl ? w * 2 : w;
+    canvas.width = Math.round(totalW * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = totalW + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
 
-    /*
-     * NEXT: right page (sp+1) flips left
-     *   flipFront = sp+1  (front face = current right page)
-     *   flipBack  = nextSp (back face = next left page)
-     *   During anim: rightCanvas = nextSp+1 (hidden under flip, safe to update)
-     *   At transitionend (-180deg): flip is over LEFT area
-     *     → drawImage leftCanvas ← flipBack (sync, instant, no flash)
-     *
-     * PREV: left page (sp) flips right
-     *   flipFront = sp    (front face = current left page)
-     *   flipBack  = nextSp+1 in double, nextSp in single (back face = prev right)
-     *   During anim: leftCanvas = nextSp (hidden under flip, safe)
-     *   At transitionend (+180deg): flip is over RIGHT area
-     *     → drawImage rightCanvas ← flipBack
-     */
-    const frontPage = dir === 'next' ? (dbl ? sp + 1 : sp) : sp;
-    const backPage  = dir === 'next' ? nextSp : (dbl ? nextSp + 1 : nextSp);
+    const sp = spreadRef.current;
+    const step = dbl ? 2 : 1;
+    const dir = flipDir.current;
+    const nextSp = dir === 'next' ? sp + step : sp - step;
 
-    // 1. Pre-render flip faces
-    await Promise.all([
-      renderPage(frontPage, frontRef.current, d),
-      renderPage(backPage, backRef.current, d),
-    ]);
-
-    // 2. Show flip card (over right side for next, left side for prev)
-    const side: 'left'|'right' = dir === 'next' ? 'right' : 'left';
-    setFlipSide(side);
-
-    // 3. Update the HIDDEN canvas during animation (covered by flip card)
+    let front: HTMLCanvasElement | null, under: HTMLCanvasElement | null, stay: HTMLCanvasElement | null;
     if (dir === 'next') {
-      // rightCanvas hidden → pre-render next right page
-      const nextRight = dbl ? nextSp + 1 : nextSp + 1;
-      renderPage(nextRight, rightRef.current, d); // fire-and-forget (hidden)
+      front = getPage(dbl ? sp + 1 : sp);  // right page turns
+      under = getPage(dbl ? nextSp : nextSp); // revealed page
+      stay = dbl ? getPage(sp) : null;       // left page stays
     } else {
-      // leftCanvas hidden → pre-render prev left page
-      renderPage(nextSp, leftRef.current, d); // fire-and-forget (hidden)
+      front = getPage(dbl ? sp : sp);        // left page turns
+      under = getPage(dbl ? nextSp + 1 : nextSp); // revealed
+      stay = dbl ? getPage(sp + 1) : null;   // right stays
     }
 
-    // 4. Wait 2 rAF to ensure flip card mounted, then start animation
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const el = flipRef.current;
-        if (!el) { animRef.current = false; setFlipSide(null); return; }
+    const prog = flipState.current === 'dragging' ? flipProg.current : ease(flipProg.current);
+    drawCurlFrame(ctx, front, under, stay, w, h, dbl, prog, dir);
+  }, []);
 
-        el.style.willChange = 'transform';
-        el.style.transition = 'transform 680ms cubic-bezier(0.645, 0.045, 0.355, 1.000)';
-        el.style.transform  = dir === 'next' ? 'rotateY(-180deg)' : 'rotateY(180deg)';
+  const startAutoFlip = useCallback((dir: 'next' | 'prev') => {
+    if (flipState.current !== 'idle') return;
+    const sp = spreadRef.current;
+    const np = npRef.current;
+    const step = dblRef.current ? 2 : 1;
+    if (dir === 'next' && sp + step > np) return;
+    if (dir === 'prev' && sp <= 1) return;
 
-        // Curl shadow via rAF
-        const t0 = performance.now();
-        const animCurl = (now: number) => {
-          const p = Math.min((now - t0) / 680, 1);
-          if (curlRef.current) curlRef.current.style.opacity = String(Math.sin(p * Math.PI) * 0.4);
-          if (p < 1) rafRef.current = requestAnimationFrame(animCurl);
-        };
-        rafRef.current = requestAnimationFrame(animCurl);
+    flipState.current = 'animating';
+    flipDir.current = dir;
+    flipProg.current = 0;
+    flipStart.current = performance.now();
 
-        el.addEventListener('transitionend', () => {
-          cancelAnimationFrame(rafRef.current);
-          if (curlRef.current) curlRef.current.style.opacity = '0';
-
-          /*
-           * At this point the flip card is at ±180deg and covers the OTHER side:
-           * NEXT at -180deg → flip card is over LEFT area  → copy backRef→leftRef
-           * PREV at +180deg → flip card is over RIGHT area → copy backRef→rightRef
-           * Both ops are synchronous drawImage → zero-latency, no flash possible
-           */
-          if (dir === 'next') {
-            copyCanvas(backRef.current, leftRef.current);
-          } else {
-            copyCanvas(backRef.current, rightRef.current);
-          }
-
-          // Reset flip element, hide it, update spread
-          el.style.willChange = el.style.transition = el.style.transform = '';
-          skipRef.current = nextSp;
-          setFlipSide(null);
-          setSpread(nextSp);
-          spreadRef.current = nextSp;
-          animRef.current = false;
-        }, { once: true });
-      });
+    // Pre-render target pages
+    const nextSp = dir === 'next' ? sp + step : sp - step;
+    [nextSp, nextSp + 1, nextSp - 1].forEach(p => {
+      if (p >= 1 && p <= np) renderPageToCache(p);
     });
-  }, [renderPage]);
 
+    const tick = (now: number) => {
+      const elapsed = now - flipStart.current;
+      flipProg.current = Math.min(elapsed / FLIP_DURATION, 1);
+      animateFlip();
+      if (flipProg.current < 1) {
+        rafId.current = requestAnimationFrame(tick);
+      } else {
+        // Flip complete
+        flipState.current = 'idle';
+        flipProg.current = 0;
+        spreadRef.current = nextSp;
+        setSpread(nextSp);
+        prerender().then(redraw);
+      }
+    };
+    rafId.current = requestAnimationFrame(tick);
+  }, [animateFlip, redraw, renderPageToCache, prerender]);
+
+  // --- DRAG INTERACTION ---
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    if (flipState.current !== 'idle') return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const w = rect.width;
+    const edgeZone = w * 0.2;
+
+    // Only start drag from edges
+    if (x > w - edgeZone) {
+      // Right edge → next
+      const sp = spreadRef.current, np = npRef.current, step = dblRef.current ? 2 : 1;
+      if (sp + step > np) return;
+      flipDir.current = 'next';
+    } else if (x < edgeZone) {
+      // Left edge → prev
+      if (spreadRef.current <= 1) return;
+      flipDir.current = 'prev';
+    } else return;
+
+    flipState.current = 'dragging';
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragCurX.current = e.clientX;
+    flipProg.current = 0;
+    canvas.setPointerCapture(e.pointerId);
+
+    // Pre-render target
+    const sp = spreadRef.current, step = dblRef.current ? 2 : 1;
+    const nextSp = flipDir.current === 'next' ? sp + step : sp - step;
+    [nextSp, nextSp + 1].forEach(p => {
+      if (p >= 1 && p <= npRef.current) renderPageToCache(p);
+    });
+  }, [renderPageToCache]);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (flipState.current === 'dragging' && isDragging.current) {
+      dragCurX.current = e.clientX;
+      const rect = canvas.getBoundingClientRect();
+      const dx = dragCurX.current - dragStartX.current;
+      const maxDrag = rect.width;
+      if (flipDir.current === 'next') {
+        flipProg.current = Math.max(0, Math.min(1, -dx / maxDrag));
+      } else {
+        flipProg.current = Math.max(0, Math.min(1, dx / maxDrag));
+      }
+      animateFlip();
+      return;
+    }
+
+    // Corner hover detection (idle only)
+    if (flipState.current === 'idle') {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const w = rect.width, h = rect.height;
+      const zone = 80;
+      let corner: 'br' | 'bl' | null = null;
+      let amt = 0;
+
+      // Bottom-right corner
+      if (x > w - zone && y > h - zone) {
+        const dist = Math.sqrt(Math.pow(w - x, 2) + Math.pow(h - y, 2));
+        if (dist < zone) {
+          corner = 'br';
+          amt = 1 - dist / zone;
+        }
+      }
+      // Bottom-left corner
+      if (x < zone && y > h - zone) {
+        const dist = Math.sqrt(x * x + Math.pow(h - y, 2));
+        if (dist < zone) {
+          corner = 'bl';
+          amt = 1 - dist / zone;
+        }
+      }
+
+      if (corner !== hoverCorner.current || Math.abs(amt - hoverAmt.current) > 0.02) {
+        hoverCorner.current = corner;
+        hoverAmt.current = amt;
+        redraw();
+      }
+    }
+  }, [animateFlip, redraw]);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    if (flipState.current !== 'dragging' || !isDragging.current) return;
+    isDragging.current = false;
+    const canvas = canvasRef.current;
+    if (canvas) canvas.releasePointerCapture(e.pointerId);
+
+    const prog = flipProg.current;
+    if (prog > 0.3) {
+      // Complete the flip with animation from current progress
+      flipState.current = 'animating';
+      const startProg = prog;
+      const remaining = 1 - startProg;
+      const duration = remaining * FLIP_DURATION * 0.6;
+      flipStart.current = performance.now();
+      const sp = spreadRef.current;
+      const step = dblRef.current ? 2 : 1;
+      const nextSp = flipDir.current === 'next' ? sp + step : sp - step;
+
+      const tick = (now: number) => {
+        const elapsed = now - flipStart.current;
+        const t = Math.min(elapsed / Math.max(duration, 100), 1);
+        flipProg.current = startProg + remaining * ease(t);
+        animateFlip();
+        if (t < 1) {
+          rafId.current = requestAnimationFrame(tick);
+        } else {
+          flipState.current = 'idle';
+          flipProg.current = 0;
+          spreadRef.current = nextSp;
+          setSpread(nextSp);
+          prerender().then(redraw);
+        }
+      };
+      rafId.current = requestAnimationFrame(tick);
+    } else {
+      // Snap back
+      flipState.current = 'animating';
+      const startProg = prog;
+      const duration = startProg * FLIP_DURATION * 0.5;
+      flipStart.current = performance.now();
+
+      const tick = (now: number) => {
+        const elapsed = now - flipStart.current;
+        const t = Math.min(elapsed / Math.max(duration, 100), 1);
+        flipProg.current = startProg * (1 - ease(t));
+        animateFlip();
+        if (t < 1) {
+          rafId.current = requestAnimationFrame(tick);
+        } else {
+          flipState.current = 'idle';
+          flipProg.current = 0;
+          redraw();
+        }
+      };
+      rafId.current = requestAnimationFrame(tick);
+    }
+  }, [animateFlip, redraw, prerender]);
+
+  const onPointerLeave = useCallback(() => {
+    if (hoverCorner.current) {
+      hoverCorner.current = null;
+      hoverAmt.current = 0;
+      if (flipState.current === 'idle') redraw();
+    }
+  }, [redraw]);
+
+  // Touch swipe
+  const touchX = useRef(0);
+  const onTouchStart = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (flipState.current !== 'idle') return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(dx) > 60) {
+      dx < 0 ? startAutoFlip('next') : startAutoFlip('prev');
+    }
+  };
+
+  // Keyboard
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') doFlip('next');
-      else if (e.key === 'ArrowLeft') doFlip('prev');
+      if (e.key === 'ArrowRight') startAutoFlip('next');
+      else if (e.key === 'ArrowLeft') startAutoFlip('prev');
       else if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [doFlip, onClose]);
+  }, [startAutoFlip, onClose]);
 
-  const onTS = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
-  const onTE = (e: React.TouchEvent) => {
-    const dx = e.changedTouches[0].clientX - touchX.current;
-    if (Math.abs(dx) > 60) dx < 0 ? doFlip('next') : doFlip('prev');
-  };
+  // Cleanup
+  useEffect(() => () => cancelAnimationFrame(rafId.current), []);
 
+  // Zoom
   const zoomIn    = () => setScale(s => Math.min(+(s + 0.15).toFixed(2), 2.0));
   const zoomOut   = () => setScale(s => Math.max(+(s - 0.15).toFixed(2), 0.5));
   const zoomReset = () => setScale(1);
 
+  // Derived
   const canNext = isDouble ? spread + 2 <= numPages : spread < numPages;
   const canPrev = spread > 1;
-  const label   = isDouble && spread + 1 <= numPages ? `${spread}–${spread + 1}` : String(spread);
-
-  // Flip layer style — inset:0 so it covers exactly its parent container
-  const flipLayerSx = (side: 'left'|'right'): React.CSSProperties => ({
-    position: 'absolute', inset: 0,
-    transformStyle: 'preserve-3d',
-    transformOrigin: side === 'right' ? 'left center' : 'right center',
-    zIndex: 20,
-    cursor: 'default',
-  });
-
-  // The flip card DOM (front + back + curl) — used in one place at a time
-  const FlipCard = ({ side }: { side: 'left'|'right' }) => {
-    if (flipSide !== side) return null;
-    const shadowFront = side === 'right'
-      ? 'linear-gradient(to left,rgba(0,0,0,0.12) 0%,transparent 30%)'
-      : 'linear-gradient(to right,rgba(0,0,0,0.12) 0%,transparent 30%)';
-    const shadowBack = side === 'right'
-      ? 'linear-gradient(to right,rgba(0,0,0,0.12) 0%,transparent 30%)'
-      : 'linear-gradient(to left,rgba(0,0,0,0.12) 0%,transparent 30%)';
-    const curlBg = side === 'right'
-      ? 'linear-gradient(to left,rgba(0,0,0,0.30) 0%,transparent 50%)'
-      : 'linear-gradient(to right,rgba(0,0,0,0.30) 0%,transparent 50%)';
-    return (
-      <div ref={flipRef} style={flipLayerSx(side)}>
-        {/* Front face */}
-        <div style={{
-          position:'absolute', inset:0, backfaceVisibility:'hidden',
-          background:'#fdf8f0', overflow:'hidden',
-          boxShadow:'0 4px 30px rgba(0,0,0,0.4)',
-        }}>
-          <canvas ref={frontRef} style={{ display:'block', width:'100%', height:'100%' }} />
-          <div style={{ position:'absolute', inset:0, pointerEvents:'none', background: shadowFront }} />
-        </div>
-        {/* Back face */}
-        <div style={{
-          position:'absolute', inset:0, backfaceVisibility:'hidden',
-          transform:'rotateY(180deg)',
-          background:'#fdf8f0', overflow:'hidden',
-          boxShadow:'0 4px 30px rgba(0,0,0,0.4)',
-        }}>
-          <canvas ref={backRef} style={{ display:'block', width:'100%', height:'100%' }} />
-          <div style={{ position:'absolute', inset:0, pointerEvents:'none', background: shadowBack }} />
-        </div>
-        {/* Curl shadow */}
-        <div ref={curlRef} style={{
-          position:'absolute', inset:0, pointerEvents:'none',
-          zIndex:5, opacity:0, background: curlBg,
-        }} />
-      </div>
-    );
-  };
-
-  const pageSx = (isLeft: boolean): React.CSSProperties => ({
-    position: 'relative',
-    width: dims.w, height: dims.h,
-    background: '#fdf8f0',
-    overflow: 'hidden',
-    flexShrink: 0,
-    borderRadius: isDouble
-      ? (isLeft ? '4px 0 0 4px' : '0 4px 4px 0')
-      : '4px',
-    boxShadow: isDouble
-      ? isLeft
-        ? 'inset -4px 0 12px rgba(0,0,0,0.08),inset 0 0 30px rgba(0,0,0,0.04)'
-        : 'inset  4px 0 12px rgba(0,0,0,0.08),inset 0 0 30px rgba(0,0,0,0.04)'
-      : 'inset 0 0 30px rgba(0,0,0,0.04)',
-  });
+  const label = isDouble && spread + 1 <= numPages ? `${spread}–${spread + 1}` : String(spread);
+  const totalW = isDouble ? dims.w * 2 : dims.w;
 
   return (
     <AnimatePresence>
@@ -371,7 +486,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
           <div className="flex items-center gap-0.5">
             <button onClick={zoomOut} className="p-1.5 text-gray-500 hover:text-white rounded transition-colors"><ZoomOut className="w-3.5 h-3.5"/></button>
             <button onClick={zoomReset} className="px-1.5 py-0.5 text-gray-500 hover:text-white text-[11px] font-mono min-w-[38px] text-center transition-colors">{Math.round(scale*100)}%</button>
-            <button onClick={zoomIn}  className="p-1.5 text-gray-500 hover:text-white rounded transition-colors"><ZoomIn  className="w-3.5 h-3.5"/></button>
+            <button onClick={zoomIn} className="p-1.5 text-gray-500 hover:text-white rounded transition-colors"><ZoomIn className="w-3.5 h-3.5"/></button>
             <div className="w-px h-5 bg-white/10 mx-2"/>
             <button onClick={onClose} className="p-1.5 text-gray-500 hover:text-white hover:bg-white/10 rounded transition-all"><X className="w-5 h-5"/></button>
           </div>
@@ -380,8 +495,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
         {/* BOOK AREA */}
         <div ref={containerRef}
           className="flex-1 flex items-center justify-center overflow-hidden relative"
-          style={{ perspective: '1400px' }}
-          onTouchStart={onTS} onTouchEnd={onTE}>
+          onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
           {loading && (
             <div className="flex flex-col items-center gap-3">
@@ -408,55 +522,42 @@ export default function FlipbookReader({ book, onClose }: Props) {
 
           {!loading && !error && numPages > 0 && (
             <>
-              {/* Click zones */}
-              <div className="absolute left-0 top-0 bottom-0 w-1/4 z-50 cursor-w-resize" onClick={() => doFlip('prev')}/>
-              <div className="absolute right-0 top-0 bottom-0 w-1/4 z-50 cursor-e-resize" onClick={() => doFlip('next')}/>
+              {/* Click zones for flip */}
+              <div className="absolute left-0 top-0 bottom-0 w-[15%] z-40 cursor-w-resize"
+                onClick={() => startAutoFlip('prev')} />
+              <div className="absolute right-0 top-0 bottom-0 w-[15%] z-40 cursor-e-resize"
+                onClick={() => startAutoFlip('next')} />
 
-              {/* Book */}
-              <div className="relative flex items-stretch"
+              {/* Book container with shadow */}
+              <div className="relative"
                 style={{
-                  transformStyle: 'preserve-3d',
-                  boxShadow: '0 40px 80px rgba(0,0,0,0.7),0 20px 40px rgba(0,0,0,0.5)',
+                  width: totalW, height: dims.h,
+                  boxShadow: '0 40px 80px rgba(0,0,0,0.7), 0 20px 40px rgba(0,0,0,0.5)',
+                  borderRadius: 4,
                 }}>
-                {isDouble && <PageStack side="left"/>}
+                <canvas
+                  ref={canvasRef}
+                  style={{
+                    display: 'block', width: totalW, height: dims.h,
+                    borderRadius: 4, cursor: 'grab',
+                  }}
+                  onPointerDown={onPointerDown}
+                  onPointerMove={onPointerMove}
+                  onPointerUp={onPointerUp}
+                  onPointerLeave={onPointerLeave}
+                />
 
-                {/* LEFT PAGE */}
+                {/* Page numbers */}
                 {isDouble && (
-                  <div style={pageSx(true)}>
-                    <canvas ref={leftRef} style={{ display:'block', width:'100%', height:'100%' }}/>
-                    <div className="absolute bottom-2 left-0 right-0 text-center pointer-events-none">
-                      <span className="text-[10px] text-gray-400 font-mono">{spread}</span>
-                    </div>
-                    <div className="absolute inset-y-0 right-0 w-8 pointer-events-none"
-                      style={{ background:'linear-gradient(to left,rgba(0,0,0,0.06),transparent)' }}/>
-                    <FlipCard side="left"/>
+                  <div className="absolute bottom-2 left-4 pointer-events-none">
+                    <span className="text-[10px] text-white/30 font-mono">{spread}</span>
                   </div>
                 )}
-
-                {/* SPINE */}
-                <div style={{
-                  width: isDouble ? 16 : 0, alignSelf:'stretch', flexShrink:0, zIndex:30,
-                  background:'linear-gradient(90deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.38) 50%,rgba(0,0,0,0.15) 100%)',
-                }}/>
-
-                {/* RIGHT PAGE */}
-                <div style={pageSx(false)}>
-                  <canvas
-                    ref={isDouble ? rightRef : leftRef}
-                    style={{ display:'block', width:'100%', height:'100%' }}/>
-                  <div className="absolute bottom-2 left-0 right-0 text-center pointer-events-none">
-                    <span className="text-[10px] text-gray-400 font-mono">
-                      {isDouble ? spread + 1 : spread}
-                    </span>
-                  </div>
-                  {isDouble && (
-                    <div className="absolute inset-y-0 left-0 w-8 pointer-events-none"
-                      style={{ background:'linear-gradient(to right,rgba(0,0,0,0.06),transparent)' }}/>
-                  )}
-                  <FlipCard side="right"/>
+                <div className="absolute bottom-2 right-4 pointer-events-none">
+                  <span className="text-[10px] text-white/30 font-mono">
+                    {isDouble ? spread + 1 : spread}
+                  </span>
                 </div>
-
-                {isDouble && <PageStack side="right"/>}
               </div>
             </>
           )}
@@ -466,7 +567,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
         {!loading && !error && numPages > 0 && (
           <footer className="shrink-0 flex items-center justify-center gap-4 py-3 px-4
             bg-black/50 backdrop-blur-md border-t border-white/[0.07]">
-            <button onClick={() => doFlip('prev')} disabled={!canPrev}
+            <button onClick={() => startAutoFlip('prev')} disabled={!canPrev}
               className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
@@ -484,7 +585,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
               </div>
               <span className="text-gray-600 text-sm font-mono">{numPages}</span>
             </div>
-            <button onClick={() => doFlip('next')} disabled={!canNext}
+            <button onClick={() => startAutoFlip('next')} disabled={!canNext}
               className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
