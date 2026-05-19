@@ -61,7 +61,7 @@ export default function ImpactSpotlight() {
             <p className="text-2xl lg:text-3xl font-bold text-white mb-2">Pandu Gunandito</p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
-            <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase mb-4">Ketua Yayasan Pendidikan Metland</p>
+            <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase">Ketua Yayasan Pendidikan Metland</p>
           </ScrollReveal>
 
           <WordReveal
@@ -72,7 +72,7 @@ export default function ImpactSpotlight() {
           />
 
           <ScrollReveal delay={0.6}>
-            <p className="text-gray-400 text-sm leading-relaxed mt-6">
+            <p className="text-gray-400 text-sm leading-relaxed">
               Assalamualaikum Warahmatullahi Wabarakatuh. Puji syukur kami panjatkan ke hadirat Allah SWT
               atas segala rahmat dan karunia-Nya. Yayasan Pendidikan Metland hadir dengan komitmen kuat
               untuk mencerdaskan kehidupan bangsa melalui pendidikan yang bermutu, berkarakter, dan
