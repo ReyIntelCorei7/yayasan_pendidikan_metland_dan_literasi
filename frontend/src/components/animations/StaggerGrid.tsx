@@ -36,7 +36,7 @@ export default function StaggerGrid({ children, className, staggerDelay = 0.1 }:
     <motion.div
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ margin: '-80px' }}
       variants={containerVariants}
       custom={staggerDelay}
       className={className}

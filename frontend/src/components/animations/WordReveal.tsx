@@ -26,7 +26,7 @@ export default function WordReveal({ text, className, tag = 'h2', delay = 0 }: W
             className="inline-block"
             initial={{ y: '110%' }}
             whileInView={{ y: '0%' }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{
               duration: 0.6,
               ease: [0.22, 1, 0.36, 1],
