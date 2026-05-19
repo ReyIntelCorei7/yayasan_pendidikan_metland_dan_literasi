@@ -18,25 +18,25 @@ export default function WordReveal({ text, className, tag = 'h2', delay = 0 }: W
     return <Tag className={className}>{text}</Tag>;
   }
 
-  return (
-    <Tag className={cn('flex flex-wrap gap-y-0', className)}>
-      {words.map((word, i) => (
-        <span key={i} className="overflow-hidden inline-flex mr-[0.3em]">
-          <motion.span
-            className="inline-block"
-            initial={{ y: '110%' }}
-            whileInView={{ y: '0%' }}
-            viewport={{ once: false }}
-            transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1],
-              delay: delay + i * 0.04,
-            }}
-          >
-            {word}
-          </motion.span>
-        </span>
-      ))}
-    </Tag>
-  );
+ return (
+  <Tag className={cn('flex flex-wrap gap-y-0 m-0 leading-none', className)}>
+    {words.map((word, i) => (
+      <span key={i} className="overflow-hidden inline-flex mr-[0.15em]">
+        <motion.span
+          className="inline-block"
+          initial={{ y: '110%' }}
+          whileInView={{ y: '0%' }}
+          viewport={{ once: false }}
+          transition={{
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1],
+            delay: delay + i * 0.04,
+          }}
+        >
+          {word}
+        </motion.span>
+      </span>
+    ))}
+  </Tag>
+);
 }

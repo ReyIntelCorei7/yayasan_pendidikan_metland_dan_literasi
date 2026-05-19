@@ -24,16 +24,8 @@ export default function VisiMisi() {
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 text-center px-6">
-          <p className="text-[#228bcb] text-base font-semibold tracking-widest uppercase mb-4">Profil Yayasan</p>
-          <WordReveal text="Visi & Misi" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-gray-400 mt-4 max-w-2xl mx-auto"
-          >
-            Landasan nilai dan arah perjuangan Yayasan Pendidikan Metland dalam memajukan generasi bangsa.
-          </motion.p>
+          <h1 className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Visi & Misi</h1>
+          <p className="text-gray-300 mt-1 max-w-2xl mx-auto">Landasan nilai dan arah perjuangan Yayasan Pendidikan Metland dalam memajukan generasi bangsa.</p>
         </div>
       </section>
 

@@ -82,13 +82,13 @@ export default function StrukturOrganisasi() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
         <div className="relative z-10 text-center px-6">
-          <p className="text-[#228bcb] text-base font-semibold tracking-widest uppercase mb-4">Profil Yayasan</p>
+          <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Profil Yayasan</p>
           <WordReveal text="Struktur Organisasi" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-gray-400 mt-4 max-w-2xl mx-auto"
+            className="text-gray-300 mt-1 max-w-2xl mx-auto"
           >
             Susunan pengurus Yayasan Pendidikan Metland yang berdedikasi membangun pendidikan berkualitas.
           </motion.p>
