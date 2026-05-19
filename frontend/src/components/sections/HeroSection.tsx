@@ -59,14 +59,14 @@ export default function HeroSection() {
       />
 
       {/* Content — center on mobile, left-aligned on desktop */}
-      <div className="absolute inset-0 flex items-center">
+      <div className="absolute inset-0 flex items-center md:ml-20">
         <div className="w-full px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20">
           <div className="max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto md:mx-0">
             {/* Heading */}
             <WordReveal
               text="Membangun Generasi Unggul Melalui Pendidikan dan Literasi"
               tag="h1"
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.12] tracking-tight"
+              className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-white leading-[1.12] tracking-tight"
               delay={0.3}
             />
 
