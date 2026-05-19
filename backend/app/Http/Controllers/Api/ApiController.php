@@ -11,12 +11,34 @@ use App\Models\Program;
 use App\Models\Scholar;
 use App\Models\TeamMember;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class ApiController extends Controller
 {
     // Cache TTL in seconds (5 minutes)
     private const TTL = 300;
+
+    /**
+     * Return a JSON response with ETag + Cache-Control headers.
+     * Browser will get 304 Not Modified (0 bytes) if data hasn't changed.
+     */
+    private function cachedJson(mixed $data, int $ttl = self::TTL): JsonResponse
+    {
+        $etag = '"' . md5(serialize($data)) . '"';
+        $request = request();
+
+        if ($request->header('If-None-Match') === $etag) {
+            return response()->json(null, 304)
+                ->header('ETag', $etag)
+                ->header('Cache-Control', "public, max-age={$ttl}, stale-while-revalidate=60");
+        }
+
+        return response()->json($data)
+            ->header('ETag', $etag)
+            ->header('Cache-Control', "public, max-age={$ttl}, stale-while-revalidate=60")
+            ->header('Vary', 'Accept-Encoding');
+    }
 
     public function programs(): JsonResponse
     {
@@ -42,7 +64,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function programBySlug(string $slug): JsonResponse
@@ -70,7 +92,7 @@ class ApiController extends Controller
             ];
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function posts(): JsonResponse
@@ -85,7 +107,7 @@ class ApiController extends Controller
                 ->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function postBySlug(string $slug): JsonResponse
@@ -97,7 +119,7 @@ class ApiController extends Controller
             return $this->formatPost($post);
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function scholars(): JsonResponse
@@ -118,7 +140,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function partners(): JsonResponse
@@ -136,7 +158,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function impactStats(): JsonResponse
@@ -154,7 +176,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function team(): JsonResponse
@@ -178,7 +200,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function books(): JsonResponse
@@ -200,7 +222,7 @@ class ApiController extends Controller
                 ])->toArray();
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     public function bookById(string $id): JsonResponse
@@ -222,7 +244,7 @@ class ApiController extends Controller
             ];
         });
 
-        return response()->json($data);
+        return $this->cachedJson($data);
     }
 
     private function storageUrl(?string $path): ?string

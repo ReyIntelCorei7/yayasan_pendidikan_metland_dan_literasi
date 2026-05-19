@@ -90,34 +90,6 @@ const elibraryCovers = [
   'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80',
 ];
 
-/* ─── Stagger Word Component ──────────────────────────────────────── */
-
-function StaggerWords({ text, className, delay = 0 }: { text: string; className?: string; delay?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  return (
-    <span ref={ref} className={`inline-flex flex-wrap ${className ?? ''}`}>
-      {text.split(' ').map((word, i) => (
-        <span key={i} className="overflow-hidden inline-block mr-[0.3em]">
-          <motion.span
-            className="inline-block"
-            initial={{ y: 60, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
-            transition={{
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1],
-              delay: delay + i * 0.08,
-            }}
-          >
-            {word}
-          </motion.span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
 /* ─── Main Literasi Page ──────────────────────────────────────────── */
 
 const BOOK_COVER_PLACEHOLDER = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80';
@@ -550,11 +522,10 @@ export default function Literasi() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 text-sm font-medium transition-all duration-200 ${
-                  activeCategory === cat
+                className={`px-5 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
                     ? 'bg-[#1C1C1C] text-white'
                     : 'border border-gray-300 text-gray-500 hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
