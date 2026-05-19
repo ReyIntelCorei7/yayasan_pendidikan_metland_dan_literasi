@@ -28,8 +28,8 @@ class PostResource extends Resource
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-newspaper'; }
     public static function getNavigationGroup(): ?string { return 'Content'; }
-    public static function getNavigationSort(): ?int { return 4; }
-    public static function getNavigationLabel(): string { return 'Berita & Artikel'; }
+    public static function getNavigationSort(): ?int { return 2; }
+    public static function getNavigationLabel(): string { return 'Artikel / Berita'; }
 
     public static function form(Schema $schema): Schema
     {
@@ -38,38 +38,34 @@ class PostResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
-                    ->label('Judul')
+                    ->label('Judul Artikel')
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn ($state, callable $set) =>
-                        $set('slug', Str::slug($state))
+                    ->afterStateUpdated(fn (string $operation, $state, $set) =>
+                        $operation === 'create' ? $set('slug', Str::slug($state)) : null
                     ),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
-                    ->label('Slug')
-                    ->unique(ignoreRecord: true),
+                    ->unique(Post::class, 'slug', ignoreRecord: true)
+                    ->label('Slug URL'),
+                Textarea::make('excerpt')
+                    ->required()
+                    ->rows(3)
+                    ->label('Ringkasan / Excerpt'),
                 Select::make('category')
                     ->options([
                         'Berita'      => 'Berita',
                         'Artikel'     => 'Artikel',
-                        'Pengumuman'  => 'Pengumuman',
+                        'Pendidikan'  => 'Pendidikan',
+                        'Literasi'    => 'Literasi',
+                        'Program'     => 'Program',
                         'Kegiatan'    => 'Kegiatan',
-                        'Prestasi'    => 'Prestasi',
                     ])
-                    ->default('Berita')
                     ->required()
                     ->label('Kategori'),
-                TextInput::make('reading_time')
-                    ->numeric()
-                    ->default(5)
-                    ->label('Estimasi Baca (menit)'),
             ])->columns(2),
 
             Section::make('Konten')->schema([
-                Textarea::make('excerpt')
-                    ->required()
-                    ->rows(3)
-                    ->label('Ringkasan'),
                 RichEditor::make('body')
                     ->required()
                     ->label('Isi Artikel')
@@ -89,7 +85,9 @@ class PostResource extends Resource
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->directory('posts')
                     ->disk('public')
-                    ->maxSize(2048)
+                    ->maxSize(3072)
+                    ->imageResizeTargetWidth('1200')
+                    ->imageResizeTargetHeight('630')
                     ->label('Gambar Utama'),
                 FileUpload::make('author_photo')
                     ->image()
@@ -100,13 +98,18 @@ class PostResource extends Resource
                     ->label('Foto Penulis'),
             ])->columns(2),
 
-            Section::make('Pengaturan Publikasi')->schema([
+            Section::make('Pengaturan')->schema([
+                DatePicker::make('published_at')
+                    ->label('Tanggal Publikasi'),
+                TextInput::make('reading_time')
+                    ->numeric()
+                    ->default(5)
+                    ->suffix('menit')
+                    ->label('Estimasi Baca'),
                 Toggle::make('is_published')
                     ->default(false)
                     ->label('Publikasikan'),
-                DatePicker::make('published_at')
-                    ->label('Tanggal Publikasi'),
-            ])->columns(2),
+            ])->columns(3),
         ]);
     }
 
@@ -143,16 +146,18 @@ class PostResource extends Resource
                     ->label('Dibuat')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(10)
             ->searchDebounce('750ms')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options([
-                        'Berita'     => 'Berita',
-                        'Artikel'    => 'Artikel',
-                        'Pengumuman' => 'Pengumuman',
-                        'Kegiatan'   => 'Kegiatan',
-                        'Prestasi'   => 'Prestasi',
+                        'Berita'      => 'Berita',
+                        'Artikel'     => 'Artikel',
+                        'Pendidikan'  => 'Pendidikan',
+                        'Literasi'    => 'Literasi',
+                        'Program'     => 'Program',
+                        'Kegiatan'    => 'Kegiatan',
                     ]),
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Status Publikasi'),
