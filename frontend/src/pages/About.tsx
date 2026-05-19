@@ -16,7 +16,7 @@ export default function About() {
         />
         <div className="relative z-10 text-center px-6">
           <WordReveal text="About Higher Life Foundation" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-400 mt-4 max-w-2xl mx-auto">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">
             Two decades of transforming lives across Africa through education, health, and sustainable livelihoods.
           </motion.p>
         </div>
