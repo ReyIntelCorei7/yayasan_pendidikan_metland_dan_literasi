@@ -7,6 +7,24 @@ import useBooks from '../hooks/useBooks';
 import type { Book } from '../hooks/useBooks';
 import FlipbookReader from '../components/sections/FlipbookReader';
 
+/* ─── StaggerWords Component ─────────────────────────────────────── */
+
+function StaggerWords({ text, delay = 0 }: { text: string; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-10% 0px' });
+  return (
+    <motion.span
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+      style={{ display: 'inline' }}
+    >
+      {text}
+    </motion.span>
+  );
+}
+
 /* ─── Local Data ───────────────────────────────────────────────────── */
 
 interface KoleksiItem {
@@ -129,53 +147,56 @@ export default function Literasi() {
           </p>
         </motion.div>
 
-        {/* Center headline */}
-        <div className="flex-1 flex items-center px-8 lg:px-16">
+        {/* Hero body — 2 column grid */}
+        <div className="flex-1 grid grid-cols-[3fr_2fr] px-8 lg:px-16 gap-8">
+          {/* Left — headline */}
           <h1
-            className="font-sans font-black leading-[0.9] text-[#1C1C1C]"
+            className="font-sans font-black text-[#1C1C1C] self-center"
             style={{
-              fontSize: 'clamp(60px, 10vw, 130px)',
-              letterSpacing: '-4px',
+              fontSize: 'clamp(56px, 7.5vw, 110px)',
+              letterSpacing: '-3px',
+              lineHeight: '1.0',
+              whiteSpace: 'nowrap',
             }}
           >
-            <StaggerWords text="Membangun" delay={0.3} />
+            <StaggerWords text="Membangun Budaya" delay={0.3} />
             <br />
-            <StaggerWords text="Budaya Membaca." delay={0.6} />
+            <StaggerWords text="Membaca." delay={0.6} />
           </h1>
-        </div>
 
-        {/* Floating books — right side */}
-        <motion.div
-          style={{ y: booksY }}
-          className="absolute right-8 lg:right-20 bottom-20 lg:bottom-16 flex items-end gap-[-20px] z-10 hidden md:flex"
-        >
-          {heroBooks.map((book, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 80, rotate: 0 }}
-              animate={{ opacity: 1, y: 0, rotate: book.rotate }}
-              transition={{
-                delay: 0.8 + book.delay,
-                duration: 1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className={`relative ${i === 0 ? 'animate-float' : i === 1 ? 'animate-float-slow' : 'animate-float-slower'}`}
-              style={{
-                marginLeft: i === 0 ? '0' : '-30px',
-                zIndex: i === 1 ? 3 : i === 0 ? 1 : 2,
-              }}
-            >
-              <img
-                src={book.src}
-                alt="Buku"
-                className="w-32 lg:w-40 h-44 lg:h-56 object-cover"
-                style={{
-                  boxShadow: '0 30px 60px rgba(0,0,0,0.15)',
+          {/* Right — floating books */}
+          <motion.div
+            style={{ y: booksY }}
+            className="hidden md:flex items-end justify-center self-end translate-y-16 lg:translate-y-24"
+          >
+            {heroBooks.map((book, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 80, rotate: 0 }}
+                animate={{ opacity: 1, y: 0, rotate: book.rotate }}
+                transition={{
+                  delay: 0.8 + book.delay,
+                  duration: 1,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+                className={`relative ${i === 0 ? 'animate-float' : i === 1 ? 'animate-float-slow' : 'animate-float-slower'}`}
+                style={{
+                  marginLeft: i === 0 ? '0' : '-30px',
+                  zIndex: i === 1 ? 3 : i === 0 ? 1 : 2,
+                }}
+              >
+                <img
+                  src={book.src}
+                  alt="Buku"
+                  className="w-32 lg:w-40 h-44 lg:h-56 object-cover"
+                  style={{
+                    boxShadow: '0 30px 60px rgba(0,0,0,0.15)',
+                  }}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
 
         {/* CTA button — bottom left */}
         <motion.div
