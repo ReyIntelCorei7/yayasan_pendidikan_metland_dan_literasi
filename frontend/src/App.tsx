@@ -68,7 +68,6 @@ function AnimatedRoutes() {
             <Route path="/programs/:slug" element={<ProgramDetail />} />
             <Route path="/impact" element={<Impact />} />
 
-            {/* Old news routes → redirect internally still work */}
             <Route path="/news" element={<Artikel />} />
             <Route path="/news/:slug" element={<ArtikelDetail />} />
           </Route>
