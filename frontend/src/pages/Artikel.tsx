@@ -10,7 +10,7 @@ import { usePosts } from '../hooks/usePosts';
 function SkeletonCard() {
   return (
     <div className="animate-pulse">
-      <div className="aspect-[16/10] bg-gray-200 rounded-2xl mb-4" />
+      <div className="aspect-[16/10] bg-gray-200 rounded-2xl mb-4 max-h-20" />
       <div className="h-4 w-20 bg-gray-200 rounded-full mb-3" />
       <div className="h-5 w-3/4 bg-gray-200 rounded mb-2" />
       <div className="h-4 w-full bg-gray-100 rounded mb-1" />
@@ -28,7 +28,7 @@ function ArticleCard({ post }: { post: any }) {
   return (
     <motion.div variants={staggerItemVariants}>
       <Link to={`/artikel/${post.slug}`} className="group block">
-        <div className="aspect-[16/10] overflow-hidden bg-gray-100 rounded-2xl mb-4">
+        <div className="aspect-[16/10] overflow-hidden bg-gray-100 rounded-2xl mb-4 max-h-26">
           <img
             src={post.featuredImage}
             alt={post.title}
@@ -246,7 +246,7 @@ export default function Artikel() {
                   <ScrollReveal className="mb-14">
                     <Link to={`/artikel/${featured.slug}`} className="group block">
                       <div className="grid lg:grid-cols-[1.5fr_1fr] gap-0 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500">
-                        <div className="aspect-[4/3] lg:aspect-auto min-h-[280px] overflow-hidden">
+                        <div className="aspect-[4/3] lg:aspect-[16/10] min-h-[280px] overflow-hidden">
                           <img
                             src={featured.featuredImage}
                             alt={featured.title}
