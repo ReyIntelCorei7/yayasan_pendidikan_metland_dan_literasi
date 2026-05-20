@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, AlertCircle, Clock, Calendar, ArrowRight } from 'lucide-react';
@@ -75,6 +75,12 @@ export default function Artikel() {
   const { posts, loading, error } = usePosts();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState(13);
+
+  // Reset pagination when category or search filters change
+  useEffect(() => {
+    setVisibleCount(13);
+  }, [activeCategory, searchQuery]);
 
   const categories = useMemo(
     () => ['All', ...new Set(posts.map((p) => p.category))],
@@ -89,8 +95,13 @@ export default function Artikel() {
     [posts, activeCategory, searchQuery]
   );
 
-  const featured = filtered[0];
-  const rest = filtered.slice(1);
+  const displayed = useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount]
+  );
+
+  const featured = displayed[0];
+  const rest = displayed.slice(1);
 
   return (
     <>
@@ -301,6 +312,18 @@ export default function Artikel() {
 
                 {/* Only 1 article — no "rest" but featured shown */}
                 {featured && rest.length === 0 && filtered.length === 1 && null}
+
+                {/* Load More Button */}
+                {filtered.length > displayed.length && (
+                  <div className="flex justify-center mt-16">
+                    <button
+                      onClick={() => setVisibleCount((prev) => prev + 12)}
+                      className="px-8 py-3 bg-white text-charcoal hover:bg-lime hover:text-white border border-gray-200 hover:border-lime text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      Muat Lebih Banyak
+                    </button>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
           )}
