@@ -113,7 +113,7 @@ export default function StrukturOrganisasi() {
           <ScrollReveal delay={0.15}>
             <div className="flex flex-col items-center">
               {/* Level 1 — Rapat Pembina */}
-              <ChartNode variant="white">
+              <ChartNode variant="default">
                 <p className="text-[10px] text-[#228bcb] uppercase tracking-[0.15em] mb-0.5 font-medium">Yayasan Pendidikan Metland</p>
                 <p className="font-semibold text-sm">{orgChartData.top}</p>
               </ChartNode>
@@ -141,7 +141,7 @@ export default function StrukturOrganisasi() {
               <VerticalLine />
 
               {/* Level 3 — Pengurus Yayasan */}
-              <ChartNode variant="white">
+              <ChartNode variant="default">
                 <p className="font-semibold text-sm">{orgChartData.pengurus.title}</p>
                 <p className="text-[11px] mt-0.5 text-black">{orgChartData.pengurus.subtitle}</p>
               </ChartNode>

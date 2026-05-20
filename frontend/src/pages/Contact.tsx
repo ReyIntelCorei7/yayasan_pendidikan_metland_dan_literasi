@@ -25,11 +25,14 @@ export default function Contact() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[50vh] min-h-[350px] flex items-center justify-center bg-charcoal overflow-hidden">
+      <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img src="/src/assets/sekolahsmkmetland.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Kontak</h1>
-          <p className="text-gray-300 mt-1 max-w-2xl mx-auto">Untuk informasi lebih lanjut mengenai Yayasan Pendidikan Metland</p>
+          <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Kontak</p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">
+            Untuk informasi lebih lanjut mengenai
+            Yayasan Pendidikan Metland
+          </motion.p>
         </div>
       </section>
 
@@ -94,7 +97,7 @@ export default function Contact() {
             <h2 className="text-3xl font-light mb-8">Our Offices</h2>
             <div className="space-y-8">
               {[
-                { city: 'Bekasi, Indonesia', address: 'Jl. Cikarang Barat, Cibarusah No.12, Sukaresmi, Kec. Cikarang Selatan, Kabupaten Bekasi, Jawa Barat 17530', phone: '+62 21 8989 8989', email: 'yayasanpendidikanmetland@gmail.com' },
+                { city: 'Bekasi, Indonesia', address: 'M Gold Tower, Lantai 15 JI. Letkol M. Moeffreni Moemin Pekayon Jaya, Bekasi 17148 - Indonesia', phone: '+62 21 8989 8989', email: 'yayasanpendidikanmetland@gmail.com' },
               ].map((office) => (
                 <div key={office.city} className="p-6 rounded-2xl border border-gray-100 hover:border-lime/30 transition-colors">
                   <h3 className="font-medium text-charcoal mb-3">{office.city}</h3>

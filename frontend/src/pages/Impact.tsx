@@ -3,9 +3,8 @@ import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
 import ImpactNumbers from '../components/sections/ImpactNumbers';
-import ScholarStories from '../components/sections/ScholarStories';
-import CTABanner from '../components/sections/CTABanner';
 import { impactStats } from '../data/stats';
+import CTABanner from '../components/sections/CTABanner';
 
 export default function Impact() {
   return (
@@ -25,7 +24,7 @@ export default function Impact() {
       <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {impactStats.map((stat, i) => (
+            {impactStats.map((stat: any, i: number) => (
               <ScrollReveal key={stat.id} delay={i * 0.1}>
                 <div className="p-8 rounded-2xl border border-gray-100 hover:border-lime/30 hover:shadow-lg transition-all duration-300 text-center">
                   <div className="w-12 h-[2px] bg-lime mx-auto mb-6" />
@@ -76,30 +75,6 @@ export default function Impact() {
       </section>
 
       <ImpactNumbers />
-      <ScholarStories />
-
-      {/* Annual Reports */}
-      <section className="bg-[#FCFCFC] py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <WordReveal text="Annual Reports" tag="h2" className="text-4xl font-light text-charcoal mb-12" />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[2024, 2023, 2022, 2021].map((year, i) => (
-              <ScrollReveal key={year} delay={i * 0.1}>
-                <motion.a
-                  href="#"
-                  whileHover={{ y: -4, boxShadow: '0 12px 40px -8px rgba(0,0,0,0.1)' }}
-                  className="block p-6 rounded-2xl border border-gray-100 hover:border-lime/30 transition-colors"
-                >
-                  <div className="text-6xl font-extralight text-gray-200 mb-4">{year}</div>
-                  <p className="text-sm font-medium text-charcoal">Annual Impact Report</p>
-                  <p className="text-xs text-gray-400 mt-1">Download PDF →</p>
-                </motion.a>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <CTABanner />
     </>
   );

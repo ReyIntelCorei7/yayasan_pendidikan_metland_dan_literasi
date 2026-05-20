@@ -305,10 +305,7 @@ export default function Literasi() {
           </div>
         </div>
       </section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          Section 4 — KOLEKSI PERPUSTAKAAN (background krem)
-          ═══════════════════════════════════════════════════════════════ */}
+{/* section 4 koleksi perpustakaan (background krem) */}  
       <section className="py-24 lg:py-32" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
@@ -399,17 +396,6 @@ export default function Literasi() {
                   <p className="text-gray-400 text-sm lg:text-base flex-1 leading-relaxed">
                     {prog.desc}
                   </p>
-
-                  {/* Arrow */}
-                  <motion.div
-                    className="text-gray-600 group-hover:text-lime transition-colors duration-300 shrink-0"
-                    variants={{
-                      hover: { x: 8 },
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.div>
                 </motion.div>
               </ScrollReveal>
             ))}
@@ -417,9 +403,7 @@ export default function Literasi() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          Section 6 — E-LIBRARY FEATURE (background lime)
-          ═══════════════════════════════════════════════════════════════ */}
+      {/* section 6 e-library feature */}
       <section className="bg-lime py-24 lg:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

@@ -23,10 +23,10 @@ export default function CountUpTrigger({
   const isInView = useInView(containerRef, { once: true, margin: '-80px' });
   const [hasStarted, setHasStarted] = useState(false);
 
-  const countUpRef = useRef<HTMLSpanElement>(null);
+  const countUpRef = useRef<HTMLElement>(null);
 
   const { start } = useCountUp({
-    ref: countUpRef,
+    ref: countUpRef as any,
     end,
     duration,
     suffix,
