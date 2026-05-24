@@ -131,7 +131,10 @@ export default function NewsInsights() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
             <ScrollReveal>
-              <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Artikel</p>
+              <div className='flex items-center gap-3'>
+                <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+                <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Artikel</p>
+              </div>
             </ScrollReveal>
             <WordReveal
               text="News & Insights"

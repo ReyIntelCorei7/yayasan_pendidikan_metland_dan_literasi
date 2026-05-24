@@ -51,7 +51,10 @@ export default function ProgramsGrid() {
     <section className="bg-offwhite py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
-          <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Unit Pendidikan</p>
+          <div className='flex items-center gap-3'>
+              <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+              <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Unit Pendidikan</p>
+          </div>
         </ScrollReveal>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <WordReveal

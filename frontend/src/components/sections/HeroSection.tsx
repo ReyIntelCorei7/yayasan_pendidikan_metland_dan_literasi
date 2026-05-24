@@ -146,11 +146,11 @@ const statsData = [
   {
     value: 0,
     suffix: '',
-    label: 'Akreditasi',
-    description: 'Terakreditasi A dengan standar pendidikan berkualitas.',
+    label: 'Prestasi',
+    description: 'Mencapai prestasi gemilang dalam berbagai bidang.',
     icon: <AwardIcon />,
     isLetter: true,
-    letter: 'A',
+    letter: '150+',
   },
 ];
 
@@ -210,12 +210,12 @@ export default function HeroSection() {
         <div className="h-20 lg:h-24" />
 
         {/* Hero Text Content */}
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-end pb-6 lg:pb-8">
           <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
               {/* ─── Text Content (full width) ─── */}
               <div className="max-w-2xl">
                 {/* Heading */}
-                <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] lg:text-5xl xl:text-[2rem] font-bold text-white leading-[1.15] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] lg:text-5xl xl:text-[2.75rem] font-bold text-white leading-[1.15] tracking-tight">
                   <motion.span
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -231,7 +231,7 @@ export default function HeroSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.0, duration: 0.8 }}
-                  className="mt-6 text-sm sm:text-base md:text-[0.95rem] text-white/75 max-w-md lg:max-w-lg leading-relaxed"
+                  className="mt-4 text-sm sm:text-base md:text-[0.95rem] text-white/75 max-w-md lg:max-w-lg leading-relaxed"
                 >
                   berkomitmen menciptakan lingkungan belajar yang inovatif dan
                   berkarakter untuk masa depan Indonesia.
@@ -279,7 +279,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.9, ease: 'easeOut' }}
-          className="w-full max-w-7xl mx-auto px-6 lg:px-8 pb-12 lg:pb-16"
+          className="w-full max-w-7xl mx-auto px-6 lg:px-8 pb-4 mb-10"
         >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {statsData.map((stat, index) => (
@@ -298,14 +298,14 @@ export default function HeroSection() {
                       'linear-gradient(135deg, rgba(34,139,203,0.4) 0%, rgba(79,195,247,0.2) 50%, rgba(34,139,203,0.4) 100%)',
                   }}
                 />
-                <div className="relative bg-[#0a1929]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-5 h-full hover:border-white/20 transition-colors duration-300">
+                <div className="relative bg-[#0a1929]/40 backdrop-blur-md rounded-2xl border border-white/[0.08] p-3 sm:p-4 h-full hover:border-white/20 transition-colors duration-300">
                   {/* Icon */}
-                  <div className="flex justify-end mb-2 sm:mb-3">
-                    <div className="text-[#228bcb]">{stat.icon}</div>
+                  <div className="flex justify-end mb-1 sm:mb-2">
+                    <div className="text-[#228bcb] scale-90">{stat.icon}</div>
                   </div>
 
                   {/* Value */}
-                  <div className="text-2xl sm:text-3xl xl:text-4xl font-bold text-white mb-1">
+                  <div className="text-xl sm:text-2xl xl:text-3xl font-bold text-white mb-0.5">
                     {stat.isLetter ? (
                       <span>{stat.letter}</span>
                     ) : (
@@ -318,7 +318,7 @@ export default function HeroSection() {
                   </div>
 
                   {/* Label */}
-                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1">
+                  <div className="text-[0.7rem] sm:text-xs font-semibold text-white/90 mb-0.5">
                     {stat.label}
                   </div>
 
