@@ -209,11 +209,10 @@ export default function HeroSection() {
         {/* Spacer for navbar */}
         <div className="h-20 lg:h-24" />
 
-        {/* Content Grid */}
+        {/* Hero Text Content */}
         <div className="flex-1 flex items-center">
-          <div className="w-full px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center max-w-[1400px] mx-auto">
-              {/* ─── LEFT: Text Content ─── */}
+          <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
+              {/* ─── Text Content (full width) ─── */}
               <div className="max-w-2xl">
                 {/* Heading */}
                 <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] lg:text-5xl xl:text-[2rem] font-bold text-white leading-[1.15] tracking-tight">
@@ -272,116 +271,69 @@ export default function HeroSection() {
                   </a>
                 </motion.div>
               </div>
-
-              {/* ─── RIGHT: Stats Card ─── */}
-              <motion.div
-                initial={{ opacity: 0, x: 60 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6, duration: 0.9, ease: 'easeOut' }}
-                className="hidden lg:block"
-              >
-                <div className="relative">
-                  {/* Glow effect */}
-                  <div
-                    className="absolute -inset-[1px] rounded-2xl opacity-60"
-                    style={{
-                      background:
-                        'linear-gradient(135deg, rgba(34,139,203,0.5) 0%, rgba(79,195,247,0.3) 50%, rgba(34,139,203,0.5) 100%)',
-                    }}
-                  />
-
-                  {/* Stats grid card */}
-                  <div className="relative bg-[#0a1929]/80 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
-                    <div className="grid grid-cols-2">
-                      {statsData.map((stat, index) => (
-                        <div
-                          key={index}
-                          className={`p-5 xl:p-6 ${
-                            index < 2 ? 'border-b border-white/10' : ''
-                          } ${index % 2 === 0 ? 'border-r border-white/10' : ''}`}
-                        >
-                          {/* Icon */}
-                          <div className="flex justify-end mb-3">
-                            <div className="text-[#228bcb]">{stat.icon}</div>
-                          </div>
-
-                          {/* Value */}
-                          <div className="text-3xl xl:text-4xl font-bold text-white mb-1">
-                            {stat.isLetter ? (
-                              <span>{stat.letter}</span>
-                            ) : (
-                              <AnimatedCounter
-                                end={stat.value}
-                                suffix={stat.suffix}
-                                separator="."
-                              />
-                            )}
-                          </div>
-
-                          {/* Label */}
-                          <div className="text-sm font-semibold text-white/90 mb-1.5">
-                            {stat.label}
-                          </div>
-
-                          {/* Description */}
-                          <p className="text-xs text-white/50 leading-relaxed">
-                            {stat.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* ── Bottom Banner: Sekolah Unggulan ── */}
-                    <div className="border-t border-white/10 bg-gradient-to-r from-[#0d2137] to-[#122d47]">
-                      <div className="flex items-center justify-between px-5 xl:px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          {/* Shield icon */}
-                          <div className="w-10 h-10 rounded-full bg-[#228bcb]/20 flex items-center justify-center flex-shrink-0">
-                            <svg
-                              className="w-5 h-5 text-[#228bcb]"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={1.5}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                              <path d="m9 12 2 2 4-4" />
-                            </svg>
-                          </div>
-                          <div>
-                            <div className="text-sm font-bold text-white">
-                              Sekolah Unggulan
-                            </div>
-                            <div className="text-xs text-white/50">
-                              Berprestasi, Berkarakter, Berwawasan Global
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Accreditation Badge */}
-                        <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-gradient-to-br from-[#c8a84e] to-[#a07c28] flex items-center justify-center shadow-lg">
-                          <div className="text-center">
-                            <div className="text-[0.5rem] font-bold text-white/80 uppercase tracking-wider leading-none">
-                              Akreditasi
-                            </div>
-                            <div className="text-xl font-black text-white leading-none mt-0.5">
-                              A
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
           </div>
         </div>
 
+        {/* ─── Stats Cards Grid ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.9, ease: 'easeOut' }}
+          className="w-full max-w-7xl mx-auto px-6 lg:px-8 pb-12 lg:pb-16"
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {statsData.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 + index * 0.1, duration: 0.6 }}
+                className="relative group"
+              >
+                {/* Glow on hover */}
+                <div
+                  className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+                  style={{
+                    background:
+                      'linear-gradient(135deg, rgba(34,139,203,0.4) 0%, rgba(79,195,247,0.2) 50%, rgba(34,139,203,0.4) 100%)',
+                  }}
+                />
+                <div className="relative bg-[#0a1929]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-5 h-full hover:border-white/20 transition-colors duration-300">
+                  {/* Icon */}
+                  <div className="flex justify-end mb-2 sm:mb-3">
+                    <div className="text-[#228bcb]">{stat.icon}</div>
+                  </div>
+
+                  {/* Value */}
+                  <div className="text-2xl sm:text-3xl xl:text-4xl font-bold text-white mb-1">
+                    {stat.isLetter ? (
+                      <span>{stat.letter}</span>
+                    ) : (
+                      <AnimatedCounter
+                        end={stat.value}
+                        suffix={stat.suffix}
+                        separator="."
+                      />
+                    )}
+                  </div>
+
+                  {/* Label */}
+                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1">
+                    {stat.label}
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-[0.65rem] sm:text-xs text-white/50 leading-relaxed">
+                    {stat.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* ── Bottom Bar ── */}
-        <div className="px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20 pb-8 flex items-center justify-between max-w-[1400px] mx-auto w-full">
+        <div className="pb-8 flex items-center justify-between max-w-7xl mx-auto w-full px-6 lg:px-8">
           {/* Welcome Label */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -411,84 +363,6 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
-
-        {/* ── Mobile Stats (visible below lg) ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.8 }}
-          className="lg:hidden px-6 sm:px-10 pb-8"
-        >
-          <div className="bg-[#0a1929]/80 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
-            <div className="grid grid-cols-2">
-              {statsData.map((stat, index) => (
-                <div
-                  key={index}
-                  className={`p-4 ${
-                    index < 2 ? 'border-b border-white/10' : ''
-                  } ${index % 2 === 0 ? 'border-r border-white/10' : ''}`}
-                >
-                  <div className="flex justify-end mb-2">
-                    <div className="text-[#228bcb] scale-75">{stat.icon}</div>
-                  </div>
-                  <div className="text-2xl font-bold text-white mb-0.5">
-                    {stat.isLetter ? (
-                      <span>{stat.letter}</span>
-                    ) : (
-                      <AnimatedCounter
-                        end={stat.value}
-                        suffix={stat.suffix}
-                        separator="."
-                      />
-                    )}
-                  </div>
-                  <div className="text-xs font-semibold text-white/90">
-                    {stat.label}
-                  </div>
-                  <p className="text-[0.65rem] text-white/50 leading-relaxed mt-1">
-                    {stat.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Mobile bottom banner */}
-            <div className="border-t border-white/10 bg-gradient-to-r from-[#0d2137] to-[#122d47]">
-              <div className="flex items-center justify-between px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#228bcb]/20 flex items-center justify-center flex-shrink-0">
-                    <svg
-                      className="w-4 h-4 text-[#228bcb]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                      <path d="m9 12 2 2 4-4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-white">Sekolah Unggulan</div>
-                    <div className="text-[0.6rem] text-white/50">
-                      Berprestasi, Berkarakter, Berwawasan Global
-                    </div>
-                  </div>
-                </div>
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-[#c8a84e] to-[#a07c28] flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-[0.4rem] font-bold text-white/80 uppercase leading-none">
-                      Akreditasi
-                    </div>
-                    <div className="text-base font-black text-white leading-none">A</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

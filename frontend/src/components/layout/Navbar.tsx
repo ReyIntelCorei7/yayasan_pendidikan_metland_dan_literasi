@@ -169,102 +169,111 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Sheet */}
+      {/* Mobile Full-Screen Menu */}
       <AnimatePresence>
         {isMobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-              onClick={() => setIsMobileOpen(false)}
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 h-full w-80 bg-white z-50 shadow-2xl lg:hidden overflow-y-auto scrollbar-hide"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              <div className="pt-24 px-6 pb-8 flex flex-col h-full">
-                <motion.div
-                  initial="hidden"
-                  animate="show"
-                  variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
-                  className="flex-1"
-                >
-                  {navItems.map((item) => (
-                    <motion.div
-                      key={item.label}
-                      variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-                    >
-                      {item.children ? (
-                        <div>
-                          <button
-                            onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
-                            className={`w-full flex items-center justify-between py-3 text-lg font-medium border-b border-gray-100 ${
-                              location.pathname.startsWith(item.href) ? 'text-lime-dark' : 'text-charcoal'
-                            }`}
-                          >
-                            {item.label}
-                            <motion.span
-                              animate={{ rotate: mobileExpanded === item.label ? 180 : 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <ChevronDown className="w-4 h-4" />
-                            </motion.span>
-                          </button>
-                          <AnimatePresence>
-                            {mobileExpanded === item.label && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25 }}
-                                className="overflow-hidden"
-                              >
-                                <div className="pl-4 pb-2">
-                                  {item.children.map((child) => (
-                                    <Link
-                                      key={child.label}
-                                      to={child.href}
-                                      onClick={() => setIsMobileOpen(false)}
-                                      className="block py-2 text-sm text-gray-500 hover:text-charcoal"
-                                    >
-                                      {child.label}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      ) : (
-                        <Link
-                          to={item.href}
-                          onClick={() => setIsMobileOpen(false)}
-                          className={`block py-3 text-lg font-medium border-b border-gray-100 ${
-                            location.pathname === item.href ? 'text-lime-dark' : 'text-charcoal'
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed inset-0 w-full h-full bg-white z-50 lg:hidden overflow-y-auto scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {/* Mobile Menu Header — Logo left, Close right */}
+            <div className="flex items-center justify-between px-6 h-20">
+              <Link to="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3">
+                <img src="/src/assets/logoyayasan.png" alt="Logo YPM" width={30} height={30} style={{ paddingBottom: '5px' }} />
+                <span className="font-semibold text-lg tracking-tight text-[#111]">
+                  Yayasan Pendidikan Metland
+                </span>
+              </Link>
+              <button
+                onClick={() => setIsMobileOpen(false)}
+                aria-label="Close menu"
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <X className="w-6 h-6 text-[#111]" />
+              </button>
+            </div>
+
+            {/* Mobile Menu Content */}
+            <div className="px-6 pb-8 flex flex-col" style={{ minHeight: 'calc(100% - 5rem)' }}>
+              <motion.div
+                initial="hidden"
+                animate="show"
+                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
+                className="flex-1"
+              >
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.label}
+                    variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+                  >
+                    {item.children ? (
+                      <div>
+                        <button
+                          onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                          className={`w-full flex items-center justify-between py-3 text-lg font-medium border-b border-gray-100 ${
+                            location.pathname.startsWith(item.href) ? 'text-lime-dark' : 'text-charcoal'
                           }`}
                         >
                           {item.label}
-                        </Link>
-                      )}
-                    </motion.div>
-                  ))}
-                </motion.div>
-                <Link
-                  to="/contact"
-                  onClick={() => setIsMobileOpen(false)}
-                  className="block w-full text-white bg-[#228bcb] text-center py-4 rounded-md font-medium text-sm mt-6"
-                >
-                  → Contact
-                </Link>
-              </div>
-            </motion.div>
-          </>
+                          <motion.span
+                            animate={{ rotate: mobileExpanded === item.label ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown className="w-4 h-4" />
+                          </motion.span>
+                        </button>
+                        <AnimatePresence>
+                          {mobileExpanded === item.label && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="pl-4 pb-2">
+                                {item.children.map((child) => (
+                                  <Link
+                                    key={child.label}
+                                    to={child.href}
+                                    onClick={() => setIsMobileOpen(false)}
+                                    className="block py-2 text-sm text-gray-500 hover:text-charcoal"
+                                  >
+                                    {child.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <Link
+                        to={item.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`block py-3 text-lg font-medium border-b border-gray-100 ${
+                          location.pathname === item.href ? 'text-lime-dark' : 'text-charcoal'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
+              </motion.div>
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileOpen(false)}
+                className="block w-full text-white bg-[#228bcb] text-center py-4 rounded-md font-medium text-sm mt-6"
+              >
+                → Contact
+              </Link>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
