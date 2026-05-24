@@ -22,7 +22,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mission & Vision */}
+
       <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-16">
           <ScrollReveal direction="left">
