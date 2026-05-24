@@ -119,19 +119,10 @@ export default function Artikel() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-block text-xs font-bold tracking-[3px] uppercase text-lime mb-4"
+            className="text-[#3aabf0] text-lg font-bold tracking-[3px] uppercase text-lime mb-4"
           >
             Berita &amp; Informasi
           </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl lg:text-6xl font-bold text-white leading-tight mb-4"
-            style={{ letterSpacing: '-1.5px' }}
-          >
-            Kabar Terkini
-          </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
