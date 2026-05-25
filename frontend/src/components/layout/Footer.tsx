@@ -39,86 +39,141 @@ const socialIcons = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] text-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Column 1: Logo + Mission */}
-          <div>
-            <Link to="/" className="flex items-center gap-3">
+    <footer className="relative bg-gradient-to-br from-[#0F0F1E] via-[#1A1A2E] to-[#16213E] text-white pt-20 pb-8 overflow-hidden">
+      {/* Gradient accent lines */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#228bcb]/10 to-transparent rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#228bcb]/10 to-transparent rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* Column 1: Brand */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Link to="/" className="flex items-center gap-3 mb-6 group">
               <img
                 src="/src/assets/logoyayasan.png"
-                alt="Yayasan Pendidikan Metland Logo"
-                className="h-8 w-auto drop-shadow-lg"
+                alt="Yayasan Pendidikan Metland"
+                className="h-10 w-auto transition-transform group-hover:scale-110 duration-300"
                 loading="eager"
                 width={128}
                 height={32}
-              />  
-              <span className="font-semibold text-sm text-white">Yayasan Pendidikan Metland</span>
+              />
+              <span className="mt-2 font-semibold text-sm text-white group-hover:text-[#228bcb] transition-colors duration-200">
+                Yayasan Pendidikan Metland
+              </span>
             </Link>
-            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
-              Yayasan Pendidikan Metland — membangun generasi unggul melalui pendidikan berkualitas.
+            <p className="text-gray-400 text-sm leading-relaxed font-light">
+              Membangun generasi unggul melalui pendidikan berkualitas, berkarakter, dan berlandaskan nilai-nilai keislaman.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Columns 2-3: Nav Links */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
-              <h4 className="text-xs uppercase tracking-widest text-gray-500 mb-4">{heading}</h4>
+          {/* Columns 2-3: Navigation Links */}
+          {Object.entries(footerLinks).map(([heading, links], index) => (
+            <motion.div
+              key={heading}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[#228bcb] mb-6">
+                {heading}
+              </h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       to={link.href}
-                      className="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-200 inline-block"
+                      className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-light"
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
 
-          {/* Column 4: Newsletter */}
-          <div>
-            <h4 className="text-xs uppercase tracking-widest text-gray-500 mb-4">Tetap Terhubung</h4>
-            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
-              yayasanpendidikanmetland@gmail.com
-            </p>
-            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
-              021 877 2072 0829
-            </p>
-            <p className="text-gray-500 text-sm mt-4 leading-relaxed max-w-[200px]">
-              M Gold Tower, Lantai 15
-                JI. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148 - Indonesia
-            </p>
+          {/* Column 4: Contact & Social */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#228bcb] mb-6">
+              Hubungi Kami
+            </h4>
+            <div className="space-y-4 mb-6">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Email</p>
+                <a href="mailto:yayasanpendidikanmetland@gmail.com" className="text-sm text-gray-400 hover:text-white transition-colors font-light">
+                  yayasanpendidikanmetland@gmail.com
+                </a>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Telepon</p>
+                <a href="tel:+6218772072" className="text-sm text-gray-400 hover:text-white transition-colors font-light">
+                  021 877 2072 0829
+                </a>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Lokasi</p>
+                <p className="text-sm text-gray-400 font-light">
+                  M Gold Tower, Lantai 15, JL. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148, Indonesia
+                </p>
+              </div>
+            </div>
+
             {/* Social Icons */}
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-4 border-t border-white/5">
               {socialIcons.map(({ icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
                   aria-label={label}
-                  whileHover={{ scale: 1.12 }}
-                  whileTap={{ scale: 0.92 }}
-                  className="w-9 h-9 border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:border-[#228bcb] hover:bg-[#228bcb]/10 hover:text-[#228bcb] transition-colors"
+                  whileHover={{ scale: 1.15, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#228bcb]/20 text-gray-400 hover:text-[#228bcb] flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-[#228bcb]/30"
                 >
                   {icon}
                 </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-600">© {new Date().getFullYear()} Yayasan Pendidikan Metland. By Reynara Rehan Rhadit.</p>
-          <div className="flex gap-6">
-            <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Kebijakan Privasi</a>
-            <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Syarat & Ketentuan</a>
-            <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Cookie Policy</a>
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
+
+        {/* Bottom Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row justify-between items-center gap-6"
+        >
+          <p className="text-xs text-gray-500 font-light">
+            © {new Date().getFullYear()} Yayasan Pendidikan Metland. Designed By Reynara Rehan Rhaditya.
+          </p>
+          <div className="flex gap-8">
+            <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
+              Kebijakan Privasi
+            </a>
+            <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
+              Syarat & Ketentuan
+            </a>
+            <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
+              Cookie Policy
+            </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

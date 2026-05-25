@@ -20,7 +20,10 @@ export default function ImpactSpotlight() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
               <ScrollReveal>
-                <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Sambutan Ketua Yayasan Pendidikan Metland</p>
+                <div className='flex items-center gap-3'>
+                  <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+                  <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Sambutan Ketua Yayasan Pendidikan</p>
+                </div>
               </ScrollReveal>
               <WordReveal
                 text="Sambutan Ketua Yayasan"
@@ -58,7 +61,7 @@ export default function ImpactSpotlight() {
         {/* Text Side */}
         <div className="lg:w-[42%] bg-[#111] p-12 lg:p-16 flex flex-col justify-center">
           <ScrollReveal delay={0.2}>
-            <p className="text-2xl lg:text-3xl font-bold text-white mb-2">Pandu Gunandito</p>
+            <p className="text-2xl lg:text-3xl font-bold text-white mb-1">Pandu Gunandito</p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
             <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase">Ketua Yayasan Pendidikan Metland</p>
