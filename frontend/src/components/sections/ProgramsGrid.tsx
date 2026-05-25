@@ -48,19 +48,24 @@ const schools = [
 
 export default function ProgramsGrid() {
   return (
-    <section className="bg-offwhite py-24">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-offwhite py-24 relative">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <ScrollReveal>
           <div className='flex items-center gap-3'>
-              <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
-              <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Unit Pendidikan</p>
+            <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+            <p
+              className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+            >
+              Unit Pendidikan
+            </p>
           </div>
         </ScrollReveal>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <WordReveal
             text="Our School"
             tag="h2"
-            className="text-4xl lg:text-5xl font-light text-charcoal"
+            className="text-4xl lg:text-6xl font-light text-charcoal"
           />
           <Link
             to="/our-school"
@@ -72,36 +77,46 @@ export default function ProgramsGrid() {
         </div>
 
         {/* Schools Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {schools.map((school, i) => (
-            <ScrollReveal key={school.slug} delay={i * 0.1}>
-              <Link to={`/our-school/${school.slug}`} className="group block">
-                <div className="relative aspect-[16/10] overflow-hidden mb-5">
-                  <motion.img
-                    src={school.image}
-                    alt={school.name}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span
-                      className="text-xs px-3 py-1 rounded-full"
-                      style={{ background: school.color + '33', color: school.color }}
+            <ScrollReveal key={school.slug} delay={i * 0.08}>
+              <Link to={`/our-school/${school.slug}`} className="group block h-full">
+                <div className="relative rounded-2xl overflow-hidden border border-gray-100 hover:border-[#228bcb]/20 transition-all duration-500 h-full bg-white shadow-sm hover:shadow-xl hover:shadow-[#228bcb]/5 card-glow">
+                  {/* Image */}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <motion.img
+                      src={school.image}
+                      alt={school.name}
+                      className="w-full h-full object-cover group-hover:brightness-110 transition-all duration-700"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <span
+                        className="text-xs px-3 py-1 rounded-full text-white"
+                        style={{ background: 'rgba(34,139,203,0.85)' }}
+                      >
+                        {school.level}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5 lg:p-6">
+                    <h3
+                      className="font-semibold text-charcoal text-lg group-hover:text-[#228bcb] transition-colors duration-300"
+                      style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                     >
-                      {school.level}
+                      {school.name}
+                    </h3>
+                    <p className="text-sm text-gray-400 mt-1">{school.tagline}</p>
+                    <span className="inline-flex items-center gap-1 text-[#228bcb] text-xs font-medium mt-4 group-hover:gap-2 transition-all">
+                      Selengkapnya <span>→</span>
                     </span>
                   </div>
                 </div>
-                <h3 className="font-semibold text-charcoal text-lg group-hover:text-[#228bcb] transition-colors duration-300">
-                  {school.name}
-                </h3>
-                <p className="text-sm text-gray-400 mt-1">{school.tagline}</p>
-                <span className="inline-flex items-center gap-1 text-[#228bcb] text-xs font-medium mt-3 group-hover:gap-2 transition-all">
-                  Selengkapnya <span>→</span>
-                </span>
               </Link>
             </ScrollReveal>
           ))}

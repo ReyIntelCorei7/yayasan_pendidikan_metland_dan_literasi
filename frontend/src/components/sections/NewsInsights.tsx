@@ -133,13 +133,18 @@ export default function NewsInsights() {
             <ScrollReveal>
               <div className='flex items-center gap-3'>
                 <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
-                <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Artikel</p>
+                <p
+                  className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+                  style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                >
+                  Artikel
+                </p>
               </div>
             </ScrollReveal>
             <WordReveal
               text="News & Insights"
               tag="h2"
-              className="text-4xl lg:text-5xl font-light text-charcoal"
+              className="text-4xl lg:text-6xl font-light text-charcoal"
             />
           </div>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -232,7 +237,10 @@ export default function NewsInsights() {
                       </span>
 
                       {/* Title */}
-                      <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-[#228bcb] transition-colors duration-200 line-clamp-2">
+                      <h3
+                        className="text-base font-medium leading-snug text-charcoal group-hover:text-[#228bcb] transition-colors duration-200 line-clamp-2"
+                        style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                      >
                         {post.title}
                       </h3>
 
