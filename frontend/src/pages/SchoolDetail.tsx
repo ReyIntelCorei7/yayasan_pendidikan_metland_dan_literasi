@@ -1,7 +1,41 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Zap, Star, Sparkles } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CTABanner from '../components/sections/CTABanner';
+
+function FloatingShapes() {
+  return (
+    <>
+      <motion.div
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+        className="absolute top-10 left-5 w-12 h-12 rounded-full bg-lime/10 blur-xl"
+      />
+      <motion.div
+        animate={{ y: [0, 20, 0] }}
+        transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+        className="absolute top-32 right-10 w-16 h-16 rounded-full bg-blue-200/20 blur-2xl"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 3, repeat: Infinity }}
+        className="absolute bottom-20 left-1/3 w-20 h-20 rounded-full border-2 border-lime/20"
+      />
+      
+      <motion.div
+        animate={{ rotate: [0, 90, 180, 270, 360] }}
+        transition={{ duration: 6, repeat: Infinity }}
+        className="absolute top-1/2 right-5 w-8 h-8 bg-yellow-300/10 rounded-lg"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.1, 1], rotate: [0, -10, 0] }}
+        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+        className="absolute bottom-10 right-1/4 w-10 h-10 border-2 border-blue-300/30 rounded-lg"
+      />
+    </>
+  );
+}
 
 const schools = [
   {
@@ -82,6 +116,7 @@ export default function SchoolDetail() {
     <>
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+        <FloatingShapes />
         <img src={school.image} alt={school.name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-6">
@@ -93,48 +128,161 @@ export default function SchoolDetail() {
           >
             {school.name}
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-lime text-sm md:text-base font-semibold"
+          >
+            {school.tagline}
+          </motion.p>
         </div>
       </section>
 
       {/* Description & Features */}
-      <section className="bg-[#FCFCFC] py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start">
+      <section className="relative bg-[#FCFCFC] py-24 overflow-hidden">
+        <FloatingShapes />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start relative z-10">
           <ScrollReveal direction="left">
-            <div className="w-12 h-[2px] bg-lime mb-6" />
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              transition={{ duration: 0.8 }}
+              className="w-12 h-[2px] bg-lime mb-6 origin-left"
+            />
             <h2 className="text-3xl font-light text-charcoal mb-6">Tentang {school.name}</h2>
             <p className="text-gray-500 leading-relaxed text-base">{school.description}</p>
           </ScrollReveal>
           <ScrollReveal direction="right">
-            <h3 className="text-xl font-medium text-charcoal mb-6">Program Unggulan</h3>
+            <h3 className="text-xl font-medium text-charcoal mb-6 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-lime" />
+              Program Unggulan
+            </h3>
             <div className="space-y-3">
               {school.features.map((f, i) => (
-                <div key={i} className="flex items-center gap-4 p-4 bg-offwhite rounded-xl border border-gray-100">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="flex items-center gap-4 p-4 bg-white rounded-2xl border-2 border-lime/20 hover:border-lime/50 cursor-pointer transition-all group"
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                    className="w-8 h-8 rounded-full bg-lime/20 flex items-center justify-center shrink-0 group-hover:bg-lime/30"
+                  >
+                    <Star className="w-4 h-4 text-lime" />
+                  </motion.div>
                   <span className="text-sm text-charcoal font-medium">{f}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Other Schools */}
-      <section className="bg-offwhite py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-3xl font-light text-charcoal mb-12">Sekolah Lainnya</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {others.slice(0, 4).map((s) => (
-              <Link key={s.slug} to={`/our-school/${s.slug}`} className="group block">
-                <div className="aspect-[4/3] overflow-hidden relative mb-4">
-                  <img src={s.image} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <p className="text-white text-xs font-medium">{s.level}</p>
-                  </div>
+      {/* Statistics Section */}
+      <section className="relative bg-gradient-to-br from-charcoal via-charcoal to-blue-900 py-24 overflow-hidden">
+        <FloatingShapes />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <ScrollReveal>
+            <h2 className="text-3xl font-light text-white mb-4 text-center">Fakta &amp; Angka</h2>
+            <p className="text-center text-gray-400 mb-16">Pencapaian dan pertumbuhan {school.name}</p>
+          </ScrollReveal>
+          <div className="grid md:grid-cols-3 gap-8">
+            {school.stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                whileHover={{ scale: 1.08, rotateY: 10 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-lime/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all" />
+                <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 text-center hover:border-lime/30 transition-all">
+                  <motion.div
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    className="mb-4"
+                  >
+                    <Zap className="w-8 h-8 text-lime mx-auto" />
+                  </motion.div>
+                  <motion.h3
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: i * 0.15 + 0.2 }}
+                    className="text-4xl font-black bg-gradient-to-r from-lime to-blue-400 bg-clip-text text-transparent mb-2"
+                  >
+                    {stat.value}
+                  </motion.h3>
+                  <p className="text-gray-300 font-medium text-sm">{stat.label}</p>
                 </div>
-                <h3 className="text-sm font-medium text-charcoal group-hover:text-lime transition-colors">{s.name}</h3>
-              </Link>
+              </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Other Schools */}
+      <section className="relative bg-offwhite py-24 overflow-hidden">
+        <FloatingShapes />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <ScrollReveal>
+            <h2 className="text-3xl font-light text-charcoal mb-12 flex items-center gap-3">
+              <Sparkles className="w-8 h-8 text-lime" />
+              Sekolah Lainnya
+            </h2>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {others.slice(0, 4).map((s, idx) => (
+              <motion.div
+                key={s.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <Link to={`/our-school/${s.slug}`} className="group block h-full">
+                  <motion.div
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className="aspect-[4/3] overflow-hidden relative mb-4 rounded-2xl"
+                  >
+                    <img
+                      src={s.image}
+                      alt={s.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <motion.div
+                      animate={{ y: [0, -8, 0] }}
+                      transition={{ duration: 3, repeat: Infinity, delay: idx * 0.2 }}
+                      className="absolute bottom-3 left-3 right-3"
+                    >
+                      <p className="text-white text-xs font-bold bg-lime/80 inline-block px-3 py-1 rounded-full">{s.level}</p>
+                    </motion.div>
+                  </motion.div>
+                  <motion.h3
+                    whileHover={{ color: '#228bcb' }}
+                    className="text-sm font-semibold text-charcoal transition-colors group-hover:text-lime"
+                  >
+                    {s.name}
+                  </motion.h3>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section className="relative bg-gradient-to-r from-lime via-blue-400 to-lime py-12 overflow-hidden">
+        <FloatingShapes />
+        <div className="relative z-10">
+          <CTABanner />
         </div>
       </section>
     </>
