@@ -172,7 +172,7 @@ export default function HeroSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.7 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
           className="hidden lg:flex items-center gap-3 absolute left-8 top-1/2 -translate-y-1/2 z-20"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg) translateY(50%)' }}
         >
@@ -184,6 +184,24 @@ export default function HeroSection() {
             Selamat Datang
           </span>
           <div className="w-px h-16 bg-white/10" />
+        </motion.div>
+
+        {/* Logo whatsapp untuk kontak */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+          className="hidden lg:flex items-center gap-3 fixed right-8 top-1/2 -translate-y-1/2 z-20 mt-80"
+          style={{ }}
+        >
+          <a
+            href="https://wa.me/6287720720829"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-2 py-2 bg-[#25D366] text-white text-sm font-semibold rounded-full hover:bg-[#1DA851] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:scale-[1.03] shadow-md"
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-8 h-8" />
+          </a>
         </motion.div>
 
         {/* Hero Text Content — bold editorial */}
