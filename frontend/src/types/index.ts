@@ -48,6 +48,7 @@ export interface Post {
     title: string;
   };
   tags: string[];
+  isImportant?: boolean;
 }
 
 export interface Partner {

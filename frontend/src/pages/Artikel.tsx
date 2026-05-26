@@ -1,86 +1,204 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, AlertCircle, Clock, Calendar, ArrowRight } from 'lucide-react';
-import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
+import { Search, AlertCircle, Clock, Calendar, ArrowRight, User } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
 import { usePosts } from '../hooks/usePosts';
 
-/* ─── Skeleton Card ─────────────────────────────────────────── */
-function SkeletonCard() {
+/* ─── Helpers ────────────────────────────────────────────────── */
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString('id-ID', {
+    month: 'short', day: 'numeric', year: 'numeric',
+  });
+}
+function fmtDateLong(iso: string) {
+  return new Date(iso).toLocaleDateString('id-ID', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  });
+}
+
+/* ─── Author Badge ───────────────────────────────────────────── */
+function AuthorBadge({ post, light = false }: { post: any; light?: boolean }) {
   return (
-    <div className="animate-pulse">
-      <div className="aspect-[16/10] bg-gray-200 rounded-2xl mb-4 max-h-20" />
-      <div className="h-4 w-20 bg-gray-200 rounded-full mb-3" />
-      <div className="h-5 w-3/4 bg-gray-200 rounded mb-2" />
-      <div className="h-4 w-full bg-gray-100 rounded mb-1" />
-      <div className="h-4 w-2/3 bg-gray-100 rounded mb-3" />
-      <div className="flex gap-2 mt-3">
-        <div className="h-3 w-20 bg-gray-100 rounded" />
-        <div className="h-3 w-16 bg-gray-100 rounded" />
-      </div>
+    <div className={`flex items-center gap-2 text-xs ${light ? 'text-white/80' : 'text-gray-400'}`}>
+      {post.author?.photo
+        ? <img src={post.author.photo} alt={post.author.name} className="w-5 h-5 rounded-full object-cover" />
+        : <User className="w-4 h-4" />}
+      <span className={`font-semibold uppercase tracking-wide ${light ? 'text-white' : 'text-gray-600'}`}>
+        {post.author?.name}
+      </span>
+      <span>·</span>
+      <span>{fmtDate(post.publishedAt)}</span>
+      {post.readingTime && <><span>·</span><Clock className="w-3 h-3" /><span>{post.readingTime} mnt</span></>}
     </div>
   );
 }
 
-/* ─── Article Card ──────────────────────────────────────────── */
-function ArticleCard({ post }: { post: any }) {
+/* ─── Category Badge ──────────────────────────────────────────── */
+function CatBadge({ cat, light = false }: { cat: string; light?: boolean }) {
+  return (
+    <span className={`inline-block text-[10px] font-bold tracking-[2px] uppercase px-2 py-0.5 rounded mb-2
+      ${light ? 'bg-lime text-white' : 'bg-lime/10 text-lime'}`}>
+      {cat}
+    </span>
+  );
+}
+
+/* ─── HERO Card (full-width, overlay text) ───────────────────── */
+function HeroCard({ post }: { post: any }) {
+  return (
+    <Link to={`/artikel/${post.slug}`} className="group relative block w-full overflow-hidden rounded-xl">
+      <div className="aspect-[21/9] min-h-[320px] overflow-hidden bg-gray-200">
+        <img
+          src={post.featuredImage}
+          alt={post.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
+        />
+      </div>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-xl" />
+      {/* Text overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+        <AuthorBadge post={post} light />
+        <h2 className="mt-2 text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight line-clamp-2 group-hover:text-lime transition-colors duration-300">
+          {post.title}
+        </h2>
+      </div>
+    </Link>
+  );
+}
+
+/* ─── SUB-HERO Card (medium, overlay text) ───────────────────── */
+function SubHeroCard({ post }: { post: any }) {
+  return (
+    <Link to={`/artikel/${post.slug}`} className="group relative block overflow-hidden rounded-xl flex-1">
+      <div className="aspect-[4/3] overflow-hidden bg-gray-200">
+        <img
+          src={post.featuredImage}
+          alt={post.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-xl" />
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+        <AuthorBadge post={post} light />
+        <h3 className="mt-1.5 text-base md:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300">
+          {post.title}
+        </h3>
+      </div>
+    </Link>
+  );
+}
+
+/* ─── EDITOR'S PICK — large left card ───────────────────────── */
+function RecommendedCard({ post }: { post: any }) {
+  return (
+    <Link to={`/artikel/${post.slug}`} className="group block">
+      <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gray-200 mb-4">
+        <img
+          src={post.featuredImage}
+          alt={post.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
+        />
+      </div>
+      <CatBadge cat={post.category} />
+      <h3 className="text-xl font-bold text-charcoal leading-snug mb-2 group-hover:text-lime transition-colors duration-300 line-clamp-2">
+        {post.title}
+      </h3>
+      <AuthorBadge post={post} />
+      <p className="text-sm text-gray-400 leading-relaxed mt-3 line-clamp-3">{post.excerpt}</p>
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[1.5px] text-lime mt-4 group-hover:gap-2.5 transition-all duration-300">
+        Read More <ArrowRight className="w-3.5 h-3.5" />
+      </span>
+    </Link>
+  );
+}
+
+/* ─── MIDDLE LIST — horizontal mini card ────────────────────── */
+function ListCard({ post, index }: { post: any; index: number }) {
   return (
     <motion.div variants={staggerItemVariants}>
-      <Link to={`/artikel/${post.slug}`} className="group block">
-        <div className="aspect-[16/10] overflow-hidden bg-gray-100 rounded-2xl mb-4 max-h-26">
+      <Link to={`/artikel/${post.slug}`} className="group flex gap-4 items-start">
+        {/* Number */}
+        <span className="text-4xl font-black text-gray-100 leading-none select-none w-8 shrink-0 mt-1">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        {/* Thumbnail */}
+        <div className="w-20 h-16 shrink-0 overflow-hidden rounded-lg bg-gray-200">
           <img
             src={post.featuredImage}
             alt={post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
         </div>
-        <span className="inline-block text-xs font-bold tracking-[2px] uppercase text-lime bg-lime/10 rounded-full px-3 py-1 mb-3">
-          {post.category}
-        </span>
-        <h3 className="text-base font-semibold leading-snug text-charcoal group-hover:text-lime transition-colors duration-300 mb-2 line-clamp-2">
-          {post.title}
-        </h3>
-        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3">
-          {post.excerpt}
-        </p>
-        <div className="flex items-center gap-2 text-xs text-gray-400">
-          {post.author.photo && (
-            <img src={post.author.photo} alt={post.author.name} className="w-5 h-5 rounded-full object-cover" />
-          )}
-          <span className="font-medium text-gray-500">{post.author.name}</span>
-          <span>·</span>
-          <span className="flex items-center gap-1">
+        {/* Text */}
+        <div className="flex-1 min-w-0">
+          <CatBadge cat={post.category} />
+          <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300 mb-1">
+            {post.title}
+          </h4>
+          <div className="flex items-center gap-1.5 text-xs text-gray-400">
             <Calendar className="w-3 h-3" />
-            {new Date(post.publishedAt).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </span>
-          {post.readingTime && (
-            <>
-              <span>·</span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {post.readingTime} mnt
-              </span>
-            </>
-          )}
+            <span>{fmtDate(post.publishedAt)}</span>
+            {post.readingTime && <><span>·</span><Clock className="w-3 h-3" /><span>{post.readingTime} mnt</span></>}
+          </div>
+          <p className="text-xs text-gray-400 mt-1 line-clamp-2 leading-relaxed">{post.excerpt}</p>
         </div>
       </Link>
     </motion.div>
   );
 }
 
-/* ─── Main Page ─────────────────────────────────────────────── */
+/* ─── SPOTLIGHT sidebar card ─────────────────────────────────── */
+function SpotlightCard({ post }: { post: any }) {
+  return (
+    <Link to={`/artikel/${post.slug}`} className="group block">
+      <div className="aspect-[16/10] overflow-hidden rounded-lg bg-gray-200 mb-2">
+        <img
+          src={post.featuredImage}
+          alt={post.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+      </div>
+      <div className="flex items-center gap-2 text-[10px] text-gray-400 mb-1">
+        <User className="w-3 h-3" />
+        <span className="font-semibold uppercase text-gray-500">{post.author?.name}</span>
+        <span>·</span>
+        <Calendar className="w-3 h-3" />
+        <span>{fmtDate(post.publishedAt)}</span>
+      </div>
+      <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300">
+        {post.title}
+      </h4>
+    </Link>
+  );
+}
+
+/* ─── Skeleton ───────────────────────────────────────────────── */
+function SkeletonHero() {
+  return (
+    <div className="animate-pulse mb-6">
+      <div className="aspect-[21/9] bg-gray-200 rounded-xl mb-4" />
+      <div className="h-5 w-1/2 bg-gray-200 rounded mb-2" />
+      <div className="h-4 w-1/3 bg-gray-100 rounded" />
+    </div>
+  );
+}
+
+/* ─── Main Page ──────────────────────────────────────────────── */
 export default function Artikel() {
   const { posts, loading, error } = usePosts();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(13);
+  const [visibleCount, setVisibleCount] = useState(20);
 
-  // Reset pagination when category or search filters change
-  useEffect(() => {
-    setVisibleCount(13);
-  }, [activeCategory, searchQuery]);
+  useEffect(() => { setVisibleCount(20); }, [activeCategory, searchQuery]);
 
   const categories = useMemo(
     () => ['All', ...new Set(posts.map((p) => p.category))],
@@ -95,31 +213,32 @@ export default function Artikel() {
     [posts, activeCategory, searchQuery]
   );
 
-  const displayed = useMemo(
-    () => filtered.slice(0, visibleCount),
-    [filtered, visibleCount]
-  );
+  const displayed = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
 
-  const featured = displayed[0];
-  const rest = displayed.slice(1);
+  // Layout slots
+  const hero        = displayed[0];        // 1 hero
+  const subHeroes   = displayed.slice(1, 3); // 2 sub-hero
+  const Recommended  = displayed[3];        // editor's pick large left
+  const listCards   = displayed.slice(4, 7); // 3 middle list cards
+  const spotlights  = displayed.slice(7, 10); // 3 sidebar spotlight
+  const rest        = displayed.slice(10);   // remaining grid
 
   return (
     <>
-      {/* ═══ Hero ══════════════════════════════════════════════ */}
-      <section className="relative h-[52vh] min-h-[360px] flex items-center justify-center bg-charcoal overflow-hidden">
+      {/* ═══ Page Hero ══════════════════════════════════════════ */}
+      <section className="relative h-[40vh] min-h-[280px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
           src="/src/assets/sekolahsmkmetlandcibitung.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
-
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[#3aabf0] text-lg font-bold tracking-[3px] uppercase text-lime mb-4"
+            className="text-lime text-lg font-bold tracking-[3px] uppercase mb-4 block"
           >
             Berita &amp; Informasi
           </motion.span>
@@ -134,8 +253,8 @@ export default function Artikel() {
         </div>
       </section>
 
-      {/* ═══ Content ═══════════════════════════════════════════ */}
-      <section className="bg-offwhite py-16 lg:py-24 min-h-[60vh]">
+      {/* ═══ Content ════════════════════════════════════════════ */}
+      <section className="bg-offwhite py-12 lg:py-16 min-h-[60vh]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
           {/* Error Banner */}
@@ -153,14 +272,13 @@ export default function Artikel() {
             )}
           </AnimatePresence>
 
-          {/* Filter bar */}
+          {/* ── Filter Bar ────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12"
+            className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10"
           >
-            {/* Category pills */}
             <div className="flex gap-2 flex-wrap">
               {loading
                 ? [1, 2, 3].map((i) => (
@@ -182,8 +300,6 @@ export default function Artikel() {
                     </motion.button>
                   ))}
             </div>
-
-            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -196,23 +312,19 @@ export default function Artikel() {
             </div>
           </motion.div>
 
-          {/* Loading Skeleton */}
+          {/* ── Skeleton ──────────────────────────────────────── */}
           {loading && (
             <div>
-              <div className="animate-pulse mb-14">
-                <div className="aspect-[21/9] bg-gray-200 rounded-2xl mb-6" />
-                <div className="h-4 w-24 bg-gray-200 rounded-full mb-3" />
-                <div className="h-8 w-2/3 bg-gray-200 rounded mb-3" />
-                <div className="h-4 w-full bg-gray-100 rounded mb-2" />
-                <div className="h-4 w-3/4 bg-gray-100 rounded" />
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
+              <SkeletonHero />
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                {[1, 2].map((i) => (
+                  <div key={i} className="animate-pulse aspect-[4/3] bg-gray-200 rounded-xl" />
+                ))}
               </div>
             </div>
           )}
 
-          {/* Posts */}
+          {/* ── Posts ─────────────────────────────────────────── */}
           {!loading && (
             <AnimatePresence mode="wait">
               <motion.div
@@ -243,68 +355,104 @@ export default function Artikel() {
                   </motion.div>
                 )}
 
-                {/* Featured Card */}
-                {featured && (
-                  <ScrollReveal className="mb-14">
-                    <Link to={`/artikel/${featured.slug}`} className="group block">
-                      <div className="grid lg:grid-cols-[1.5fr_1fr] gap-0 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-500">
-                        <div className="aspect-[4/3] lg:aspect-[16/10] min-h-[280px] overflow-hidden">
-                          <img
-                            src={featured.featuredImage}
-                            alt={featured.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div className="p-8 lg:p-10 flex flex-col justify-center">
-                          <span className="inline-block text-xs font-bold tracking-[2px] uppercase text-lime bg-lime/10 rounded-full px-3 py-1 mb-5 self-start">
-                            {featured.category}
-                          </span>
-                          <h2 className="text-2xl lg:text-3xl font-bold text-charcoal leading-tight mb-4 group-hover:text-lime transition-colors duration-300">
-                            {featured.title}
-                          </h2>
-                          <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
-                            {featured.excerpt}
-                          </p>
-                          <div className="flex items-center gap-3 text-xs text-gray-400 mb-8">
-                            {featured.author.photo && (
-                              <img src={featured.author.photo} alt={featured.author.name} className="w-7 h-7 rounded-full object-cover" />
-                            )}
-                            <span className="font-medium text-gray-500">{featured.author.name}</span>
-                            <span>·</span>
-                            <span>{new Date(featured.publishedAt).toLocaleDateString('id-ID', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                            {featured.readingTime && <><span>·</span><span>{featured.readingTime} mnt baca</span></>}
-                          </div>
-                          <span className="inline-flex items-center gap-2 text-sm font-semibold text-lime group-hover:gap-3 transition-all duration-300">
-                            Baca Selengkapnya <ArrowRight className="w-4 h-4" />
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
+                {/* ══ ZONE 1: HERO ════════════════════════════ */}
+                {hero && (
+                  <ScrollReveal className="mb-4">
+                    <HeroCard post={hero} />
                   </ScrollReveal>
                 )}
 
-                {/* Grid */}
-                {rest.length > 0 && (
-                  <>
-                    {featured && (
-                      <div className="flex items-center gap-4 mb-10">
-                        <h2 className="text-lg font-bold text-charcoal shrink-0">Artikel Lainnya</h2>
-                        <div className="flex-1 h-px bg-gray-200" />
-                      </div>
-                    )}
-                    <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {rest.map((post) => (
-                        <ArticleCard key={post.id} post={post} />
+                {/* ══ ZONE 2: SUB-HERO ROW (2 cards) ═════════ */}
+                {subHeroes.length > 0 && (
+                  <ScrollReveal className="mb-12">
+                    <div className="flex gap-4">
+                      {subHeroes.map((post) => (
+                        <SubHeroCard key={post.id} post={post} />
                       ))}
-                    </StaggerGrid>
-                  </>
+                    </div>
+                  </ScrollReveal>
                 )}
 
-                {/* Only 1 article — no "rest" but featured shown */}
-                {featured && rest.length === 0 && filtered.length === 1 && null}
+   
+                {(Recommended || listCards.length > 0 || spotlights.length > 0) && (
+                  <ScrollReveal className="mb-16">
+                    {/* Section label */}
+                    <div className="flex items-center gap-3 mb-8">
+                      <span className="text-[10px] font-bold tracking-[3px] uppercase text-gray-400">
+                        Jelajahi Beberapa Artikel Favorit Kami
+                      </span>
+                      <div className="flex-1 h-px bg-gray-200" />
+                    </div>
 
-                {/* Load More Button */}
+                    <div className="grid lg:grid-cols-[2fr_2fr_1fr] gap-8">
+                      <div>
+                        {Recommended && (
+                          <>
+                            <h2 className="text-3xl font-black text-charcoal mb-6 leading-tight">
+                              Editor's <span className="text-lime">Picks</span>
+                            </h2>
+                            <RecommendedCard post={Recommended} />
+                          </>
+                        )}
+                      </div>
+
+                      {/* MIDDLE — 3 list cards */}
+                      <div className="flex flex-col gap-6 divide-y divide-gray-100">
+                        {listCards.map((post, i) => (
+                          <div key={post.id} className={i > 0 ? 'pt-6' : ''}>
+                            <ListCard post={post} index={i} />
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* RIGHT — spotlight sidebar */}
+                      <div>
+                        <h3 className="text-xs font-black tracking-[3px] uppercase text-charcoal border-b-2 border-lime pb-2 mb-5">
+                          Spotlight
+                        </h3>
+                        <div className="flex flex-col gap-6">
+                          {spotlights.map((post) => (
+                            <SpotlightCard key={post.id} post={post} />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                )}
+
+                {/* ══ ZONE 4: REMAINING GRID ══════════════════ */}
+                {rest.length > 0 && (
+                  <ScrollReveal>
+                    <div className="flex items-center gap-4 mb-10">
+                      <h2 className="text-lg font-bold text-charcoal shrink-0">Artikel Lainnya</h2>
+                      <div className="flex-1 h-px bg-gray-200" />
+                    </div>
+                    <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {rest.map((post) => (
+                        <motion.div key={post.id} variants={staggerItemVariants}>
+                          <Link to={`/artikel/${post.slug}`} className="group block">
+                            <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-200 mb-3">
+                              <img
+                                src={post.featuredImage}
+                                alt={post.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                loading="lazy"
+                              />
+                            </div>
+                            <CatBadge cat={post.category} />
+                            <h3 className="text-base font-semibold text-charcoal leading-snug group-hover:text-lime transition-colors duration-300 mb-2 line-clamp-2">
+                              {post.title}
+                            </h3>
+                            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3">{post.excerpt}</p>
+                            <AuthorBadge post={post} />
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </StaggerGrid>
+                  </ScrollReveal>
+                )}
+
+                {/* Load More */}
                 {filtered.length > displayed.length && (
                   <div className="flex justify-center mt-16">
                     <button

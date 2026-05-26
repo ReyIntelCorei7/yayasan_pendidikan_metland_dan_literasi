@@ -23,10 +23,12 @@ class Post extends Model
         'author_photo',
         'author_title',
         'is_published',
+        'is_important',
     ];
 
     protected $casts = [
         'is_published'  => 'boolean',
+        'is_important'  => 'boolean',
         'published_at'  => 'date',
         'reading_time'  => 'integer',
     ];
@@ -39,5 +41,24 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    public function scopeImportant($query)
+    {
+        return $query->where('is_important', true);
+    }
+
+    /**
+     * Ketika artikel ini di-set sebagai important,
+     * otomatis matikan is_important pada artikel lain.
+     */
+    public function setAsImportant(): void
+    {
+        // Matikan semua artikel important lainnya (kecuali artikel ini)
+        static::where('is_important', true)
+            ->where('id', '!=', $this->id)
+            ->update(['is_important' => false]);
+
+        $this->update(['is_important' => true]);
     }
 }

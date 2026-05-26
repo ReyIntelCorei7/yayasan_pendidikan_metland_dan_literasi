@@ -109,7 +109,10 @@ class PostResource extends Resource
                 Toggle::make('is_published')
                     ->default(false)
                     ->label('Publikasikan'),
-            ])->columns(3),
+                Toggle::make('is_important')
+                    ->default(false)
+                    ->label('Artikel Penting (Hero)'),
+            ])->columns(4),
         ]);
     }
 
@@ -136,6 +139,9 @@ class PostResource extends Resource
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean()
                     ->label('Published'),
+                Tables\Columns\IconColumn::make('is_important')
+                    ->boolean()
+                    ->label('Penting (Hero)'),
                 Tables\Columns\TextColumn::make('published_at')
                     ->date()
                     ->sortable()

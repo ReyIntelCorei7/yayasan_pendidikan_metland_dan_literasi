@@ -99,8 +99,9 @@ class ApiController extends Controller
     {
         $data = Cache::remember('api.posts', self::TTL, function () {
             return Post::published()
-                ->select(['id','title','slug','excerpt','featured_image','category','published_at','reading_time','author_name','author_photo','author_title','is_published'])
+                ->select(['id','title','slug','excerpt','featured_image','category','published_at','reading_time','author_name','author_photo','author_title','is_published', 'is_important'])
                 ->with(['tags:id,post_id,tag'])
+                ->orderByDesc('is_important')
                 ->orderByDesc('published_at')
                 ->get()
                 ->map(fn ($p) => $this->formatPost($p))
@@ -274,6 +275,7 @@ class ApiController extends Controller
                 'title' => $p->author_title,
             ],
             'tags' => $p->tags->pluck('tag')->toArray(),
+            'isImportant'   => (bool) $p->is_important,
         ];
     }
 }
