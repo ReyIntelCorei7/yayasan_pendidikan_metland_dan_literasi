@@ -40,6 +40,15 @@ const shareTargets = [
   },
 ];
 
+/* ─── Helper Functions ──────────────────────────────────────── */
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString('id-ID', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
 /* ─── Loading Skeleton ──────────────────────────────────────── */
 function ArticleDetailSkeleton() {
   return (
@@ -77,6 +86,19 @@ export default function ArtikelDetail() {
   const related = useMemo(
     () => (post ? allPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3) : []),
     [post, allPosts]
+  );
+
+  const suggestions = useMemo(
+    () => {
+      if (!post) return [];
+      const relatedIds = new Set(related.map((r) => r.id));
+      relatedIds.add(post.id);
+      return allPosts
+        .filter((p) => !relatedIds.has(p.id))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4);
+    },
+    [post, related, allPosts]
   );
 
   const handleCopy = () => {
@@ -184,7 +206,7 @@ export default function ArtikelDetail() {
         </div>
       </section>
 
-      {/* ─── Cropped Featured Image ───────────────────────── */}
+  
       {post.featuredImage && (
         <section className="bg-white pb-8">
           <div className="max-w-4xl mx-auto px-6">
@@ -192,12 +214,12 @@ export default function ArtikelDetail() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="aspect-[21/9] rounded-2xl overflow-hidden shadow-sm"
+              className="rounded-2xl overflow-hidden shadow-sm"
             >
               <img
                 src={post.featuredImage}
                 alt={post.title}
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
               />
             </motion.div>
           </div>
@@ -208,7 +230,7 @@ export default function ArtikelDetail() {
       <section className="bg-[#FCFCFC] py-16 lg:py-20">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
 
-          {/* Lead / Excerpt */}
+
           {post.excerpt && (
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -220,7 +242,7 @@ export default function ArtikelDetail() {
             </motion.p>
           )}
 
-          {/* Body Content */}
+          {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -302,6 +324,46 @@ export default function ArtikelDetail() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* ─── Suggestion Articles ──────────────────────────── */}
+      {suggestions.length > 0 && (
+        <section className="bg-charcoal py-20 lg:py-28">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <ScrollReveal>
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-2xl font-bold text-white shrink-0">Artikel Lainnya</h2>
+                <div className="flex-1 h-px bg-gray-700" />
+              </div>
+            </ScrollReveal>
+            <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {suggestions.map((p) => (
+                <motion.div key={p.id} variants={staggerItemVariants}>
+                  <Link to={`/artikel/${p.slug}`} className="group block h-full">
+                    <div className="aspect-[16/10] overflow-hidden bg-gray-700 rounded-xl mb-3">
+                      <img
+                        src={p.featuredImage}
+                        alt={p.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span className="inline-block text-xs font-bold tracking-[1px] uppercase text-lime bg-lime/10 rounded px-2 py-0.5 mb-2">
+                      {p.category}
+                    </span>
+                    <h3 className="text-sm font-semibold text-white group-hover:text-lime transition-colors duration-300 line-clamp-2 mb-2">
+                      {p.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <Calendar className="w-3 h-3" />
+                      <span>{fmtDate(p.publishedAt)}</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
 
       {/* ─── Related Articles ─────────────────────────────── */}
       {related.length > 0 && (
