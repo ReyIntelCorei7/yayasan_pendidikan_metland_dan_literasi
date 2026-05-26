@@ -214,7 +214,7 @@ export default function HeroSection() {
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+                  className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
                   style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
                   Yayasan Pendidikan
@@ -223,7 +223,7 @@ export default function HeroSection() {
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light italic mt-1"
+                  className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light italic mt-1"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
                   Metland
@@ -349,6 +349,26 @@ export default function HeroSection() {
             />
           ))}
         </div>
+      </div>
+      {/* Wave */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+        <svg
+          viewBox="0 0 1440 320"
+          className="w-full h-[140px]"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#228bcb"
+            d="
+              M0,160
+              C240,260 480,260 720,220
+              C960,180 1200,120 1440,240
+              L1440,320
+              L0,320
+              Z
+            "
+          />
+        </svg>
       </div>
     </section>
   );
