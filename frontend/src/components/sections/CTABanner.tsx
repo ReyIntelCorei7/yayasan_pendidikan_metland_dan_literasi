@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import WordReveal from '../animations/WordReveal';
 
 export default function CTABanner() {
   return (
@@ -23,14 +22,12 @@ export default function CTABanner() {
       />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
-        <WordReveal
-          text="Bergabung Bersama Kami"
-          tag="h2"
-          className="text-4xl lg:text-5xl font-light text-white justify-center"
-        />
+        <h2 className="text-4xl lg:text-5xl font-light text-white leading-tight">
+          Bergabung Bersama Kami
+        </h2>
 
         <motion.p
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
