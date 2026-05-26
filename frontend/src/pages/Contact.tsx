@@ -111,6 +111,29 @@ export default function Contact() {
             </div>
           </ScrollReveal>
         </div>
+
+        {/* Map Section */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-16 pb-4">
+          <ScrollReveal direction="up">
+            <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+              <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-[#3aabf0]" />
+                <h3 className="text-lg font-medium text-gray-800">Lokasi Kami</h3>
+              </div>
+              <iframe
+                title="Lokasi Yayasan Pendidikan Metland - M Gold Tower Bekasi"
+                src="https://maps.google.com/maps?q=M+Gold+Tower+Pekayon+Jaya+Bekasi&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+              />
+            </div>
+          </ScrollReveal>
+        </div>
       </section>
     </>
   );

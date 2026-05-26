@@ -173,7 +173,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.7 }}
-          className="hidden lg:flex items-center gap-3 fixed left-8 top-1/2 -translate-y-1/2 z-20"
+          className="hidden lg:flex items-center gap-3 absolute left-8 top-1/2 -translate-y-1/2 z-20"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg) translateY(50%)' }}
         >
           <div className="w-2 h-2 rounded-full bg-[#228bcb] animate-pulse" />
