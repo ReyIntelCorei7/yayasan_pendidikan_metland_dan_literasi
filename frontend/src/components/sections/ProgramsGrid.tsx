@@ -81,7 +81,7 @@ export default function ProgramsGrid() {
           {schools.map((school, i) => (
             <ScrollReveal key={school.slug} delay={i * 0.08}>
               <Link to={`/our-school/${school.slug}`} className="group block h-full">
-                <div className="relative rounded-2xl overflow-hidden border border-gray-100 hover:border-[#228bcb]/20 transition-all duration-500 h-full bg-white shadow-sm hover:shadow-xl hover:shadow-[#228bcb]/5 card-glow">
+                <div className="relative overflow-hidden border border-gray-100 hover:border-[#228bcb]/20 transition-all duration-500 h-full bg-white shadow-lg hover:shadow-xl hover:shadow-[#228bcb]/5 card-glow">
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <motion.img
