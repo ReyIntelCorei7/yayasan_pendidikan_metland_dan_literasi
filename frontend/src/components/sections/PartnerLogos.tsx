@@ -31,19 +31,21 @@ export default function PartnerLogos() {
   );
 
   return (
-    <section className="bg-offwhite py-12 sm:py-16 md:py-20 overflow-hidden">
+    <section className="bg-offwhite py-12 sm:py-16 md:py-20 overflow-hidden relative">
+      {/* Top divider */}
+      <div className="section-divider w-full absolute top-0" />
+
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-6 sm:mb-10 text-center">
+        <p
+          className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-6 sm:mb-10 text-center"
+          style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+        >
           Our Partners &amp; Supporters
         </p>
       </div>
 
       {/* Infinite Marquee */}
-      <div className="relative group">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 md:w-32 bg-gradient-to-r from-offwhite to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 md:w-32 bg-gradient-to-l from-offwhite to-transparent z-10 pointer-events-none" />
-
+      <div className="relative group fade-mask-x">
         <div className="flex animate-marquee group-hover:[animation-play-state:paused] will-change-transform">
           {/* First set */}
           <div className="flex shrink-0 items-center">

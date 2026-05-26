@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import WordReveal from '../animations/WordReveal';
 
 import hero1 from '../../assets/sekolahsmkmetland.png';
 import hero2 from '../../assets/sekolahsmkmetlandcibitung.jpg';
@@ -55,68 +54,28 @@ function AnimatedCounter({
 
 /* ──────────────── Icon Components ──────────────── */
 const TrophyIcon = () => (
-  <svg
-    className="w-7 h-7"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-    <path d="M4 22h16" />
-    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" />
+    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
     <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
   </svg>
 );
 
 const GraduationIcon = () => (
-  <svg
-    className="w-7 h-7"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-    <path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5" />
+  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5" />
   </svg>
 );
 
 const SchoolIcon = () => (
-  <svg
-    className="w-7 h-7"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M3 21h18" />
-    <path d="M5 21V7l8-4v18" />
-    <path d="M19 21V11l-6-4" />
-    <path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01" />
+  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01" />
   </svg>
 );
 
 const AwardIcon = () => (
-  <svg
-    className="w-7 h-7"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="12" cy="8" r="6" />
-    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+  <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
   </svg>
 );
 
@@ -146,11 +105,11 @@ const statsData = [
   {
     value: 0,
     suffix: '',
-    label: 'Akreditasi',
-    description: 'Terakreditasi A dengan standar pendidikan berkualitas.',
+    label: 'Prestasi',
+    description: 'Mencapai prestasi gemilang dalam berbagai bidang.',
     icon: <AwardIcon />,
     isLetter: true,
-    letter: 'A',
+    letter: '150+',
   },
 ];
 
@@ -193,14 +152,14 @@ export default function HeroSection() {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(180deg, rgba(2,12,27,0.70) 0%, rgba(2,12,27,0.50) 40%, rgba(2,12,27,0.75) 100%)',
+            'linear-gradient(180deg, rgba(2,12,27,0.75) 0%, rgba(2,12,27,0.45) 40%, rgba(2,12,27,0.82) 100%)',
         }}
       />
       <div
         className="absolute inset-0 hidden lg:block"
         style={{
           background:
-            'linear-gradient(100deg, rgba(2,12,27,0.65) 0%, rgba(2,12,27,0.25) 50%, rgba(2,12,27,0.45) 100%)',
+            'linear-gradient(100deg, rgba(2,12,27,0.70) 0%, rgba(2,12,27,0.20) 50%, rgba(2,12,27,0.50) 100%)',
         }}
       />
 
@@ -209,159 +168,168 @@ export default function HeroSection() {
         {/* Spacer for navbar */}
         <div className="h-20 lg:h-24" />
 
-        {/* Hero Text Content */}
-        <div className="flex-1 flex items-center">
+        {/* ── Vertical "Selamat Datang" label ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.7 }}
+          className="hidden lg:flex items-center gap-3 fixed left-8 top-1/2 -translate-y-1/2 z-20"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg) translateY(50%)' }}
+        >
+          <div className="w-2 h-2 rounded-full bg-[#228bcb] animate-pulse" />
+          <span
+            className="text-xs text-white/40 tracking-[0.3em] uppercase font-medium"
+            style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+          >
+            Selamat Datang
+          </span>
+          <div className="w-px h-16 bg-white/10" />
+        </motion.div>
+
+        {/* Hero Text Content — bold editorial */}
+        <div className="flex-1 flex items-center pb-6 lg:pb-8">
           <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
-              {/* ─── Text Content (full width) ─── */}
-              <div className="max-w-2xl">
-                {/* Heading */}
-                <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] lg:text-5xl xl:text-[2rem] font-bold text-white leading-[1.15] tracking-tight">
-                  <motion.span
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.2 }}
-                    className="block"
-                  >
-                    Yayasan Pendidikan Metland
-                  </motion.span>
-                </h1>
-
-                {/* Subtitle */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
+            <div className="max-w-3xl">
+              {/* Heading — bold + italic accent */}
+              <h1 className="font-bold text-white leading-[0.95] tracking-tight">
+                <motion.span
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.0, duration: 0.8 }}
-                  className="mt-6 text-sm sm:text-base md:text-[0.95rem] text-white/75 max-w-md lg:max-w-lg leading-relaxed"
+                  transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+                  style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
-                  berkomitmen menciptakan lingkungan belajar yang inovatif dan
-                  berkarakter untuk masa depan Indonesia.
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  Yayasan Pendidikan
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.3, duration: 0.7 }}
-                  className="flex flex-wrap gap-3 sm:gap-4 mt-8"
+                  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light italic mt-1"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  <a
-                    href="/profil"
-                    className="group inline-flex items-center gap-2 px-6 py-3 bg-[#228bcb] text-white text-sm font-semibold rounded-xl hover:bg-[#1b78b3] transition-all duration-300 shadow-lg shadow-[#228bcb]/25 hover:shadow-[#228bcb]/40"
+                  Metland
+                </motion.span>
+              </h1>
+
+              {/* Accent line */}
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="w-16 h-[2px] bg-[#228bcb] origin-left mt-6 mb-5"
+              />
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0, duration: 0.8 }}
+                className="text-sm sm:text-base md:text-lg text-white/65 max-w-md lg:max-w-xl leading-relaxed"
+              >
+                berkomitmen menciptakan lingkungan belajar yang inovatif dan
+                berkarakter untuk masa depan Indonesia.
+              </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3, duration: 0.7 }}
+                className="flex flex-wrap gap-3 sm:gap-4 mt-8"
+              >
+                <a
+                  href="/profil"
+                  className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#228bcb] text-white text-sm font-semibold rounded-full hover:bg-[#1b78b3] transition-all duration-300 shadow-lg shadow-[#228bcb]/25 hover:shadow-[#228bcb]/40 hover:scale-[1.03]"
+                >
+                  Tentang Kami
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"
                   >
-                    Tentang Kami
-                    <svg
-                      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href="/our-school"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-xl border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300"
-                  >
-                    Unit Pendidikan
-                  </a>
-                </motion.div>
-              </div>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </a>
+                <a
+                  href="/our-school"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300"
+                >
+                  Unit Pendidikan
+                </a>
+              </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* ─── Stats Cards Grid ─── */}
+        {/* ─── Stats Strip (Bottom) ─── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.9, ease: 'easeOut' }}
-          className="w-full max-w-7xl mx-auto px-6 lg:px-8 pb-12 lg:pb-16"
+          className="w-full border-t border-white/[0.08]"
+          style={{ background: 'rgba(2,12,27,0.55)', backdropFilter: 'blur(20px)' }}
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            {statsData.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 + index * 0.1, duration: 0.6 }}
-                className="relative group"
-              >
-                {/* Glow on hover */}
-                <div
-                  className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-500"
-                  style={{
-                    background:
-                      'linear-gradient(135deg, rgba(34,139,203,0.4) 0%, rgba(79,195,247,0.2) 50%, rgba(34,139,203,0.4) 100%)',
-                  }}
-                />
-                <div className="relative bg-[#0a1929]/80 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-5 h-full hover:border-white/20 transition-colors duration-300">
-                  {/* Icon */}
-                  <div className="flex justify-end mb-2 sm:mb-3">
-                    <div className="text-[#228bcb]">{stat.icon}</div>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.08]">
+              {statsData.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + index * 0.1, duration: 0.6 }}
+                  className="group px-4 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-white/[0.03] transition-colors duration-500"
+                >
+                  <div className="flex items-start justify-between mb-1">
+                    <div
+                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight"
+                      style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                    >
+                      {stat.isLetter ? (
+                        <span>{stat.letter}</span>
+                      ) : (
+                        <AnimatedCounter end={stat.value} suffix={stat.suffix} separator="." />
+                      )}
+                    </div>
+                    <div className="text-[#228bcb]/60 group-hover:text-[#228bcb] transition-colors duration-300 scale-90">
+                      {stat.icon}
+                    </div>
                   </div>
-
-                  {/* Value */}
-                  <div className="text-2xl sm:text-3xl xl:text-4xl font-bold text-white mb-1">
-                    {stat.isLetter ? (
-                      <span>{stat.letter}</span>
-                    ) : (
-                      <AnimatedCounter
-                        end={stat.value}
-                        suffix={stat.suffix}
-                        separator="."
-                      />
-                    )}
-                  </div>
-
-                  {/* Label */}
-                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1">
-                    {stat.label}
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-[0.65rem] sm:text-xs text-white/50 leading-relaxed">
-                    {stat.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="text-xs sm:text-sm font-semibold text-white/80 mb-0.5">{stat.label}</div>
+                  <p className="text-[0.65rem] sm:text-xs text-white/40 leading-relaxed">{stat.description}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
-        {/* ── Bottom Bar ── */}
-        <div className="pb-8 flex items-center justify-between max-w-7xl mx-auto w-full px-6 lg:px-8">
-          {/* Welcome Label */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 0.7 }}
-            className="hidden md:flex items-center gap-3"
-          >
-            <div className="w-2 h-2 rounded-full bg-[#228bcb] animate-pulse" />
-            <span className="text-xs text-white/50 tracking-[0.2em] uppercase font-medium">
-              Selamat Datang
-            </span>
-          </motion.div>
+        {/* ── Slide Indicators (vertical, right side) ── */}
+        <div className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-3 z-20">
+          {heroImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`rounded-full transition-all duration-500 ${
+                i === currentIndex
+                  ? 'w-2 h-8 bg-[#228bcb]'
+                  : 'w-2 h-2 bg-white/25 hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
 
-          {/* Slide Indicators */}
-          <div className="flex items-center gap-2 ml-auto">
-            {heroImages.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentIndex(i)}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
-                  i === currentIndex
-                    ? 'w-8 bg-[#228bcb]'
-                    : 'w-3 bg-white/30 hover:bg-white/50'
-                }`}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
+        {/* ── Mobile Slide Indicators ── */}
+        <div className="flex md:hidden items-center justify-center gap-2 pb-4">
+          {heroImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === currentIndex ? 'w-8 bg-[#228bcb]' : 'w-3 bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

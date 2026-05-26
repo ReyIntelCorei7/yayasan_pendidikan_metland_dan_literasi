@@ -14,18 +14,26 @@ export default function ImpactSpotlight() {
 
   return (
     <section ref={sectionRef}>
-      {/* Section Header — like NewsInsights */}
+      {/* Section Header */}
       <div className="bg-[#FCFCFC] py-16 pb-0">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
               <ScrollReveal>
-                <p className="text-m text-[#228bcb] uppercase tracking-[0.2em] mb-4">Sambutan Ketua Yayasan Pendidikan Metland</p>
+                <div className='flex items-center gap-3'>
+                  <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+                  <p
+                    className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                  >
+                    Sambutan Ketua Yayasan Pendidikan
+                  </p>
+                </div>
               </ScrollReveal>
               <WordReveal
                 text="Sambutan Ketua Yayasan"
                 tag="h2"
-                className="text-4xl lg:text-5xl font-light text-charcoal"
+                className="text-4xl lg:text-6xl font-light text-charcoal"
               />
             </div>
           </div>
@@ -55,13 +63,35 @@ export default function ImpactSpotlight() {
           />
         </motion.div>
 
-        {/* Text Side */}
-        <div className="lg:w-[42%] bg-[#111] p-12 lg:p-16 flex flex-col justify-center">
+        {/* Text Side — dark section matching footer palette */}
+        <div
+          className="lg:w-[42%] p-12 lg:p-16 flex flex-col justify-center relative"
+          style={{ background: 'linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%)' }}
+        >
+          {/* Decorative accent line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="w-12 h-[2px] bg-[#228bcb] origin-left mb-8"
+          />
+
           <ScrollReveal delay={0.2}>
-            <p className="text-2xl lg:text-3xl font-bold text-white mb-2">Pandu Gunandito</p>
+            <p
+              className="text-2xl lg:text-3xl font-bold text-white mb-1 tracking-tight"
+              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+            >
+              Pandu Gunandito
+            </p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
-            <p className="text-xs text-[#228bcb] tracking-[0.2em] uppercase">Ketua Yayasan Pendidikan Metland</p>
+            <p
+              className="text-xs text-[#228bcb] tracking-[0.2em] uppercase"
+              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+            >
+              Ketua Yayasan Pendidikan Metland
+            </p>
           </ScrollReveal>
 
           <WordReveal
@@ -84,11 +114,14 @@ export default function ImpactSpotlight() {
           <ScrollReveal delay={0.8}>
             <Link to="/profil" className="inline-block mt-8">
               <motion.span
-                className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded text-sm font-medium cursor-pointer"
+                className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full text-sm font-medium cursor-pointer"
                 whileHover={{ backgroundColor: '#228bcb', color: '#fff', borderColor: 'rgba(34,139,203,1)' }}
                 transition={{ duration: 0.25 }}
               >
-                Selengkapnya →
+                Selengkapnya
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
               </motion.span>
             </Link>
           </ScrollReveal>

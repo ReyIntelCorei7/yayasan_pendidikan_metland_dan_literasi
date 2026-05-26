@@ -1,0 +1,448 @@
+/* ═══════════════════════════════════════════════════════════════
+   3D Book-Opening Animation Styles
+   Inspired by howtotalktowhitekidsaboutracism.com
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Scene Container (pinned during scroll) ── */
+.book-scene {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2500px;
+  perspective-origin: 50% 50%;
+  background: #FFFFFF;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Background decorative elements ── */
+.book-scene::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 139, 203, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.book-scene::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 139, 203, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Top Label (above the book) ── */
+.book-scene-label {
+  position: absolute;
+  top: clamp(80px, 12vh, 120px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── Book wrapper — holds the 3D book ── */
+.book-wrapper {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* ── Book Container ── */
+.book {
+  width: clamp(320px, 55vw, 680px);
+  height: clamp(230px, 38vw, 460px);
+  position: relative;
+  transform-style: preserve-3d;
+  /* Subtle initial tilt for depth */
+  transform: rotateX(2deg);
+}
+
+/* ── Spine (center of the book) ── */
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 12px;
+  height: 100%;
+  transform: translateX(-50%) translateZ(2px);
+  background: linear-gradient(
+    90deg,
+    #0d0d0d 0%,
+    #1a1a1a 20%,
+    #252525 50%,
+    #1a1a1a 80%,
+    #0d0d0d 100%
+  );
+  z-index: 25;
+  box-shadow:
+    0 0 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 8px rgba(0, 0, 0, 0.3);
+  border-radius: 1px;
+}
+
+/* ── Front Cover (animated by GSAP rotateY) ── */
+.book-cover-front {
+  position: absolute;
+  width: calc(50% - 6px);
+  height: 100%;
+  right: 0;
+  top: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  z-index: 20;
+  cursor: default;
+}
+
+/* ── Cover Outside Face ── */
+.cover-outside {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #1e1e1e 0%, #1C1C1C 50%, #141414 100%);
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  border-radius: 0 4px 4px 0;
+  box-shadow:
+    4px 4px 30px rgba(0, 0, 0, 0.35),
+    inset -3px 0 15px rgba(0, 0, 0, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Cover texture overlay */
+.cover-outside::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.008) 2px,
+      rgba(255, 255, 255, 0.008) 4px
+    );
+  pointer-events: none;
+}
+
+/* Cover decorative border */
+.cover-outside::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* ── Cover Inside Face (visible when opened) ── */
+.cover-inside {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  background: linear-gradient(135deg, #f8f4eb 0%, #f0ead6 100%);
+  border-radius: 4px 0 0 4px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow:
+    inset 3px 0 15px rgba(0, 0, 0, 0.06),
+    inset 0 0 40px rgba(0, 0, 0, 0.02);
+}
+
+/* Paper texture on inside cover */
+.cover-inside::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: 4px 0 0 4px;
+}
+
+/* ── Back Cover (static) ── */
+.book-cover-back {
+  position: absolute;
+  width: calc(50% - 6px);
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(215deg, #1e1e1e 0%, #1C1C1C 50%, #141414 100%);
+  border-radius: 4px 0 0 4px;
+  z-index: 1;
+  box-shadow:
+    -4px 4px 30px rgba(0, 0, 0, 0.35),
+    inset 3px 0 15px rgba(0, 0, 0, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Back cover texture */
+.book-cover-back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.008) 2px,
+      rgba(255, 255, 255, 0.008) 4px
+    );
+  pointer-events: none;
+  border-radius: 4px 0 0 4px;
+}
+
+/* ── Pages Container ── */
+.book-pages {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  z-index: 5;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Individual page */
+.book-page {
+  flex: 1;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.book-page-left {
+  background: linear-gradient(to right, #faf6ed, #f8f4eb);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: inset -5px 0 15px rgba(0, 0, 0, 0.03);
+}
+
+.book-page-right {
+  background: linear-gradient(to left, #faf6ed, #f8f4eb);
+  box-shadow: inset 5px 0 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Page paper texture */
+.book-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Page edge effect (visible page stack) */
+.book-pages::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  right: 4px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #e8e0d0,
+    #e8e0d0 1px,
+    #f0ead6 1px,
+    #f0ead6 3px
+  );
+  z-index: 1;
+}
+
+.book-pages::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 4px;
+  right: 4px;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #e8e0d0,
+    #e8e0d0 1px,
+    #f0ead6 1px,
+    #f0ead6 3px
+  );
+  z-index: 1;
+}
+
+/* ── Content wrappers inside pages (animated by GSAP) ── */
+.page-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-content-left,
+.page-content-right {
+  opacity: 0; /* GSAP will animate these */
+}
+
+/* ── Cover typography ── */
+.cover-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  color: #228bcb;
+  font-size: clamp(28px, 4vw, 52px);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-divider {
+  width: 50px;
+  height: 1px;
+  background: rgba(34, 139, 203, 0.4);
+  margin: 1rem auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-subtitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(9px, 1.2vw, 12px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Scroll hint indicator ── */
+.scroll-hint {
+  position: absolute;
+  bottom: clamp(24px, 5vh, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+}
+
+.scroll-hint-text {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(28, 28, 28, 0.3);
+}
+
+.scroll-hint-line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(28, 28, 28, 0.2), transparent);
+  animation: scrollHintPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollHintPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.4; transform: scaleY(0.6); }
+}
+
+/* ── Bottom book shadow ── */
+.book-shadow {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 40px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
+  filter: blur(8px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive Adjustments
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .book {
+    width: clamp(300px, 75vw, 550px);
+    height: clamp(215px, 52vw, 380px);
+  }
+
+  .book-spine {
+    width: 8px;
+  }
+
+  .cover-outside::after {
+    inset: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .book-scene {
+    min-height: 500px;
+  }
+
+  .book {
+    width: clamp(260px, 85vw, 380px);
+    height: clamp(186px, 60vw, 270px);
+  }
+
+  .book-spine {
+    width: 6px;
+  }
+
+  .book-cover-front {
+    width: calc(50% - 3px);
+  }
+
+  .book-cover-back {
+    width: calc(50% - 3px);
+  }
+
+  .book-page {
+    padding: 1rem;
+  }
+
+  .cover-outside {
+    padding: 1.5rem 1rem;
+  }
+
+  .cover-outside::after {
+    inset: 6px;
+  }
+
+  .cover-divider {
+    width: 30px;
+    margin: 0.6rem auto;
+  }
+
+  .scroll-hint {
+    bottom: 16px;
+  }
+
+  .book-shadow {
+    bottom: -20px;
+    height: 25px;
+  }
+}

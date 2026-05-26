@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Download, Loader2, ZoomIn, ZoomOut } from 'lucide-react';
 import type { Book } from '../../hooks/useBooks';
 import * as pdfjsLib from 'pdfjs-dist';
-import { drawIdle, drawCurlFrame, drawCornerCurl } from '../../lib/curlEngine';
+import '../../styles/book-animation.css';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -19,6 +19,23 @@ function ease(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+// Component to display offscreen PDF render canvases in the DOM
+const PageCanvasWrapper = ({ canvas }: { canvas: HTMLCanvasElement | null }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.innerHTML = '';
+    if (canvas) {
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.display = 'block';
+      canvas.style.objectFit = 'fill';
+      ref.current.appendChild(canvas);
+    }
+  }, [canvas]);
+  return <div ref={ref} className="w-full h-full block overflow-hidden" />;
+};
+
 export default function FlipbookReader({ book, onClose }: Props) {
   const [spread, setSpread]     = useState(1);
   const [numPages, setNumPages] = useState(0);
@@ -27,32 +44,33 @@ export default function FlipbookReader({ book, onClose }: Props) {
   const [isDouble, setDouble]   = useState(window.innerWidth >= 900);
   const [scale, setScale]       = useState(1);
 
+  // ── Cover opening animation state ──
+  const [showCover, setShowCover]   = useState(true);
+  const [coverOpen, setCoverOpen]   = useState(false);
+  const coverTouchX = useRef(0);
+  const coverRef = useRef<HTMLDivElement>(null);
+
+  // ── 3D Page flip animation state ──
+  interface FlipAnimation {
+    dir: 'next' | 'prev';
+    frontPage: number;
+    backPage: number;
+    underPage: number;
+    stayPage: number | null;
+  }
+  const [flipAnim, setFlipAnim] = useState<FlipAnimation | null>(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const pdfRef       = useRef<pdfjsLib.PDFDocumentProxy | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef    = useRef<HTMLCanvasElement>(null);
 
   // Pre-rendered page cache: pageNum → offscreen canvas
   const pageCache = useRef<Map<number, HTMLCanvasElement>>(new Map());
   const renderingPages = useRef<Set<number>>(new Set());
 
-  // Animation state refs
-  const flipState = useRef<FlipState>('idle');
-  const flipDir   = useRef<'next' | 'prev'>('next');
-  const flipProg  = useRef(0);
-  const flipStart = useRef(0);
-  const rafId     = useRef(0);
   const spreadRef = useRef(1);
   const npRef     = useRef(0);
   const dblRef    = useRef(isDouble);
-
-  // Drag state
-  const dragStartX = useRef(0);
-  const dragCurX   = useRef(0);
-  const isDragging = useRef(false);
-
-  // Corner hover
-  const hoverCorner = useRef<'br' | 'bl' | null>(null);
-  const hoverAmt    = useRef(0);
 
   // Page dimensions
   const [dims, setDims] = useState({ w: 380, h: 537 });
@@ -172,288 +190,90 @@ export default function FlipbookReader({ book, onClose }: Props) {
       renderingPages.current.clear();
       prevDimsRef.current = dims;
     }
-    prerender().then(redraw);
+    prerender();
   }, [spread, numPages, loading, isDouble, dims, prerender]);
 
   // Get cached page canvas
   const getPage = (n: number) => pageCache.current.get(n) ?? null;
 
-  // Redraw the main canvas (idle state)
-  const redraw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const { w, h } = dimsRef.current;
-    const dbl = dblRef.current;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const totalW = dbl ? w * 2 : w;
-    canvas.width = Math.round(totalW * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width = totalW + 'px';
-    canvas.style.height = h + 'px';
-    const ctx = canvas.getContext('2d')!;
-    ctx.scale(dpr, dpr);
-    const sp = spreadRef.current;
-    drawIdle(ctx, dbl ? getPage(sp) : null, getPage(dbl ? sp + 1 : sp), w, h, dbl);
-    // Corner curl preview
-    if (hoverCorner.current && hoverAmt.current > 0 && flipState.current === 'idle') {
-      drawCornerCurl(ctx, w, h, dbl, hoverCorner.current, hoverAmt.current);
-    }
-  }, []);
-
-  // --- FLIP ANIMATION ---
-  const FLIP_DURATION = 700; // ms
-
-  const animateFlip = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const { w, h } = dimsRef.current;
-    const dbl = dblRef.current;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const totalW = dbl ? w * 2 : w;
-    canvas.width = Math.round(totalW * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width = totalW + 'px';
-    canvas.style.height = h + 'px';
-    const ctx = canvas.getContext('2d')!;
-    ctx.scale(dpr, dpr);
-
-    const sp = spreadRef.current;
-    const step = dbl ? 2 : 1;
-    const dir = flipDir.current;
-    const nextSp = dir === 'next' ? sp + step : sp - step;
-
-    let front: HTMLCanvasElement | null, under: HTMLCanvasElement | null, stay: HTMLCanvasElement | null;
-    if (dir === 'next') {
-      front = getPage(dbl ? sp + 1 : sp);  // right page turns
-      under = getPage(dbl ? nextSp : nextSp); // revealed page
-      stay = dbl ? getPage(sp) : null;       // left page stays
-    } else {
-      front = getPage(dbl ? sp : sp);        // left page turns
-      under = getPage(dbl ? nextSp + 1 : nextSp); // revealed
-      stay = dbl ? getPage(sp + 1) : null;   // right stays
-    }
-
-    const prog = flipState.current === 'dragging' ? flipProg.current : ease(flipProg.current);
-    drawCurlFrame(ctx, front, under, stay, w, h, dbl, prog, dir);
-  }, []);
-
-  const startAutoFlip = useCallback((dir: 'next' | 'prev') => {
-    if (flipState.current !== 'idle') return;
+  // --- 3D PAGE FLIP ANIMATION ---
+  const startPageFlip = useCallback((dir: 'next' | 'prev') => {
+    if (flipAnim) return; // Wait for current flip to finish
     const sp = spreadRef.current;
     const np = npRef.current;
     const step = dblRef.current ? 2 : 1;
-    if (dir === 'next' && sp + step > np) return;
-    if (dir === 'prev' && sp <= 1) return;
 
-    flipState.current = 'animating';
-    flipDir.current = dir;
-    flipProg.current = 0;
-    flipStart.current = performance.now();
-
-    // Pre-render target pages
-    const nextSp = dir === 'next' ? sp + step : sp - step;
-    [nextSp, nextSp + 1, nextSp - 1].forEach(p => {
-      if (p >= 1 && p <= np) renderPageToCache(p);
-    });
-
-    const tick = (now: number) => {
-      const elapsed = now - flipStart.current;
-      flipProg.current = Math.min(elapsed / FLIP_DURATION, 1);
-      animateFlip();
-      if (flipProg.current < 1) {
-        rafId.current = requestAnimationFrame(tick);
-      } else {
-        // Flip complete
-        flipState.current = 'idle';
-        flipProg.current = 0;
-        spreadRef.current = nextSp;
-        setSpread(nextSp);
-        prerender().then(redraw);
-      }
-    };
-    rafId.current = requestAnimationFrame(tick);
-  }, [animateFlip, redraw, renderPageToCache, prerender]);
-
-  // --- DRAG INTERACTION ---
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
-    if (flipState.current !== 'idle') return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const w = rect.width;
-    const edgeZone = w * 0.2;
-
-    // Only start drag from edges
-    if (x > w - edgeZone) {
-      // Right edge → next
-      const sp = spreadRef.current, np = npRef.current, step = dblRef.current ? 2 : 1;
+    if (dir === 'next') {
       if (sp + step > np) return;
-      flipDir.current = 'next';
-    } else if (x < edgeZone) {
-      // Left edge → prev
-      if (spreadRef.current <= 1) return;
-      flipDir.current = 'prev';
-    } else return;
+      const front = dblRef.current ? sp + 1 : sp;
+      const back = dblRef.current ? sp + 2 : sp + 1;
+      const under = dblRef.current ? sp + 3 : sp + 2;
+      const stay = dblRef.current ? sp : null;
+      
+      // Pre-render target pages
+      [back, under].forEach(p => {
+        if (p >= 1 && p <= np) renderPageToCache(p);
+      });
 
-    flipState.current = 'dragging';
-    isDragging.current = true;
-    dragStartX.current = e.clientX;
-    dragCurX.current = e.clientX;
-    flipProg.current = 0;
-    canvas.setPointerCapture(e.pointerId);
-
-    // Pre-render target
-    const sp = spreadRef.current, step = dblRef.current ? 2 : 1;
-    const nextSp = flipDir.current === 'next' ? sp + step : sp - step;
-    [nextSp, nextSp + 1].forEach(p => {
-      if (p >= 1 && p <= npRef.current) renderPageToCache(p);
-    });
-  }, [renderPageToCache]);
-
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    if (flipState.current === 'dragging' && isDragging.current) {
-      dragCurX.current = e.clientX;
-      const rect = canvas.getBoundingClientRect();
-      const dx = dragCurX.current - dragStartX.current;
-      const maxDrag = rect.width;
-      if (flipDir.current === 'next') {
-        flipProg.current = Math.max(0, Math.min(1, -dx / maxDrag));
-      } else {
-        flipProg.current = Math.max(0, Math.min(1, dx / maxDrag));
-      }
-      animateFlip();
-      return;
-    }
-
-    // Corner hover detection (idle only)
-    if (flipState.current === 'idle') {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const w = rect.width, h = rect.height;
-      const zone = 80;
-      let corner: 'br' | 'bl' | null = null;
-      let amt = 0;
-
-      // Bottom-right corner
-      if (x > w - zone && y > h - zone) {
-        const dist = Math.sqrt(Math.pow(w - x, 2) + Math.pow(h - y, 2));
-        if (dist < zone) {
-          corner = 'br';
-          amt = 1 - dist / zone;
-        }
-      }
-      // Bottom-left corner
-      if (x < zone && y > h - zone) {
-        const dist = Math.sqrt(x * x + Math.pow(h - y, 2));
-        if (dist < zone) {
-          corner = 'bl';
-          amt = 1 - dist / zone;
-        }
-      }
-
-      if (corner !== hoverCorner.current || Math.abs(amt - hoverAmt.current) > 0.02) {
-        hoverCorner.current = corner;
-        hoverAmt.current = amt;
-        redraw();
-      }
-    }
-  }, [animateFlip, redraw]);
-
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
-    if (flipState.current !== 'dragging' || !isDragging.current) return;
-    isDragging.current = false;
-    const canvas = canvasRef.current;
-    if (canvas) canvas.releasePointerCapture(e.pointerId);
-
-    const prog = flipProg.current;
-    if (prog > 0.3) {
-      // Complete the flip with animation from current progress
-      flipState.current = 'animating';
-      const startProg = prog;
-      const remaining = 1 - startProg;
-      const duration = remaining * FLIP_DURATION * 0.6;
-      flipStart.current = performance.now();
-      const sp = spreadRef.current;
-      const step = dblRef.current ? 2 : 1;
-      const nextSp = flipDir.current === 'next' ? sp + step : sp - step;
-
-      const tick = (now: number) => {
-        const elapsed = now - flipStart.current;
-        const t = Math.min(elapsed / Math.max(duration, 100), 1);
-        flipProg.current = startProg + remaining * ease(t);
-        animateFlip();
-        if (t < 1) {
-          rafId.current = requestAnimationFrame(tick);
-        } else {
-          flipState.current = 'idle';
-          flipProg.current = 0;
-          spreadRef.current = nextSp;
-          setSpread(nextSp);
-          prerender().then(redraw);
-        }
-      };
-      rafId.current = requestAnimationFrame(tick);
+      setFlipAnim({ dir: 'next', frontPage: front, backPage: back, underPage: under, stayPage: stay });
+      setIsFlipped(false);
+      setTimeout(() => {
+        setIsFlipped(true);
+      }, 30);
     } else {
-      // Snap back
-      flipState.current = 'animating';
-      const startProg = prog;
-      const duration = startProg * FLIP_DURATION * 0.5;
-      flipStart.current = performance.now();
+      if (sp <= 1) return;
+      const front = dblRef.current ? sp : sp;
+      const back = dblRef.current ? sp - 1 : sp - 1;
+      const under = dblRef.current ? sp - 2 : sp - 2;
+      const stay = dblRef.current ? sp + 1 : null;
 
-      const tick = (now: number) => {
-        const elapsed = now - flipStart.current;
-        const t = Math.min(elapsed / Math.max(duration, 100), 1);
-        flipProg.current = startProg * (1 - ease(t));
-        animateFlip();
-        if (t < 1) {
-          rafId.current = requestAnimationFrame(tick);
-        } else {
-          flipState.current = 'idle';
-          flipProg.current = 0;
-          redraw();
-        }
-      };
-      rafId.current = requestAnimationFrame(tick);
-    }
-  }, [animateFlip, redraw, prerender]);
+      // Pre-render target pages
+      [back, under].forEach(p => {
+        if (p >= 1 && p <= np) renderPageToCache(p);
+      });
 
-  const onPointerLeave = useCallback(() => {
-    if (hoverCorner.current) {
-      hoverCorner.current = null;
-      hoverAmt.current = 0;
-      if (flipState.current === 'idle') redraw();
+      setFlipAnim({ dir: 'prev', frontPage: front, backPage: back, underPage: under, stayPage: stay });
+      setIsFlipped(false);
+      setTimeout(() => {
+        setIsFlipped(true);
+      }, 30);
     }
-  }, [redraw]);
+  }, [flipAnim, renderPageToCache]);
+
+  const handleFlipEnd = useCallback(() => {
+    if (!flipAnim) return;
+    const sp = spreadRef.current;
+    const step = dblRef.current ? 2 : 1;
+    const nextSp = flipAnim.dir === 'next' ? sp + step : sp - step;
+    
+    setSpread(nextSp);
+    spreadRef.current = nextSp;
+    setFlipAnim(null);
+    setIsFlipped(false);
+    prerender();
+  }, [flipAnim, prerender]);
 
   // Touch swipe
   const touchX = useRef(0);
   const onTouchStart = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (flipState.current !== 'idle') return;
+    if (flipAnim) return;
     const dx = e.changedTouches[0].clientX - touchX.current;
     if (Math.abs(dx) > 60) {
-      dx < 0 ? startAutoFlip('next') : startAutoFlip('prev');
+      dx < 0 ? startPageFlip('next') : startPageFlip('prev');
     }
   };
 
   // Keyboard
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') startAutoFlip('next');
-      else if (e.key === 'ArrowLeft') startAutoFlip('prev');
+      if (e.key === 'ArrowRight') startPageFlip('next');
+      else if (e.key === 'ArrowLeft') startPageFlip('prev');
       else if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
-  }, [startAutoFlip, onClose]);
-
-  // Cleanup
-  useEffect(() => () => cancelAnimationFrame(rafId.current), []);
+  }, [startPageFlip, onClose]);
 
   // Zoom
   const zoomIn    = () => setScale(s => Math.min(+(s + 0.15).toFixed(2), 2.0));
@@ -497,19 +317,10 @@ export default function FlipbookReader({ book, onClose }: Props) {
           className="flex-1 flex items-center justify-center overflow-hidden relative"
           onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
-          {loading && (
-            <div className="flex flex-col items-center gap-3">
-              <div className="relative w-12 h-12">
-                <Loader2 className="w-12 h-12 text-emerald-400 animate-spin"/>
-                <div className="absolute inset-0 rounded-full bg-emerald-400/10 animate-ping"/>
-              </div>
-              <p className="text-gray-400 text-sm animate-pulse">Memuat buku…</p>
-            </div>
-          )}
-
+          {/* ERROR STATE */}
           {error && (
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-              className="text-center bg-white/5 border border-white/10 rounded-2xl p-8 max-w-xs">
+              className="text-center bg-white/5 border border-white/10 rounded-2xl p-8 max-w-xs z-50">
               <X className="w-10 h-10 text-red-400 mx-auto mb-4"/>
               <p className="text-red-400 font-medium mb-1">Gagal Memuat PDF</p>
               <p className="text-gray-500 text-sm mb-5">Coba unduh langsung</p>
@@ -520,54 +331,364 @@ export default function FlipbookReader({ book, onClose }: Props) {
             </motion.div>
           )}
 
-          {!loading && !error && numPages > 0 && (
-            <>
-              {/* Click zones for flip */}
-              <div className="absolute left-0 top-0 bottom-0 w-[15%] z-40 cursor-w-resize"
-                onClick={() => startAutoFlip('prev')} />
-              <div className="absolute right-0 top-0 bottom-0 w-[15%] z-40 cursor-e-resize"
-                onClick={() => startAutoFlip('next')} />
-
-              {/* Book container with shadow */}
-              <div className="relative"
-                style={{
-                  width: totalW, height: dims.h,
-                  boxShadow: '0 40px 80px rgba(0,0,0,0.7), 0 20px 40px rgba(0,0,0,0.5)',
-                  borderRadius: 4,
-                }}>
-                <canvas
-                  ref={canvasRef}
-                  style={{
-                    display: 'block', width: totalW, height: dims.h,
-                    borderRadius: 4, cursor: 'grab',
-                  }}
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerUp}
-                  onPointerLeave={onPointerLeave}
-                />
-
-                {/* Page numbers */}
-                {isDouble && (
-                  <div className="absolute bottom-2 left-4 pointer-events-none">
-                    <span className="text-[10px] text-white/30 font-mono">{spread}</span>
-                  </div>
-                )}
-                <div className="absolute bottom-2 right-4 pointer-events-none">
-                  <span className="text-[10px] text-white/30 font-mono">
-                    {isDouble ? spread + 1 : spread}
-                  </span>
-                </div>
+          {/* 3D BOOK COVER INTRO ANIMATION */}
+          {!error && showCover && (
+            <div
+              className="absolute inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
+              style={{ perspective: 2500 }}
+            >
+              {/* Top Label */}
+              <div className="absolute top-[8vh] sm:top-[12vh] text-center pointer-events-none px-4">
+                <p className="text-[10px] sm:text-xs font-semibold tracking-[3px] uppercase text-white/40">
+                  Membuka E-Book Digital
+                </p>
               </div>
-            </>
+
+              {/* 3D Book Wrapper */}
+              <div 
+                className="book-wrapper"
+                style={{
+                  transform: `rotateX(10deg) rotateY(-5deg) scale(${isDouble ? 1 : 0.7})`,
+                  transition: 'transform 0.5s ease-out',
+                }}
+              >
+                <div 
+                  ref={coverRef}
+                  className="book cursor-pointer"
+                  style={{
+                    width: dims.w * 2,
+                    height: dims.h,
+                    transformStyle: 'preserve-3d',
+                  }}
+                  onClick={() => {
+                    if (!loading) {
+                      setCoverOpen(true);
+                    }
+                  }}
+                  onTouchStart={(e) => {
+                    coverTouchX.current = e.touches[0].clientX;
+                  }}
+                  onTouchEnd={(e) => {
+                    const dx = e.changedTouches[0].clientX - coverTouchX.current;
+                    if (dx < -45 && !loading) {
+                      setCoverOpen(true); // Swipe left to open
+                    }
+                  }}
+                >
+                  {/* Spine */}
+                  <div className="book-spine" />
+
+                  {/* Pages (always visible behind the cover) */}
+                  <div className="book-pages">
+                    {/* Left page inside */}
+                    <div className="book-page book-page-left">
+                      <div className="page-content flex flex-col justify-center items-center h-full text-center p-4">
+                        <span className="text-[8px] sm:text-[9px] uppercase tracking-wider text-emerald-600 font-bold mb-2">Penerbit</span>
+                        <h3 className="font-bold text-gray-800 text-xs sm:text-sm md:text-base mb-1 truncate w-full max-w-[150px]">{book.title}</h3>
+                        <p className="text-[10px] text-gray-500 truncate w-full max-w-[120px]">{book.author}</p>
+                        <div className="h-[2px] w-6 bg-emerald-500 mt-3 rounded-full" />
+                      </div>
+                    </div>
+
+                    {/* Right page inside */}
+                    <div className="book-page book-page-right">
+                      <div className="page-content flex flex-col justify-between h-full p-4">
+                        <div className="flex-1 flex flex-col justify-center items-center text-center">
+                          <span className="text-[8px] sm:text-[9px] uppercase tracking-wider text-emerald-600 font-bold mb-1.5">Selamat Membaca</span>
+                          <p className="text-[10px] text-gray-600 leading-relaxed max-w-[140px] line-clamp-4">
+                            {book.description || "Selamat datang di lembaran ilmu baru. Mari tingkatkan budaya literasi bersama Metland."}
+                          </p>
+                        </div>
+                        <div className="text-[8px] sm:text-[9px] text-gray-400 text-center font-mono">
+                          Halaman 1 dari {numPages || '...'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Back Cover (static, left side) */}
+                  <div className="book-cover-back" style={{ width: 'calc(50% - 6px)' }} />
+
+                  {/* Front Cover (animated, right side) */}
+                  <div 
+                    className="book-cover-front"
+                    style={{
+                      width: 'calc(50% - 6px)',
+                      transformOrigin: 'left center',
+                      transformStyle: 'preserve-3d',
+                      transform: coverOpen ? 'rotateY(-178deg)' : 'rotateY(0deg)',
+                      transition: 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)',
+                      zIndex: coverOpen ? 5 : 20,
+                    }}
+                    onTransitionEnd={() => {
+                      if (coverOpen) {
+                        setTimeout(() => {
+                          setShowCover(false);
+                        }, 300);
+                      }
+                    }}
+                  >
+                    {/* Outside face (with Cover Image or styling) */}
+                    <div 
+                      className="cover-outside flex flex-col items-center justify-between p-5 rounded-r-md overflow-hidden relative"
+                      style={{
+                        background: book.coverImage
+                          ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${book.coverImage.replace(/^https?:\/\/[^/]+/, '')}) center/cover no-repeat`
+                          : 'linear-gradient(145deg, #1e1e1e 0%, #1C1C1C 50%, #141414 100%)',
+                      }}
+                    >
+                      {/* Realistic book shadow overlay */}
+                      <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/40 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/5 pointer-events-none" />
+
+                      <div className="w-full flex flex-col items-center gap-0.5 z-10 text-center mt-1">
+                        <span className="text-[8px] uppercase tracking-[3px] text-emerald-400 font-bold">METLAND LITERASI</span>
+                        <div className="h-[1px] w-6 bg-emerald-400/40 my-1" />
+                      </div>
+
+                      <div className="w-full text-center z-10 px-2 my-auto">
+                        <h1 
+                          className="text-white font-bold leading-tight font-serif drop-shadow-lg line-clamp-3"
+                          style={{
+                            fontSize: 'clamp(14px, 2vw, 24px)',
+                            fontFamily: 'Playfair Display, Georgia, serif',
+                          }}
+                        >
+                          {book.title}
+                        </h1>
+                        <p className="text-[9px] sm:text-[10px] text-white/60 tracking-wider mt-1.5 truncate">
+                          {book.author}
+                        </p>
+                      </div>
+
+                      <div className="w-full text-center z-10 mb-1">
+                        <span className="text-[7px] tracking-[2px] text-white/30 uppercase">E-BOOK DIGITAL</span>
+                      </div>
+                    </div>
+
+                    {/* Inside face (revealed when cover opens) */}
+                    <div className="cover-inside flex flex-col items-center justify-center p-5 rounded-l-md bg-[#faf6ed]">
+                      <div className="text-center opacity-40">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="1.5" className="mx-auto mb-2 opacity-50">
+                          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg>
+                        <p className="text-[8px] font-semibold tracking-wider text-gray-700 uppercase">YAYASAN PENDIDIKAN</p>
+                        <p className="text-[7px] tracking-widest text-gray-500 uppercase mt-0.5">METLAND</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Book Shadow */}
+                <div className="book-shadow" style={{ width: '85%', opacity: coverOpen ? 0.8 : 0.4 }} />
+              </div>
+
+              {/* Action Hint */}
+              <div className="absolute bottom-[6vh] sm:bottom-[10vh] flex flex-col items-center gap-2 pointer-events-none">
+                {loading ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="w-6 h-6 text-emerald-400 animate-spin" />
+                    <span className="text-xs text-gray-400 animate-pulse">Menyiapkan halaman...</span>
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center gap-1.5"
+                  >
+                    <span className="text-xs text-emerald-400 font-medium tracking-[2px] uppercase animate-pulse">
+                      Usap ke Kiri atau Klik untuk Membaca
+                    </span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  </motion.div>
+                )}
+              </div>
+            </div>
           )}
+
+          {/* FLIPBOOK 3D DOM READER */}
+          {!error && numPages > 0 && (() => {
+            const leftPageNum = isDouble
+              ? (flipAnim
+                  ? (flipAnim.dir === 'next' ? flipAnim.stayPage : flipAnim.underPage)
+                  : spread)
+              : null;
+
+            const rightPageNum = isDouble
+              ? (flipAnim
+                  ? (flipAnim.dir === 'next' ? flipAnim.underPage : flipAnim.stayPage)
+                  : (spread + 1))
+              : (flipAnim
+                  ? flipAnim.backPage
+                  : spread);
+
+            return (
+              <>
+                {/* Click zones for flip */}
+                <div className="absolute left-0 top-0 bottom-0 w-[15%] z-40 cursor-w-resize"
+                  style={{ display: showCover ? 'none' : 'block' }}
+                  onClick={() => startPageFlip('prev')} />
+                <div className="absolute right-0 top-0 bottom-0 w-[15%] z-40 cursor-e-resize"
+                  style={{ display: showCover ? 'none' : 'block' }}
+                  onClick={() => startPageFlip('next')} />
+
+                {/* Book container with shadow */}
+                <div 
+                  className="book relative"
+                  style={{
+                    width: totalW, height: dims.h,
+                    boxShadow: '0 40px 80px rgba(0,0,0,0.7), 0 20px 40px rgba(0,0,0,0.5)',
+                    borderRadius: 4,
+                    opacity: showCover ? 0 : 1,
+                    pointerEvents: showCover ? 'none' : 'auto',
+                    transition: 'opacity 0.6s ease-in-out',
+                    transformStyle: 'preserve-3d',
+                    transform: 'rotateX(5deg)',
+                  }}
+                >
+                  {/* Spine */}
+                  {isDouble && <div className="book-spine" />}
+
+                  {/* Left Page (Static) */}
+                  {isDouble && (
+                    <div 
+                      className="book-page book-page-left" 
+                      style={{ 
+                        width: '50%', 
+                        height: '100%', 
+                        left: 0, 
+                        position: 'absolute',
+                        padding: 0,
+                        margin: 0,
+                        display: 'block',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {leftPageNum && leftPageNum >= 1 && leftPageNum <= numPages ? (
+                        <PageCanvasWrapper canvas={getPage(leftPageNum)} />
+                      ) : (
+                        <div className="w-full h-full bg-[#faf6ed]" />
+                      )}
+                    </div>
+                  )}
+
+                  {/* Right Page (Static) */}
+                  <div 
+                    className={isDouble ? "book-page book-page-right" : "book-page"} 
+                    style={{ 
+                      width: isDouble ? '50%' : '100%', 
+                      height: '100%', 
+                      right: 0, 
+                      position: 'absolute',
+                      padding: 0,
+                      margin: 0,
+                      display: 'block',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {rightPageNum && rightPageNum >= 1 && rightPageNum <= numPages ? (
+                      <PageCanvasWrapper canvas={getPage(rightPageNum)} />
+                    ) : (
+                      <div className="w-full h-full bg-[#faf6ed]" />
+                    )}
+                  </div>
+
+                  {/* Flipping Page */}
+                  {flipAnim && (
+                    <div 
+                      className="book-cover-front"
+                      style={{
+                        width: isDouble ? '50%' : '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: flipAnim.dir === 'prev' ? 0 : 'auto',
+                        right: flipAnim.dir === 'next' ? 0 : 'auto',
+                        transformOrigin: flipAnim.dir === 'next' ? 'left center' : 'right center',
+                        transformStyle: 'preserve-3d',
+                        transform: isFlipped 
+                          ? (flipAnim.dir === 'next' ? 'rotateY(-178deg)' : 'rotateY(178deg)') 
+                          : 'rotateY(0deg)',
+                        transition: 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)',
+                        zIndex: 30,
+                      }}
+                      onTransitionEnd={handleFlipEnd}
+                    >
+                      {/* Front Face (Turns away) */}
+                      <div 
+                        className={flipAnim.dir === 'next' ? "book-page book-page-right" : "book-page book-page-left"} 
+                        style={{ 
+                          backfaceVisibility: 'hidden', 
+                          inset: 0, 
+                          position: 'absolute', 
+                          background: '#faf6ed',
+                          borderRadius: 0,
+                          border: 'none',
+                          boxShadow: 'none',
+                          padding: 0,
+                          margin: 0,
+                          display: 'block',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        {flipAnim.frontPage >= 1 && flipAnim.frontPage <= numPages ? (
+                          <PageCanvasWrapper canvas={getPage(flipAnim.frontPage)} />
+                        ) : (
+                          <div className="w-full h-full bg-[#faf6ed]" />
+                        )}
+                      </div>
+
+                      {/* Back Face (Turns in) */}
+                      <div 
+                        className={flipAnim.dir === 'next' ? "book-page book-page-left" : "book-page book-page-right"} 
+                        style={{ 
+                          backfaceVisibility: 'hidden', 
+                          inset: 0, 
+                          position: 'absolute', 
+                          transform: 'rotateY(180deg)',
+                          background: '#faf6ed',
+                          borderRadius: 0,
+                          border: 'none',
+                          boxShadow: 'none',
+                          padding: 0,
+                          margin: 0,
+                          display: 'block',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        {flipAnim.backPage >= 1 && flipAnim.backPage <= numPages ? (
+                          <PageCanvasWrapper canvas={getPage(flipAnim.backPage)} />
+                        ) : (
+                          <div className="w-full h-full bg-[#faf6ed]" />
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Page numbers */}
+                  {isDouble && (
+                    <div className="absolute bottom-2 left-4 pointer-events-none z-40">
+                      <span className="text-[10px] text-black/30 font-mono">{spread}</span>
+                    </div>
+                  )}
+                  <div className="absolute bottom-2 right-4 pointer-events-none z-40">
+                    <span className="text-[10px] text-black/30 font-mono">
+                      {isDouble ? spread + 1 : spread}
+                    </span>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
+
         </div>
 
         {/* FOOTER */}
-        {!loading && !error && numPages > 0 && (
+        {!showCover && !loading && !error && numPages > 0 && (
           <footer className="shrink-0 flex items-center justify-center gap-4 py-3 px-4
             bg-black/50 backdrop-blur-md border-t border-white/[0.07]">
-            <button onClick={() => startAutoFlip('prev')} disabled={!canPrev}
+            <button onClick={() => startPageFlip('prev')} disabled={!canPrev}
               className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
@@ -585,7 +706,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
               </div>
               <span className="text-gray-600 text-sm font-mono">{numPages}</span>
             </div>
-            <button onClick={() => startAutoFlip('next')} disabled={!canNext}
+            <button onClick={() => startPageFlip('next')} disabled={!canNext}
               className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
