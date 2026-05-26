@@ -201,7 +201,6 @@ export default function SchoolDetail() {
                 whileHover={{ scale: 1.08, rotateY: 10 }}
                 className="relative group"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-lime/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all" />
                 <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 text-center hover:border-lime/30 transition-all">
                   <motion.div
                     animate={{ y: [0, -5, 0] }}
@@ -253,15 +252,11 @@ export default function SchoolDetail() {
                     <img
                       src={s.image}
                       alt={s.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <motion.div
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: idx * 0.2 }}
-                      className="absolute bottom-3 left-3 right-3"
-                    >
+                    <motion.div>
                       <p className="text-white text-xs font-bold bg-lime/80 inline-block px-3 py-1 rounded-full">{s.level}</p>
                     </motion.div>
                   </motion.div>

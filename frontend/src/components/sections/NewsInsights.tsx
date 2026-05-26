@@ -1,6 +1,7 @@
-import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import { useMemo, useState, useCallback, useEffect, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BookOpen } from 'lucide-react';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import { usePosts } from '../../hooks/usePosts';
@@ -90,7 +91,18 @@ export default function NewsInsights() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const AUTOPLAY_MS = 5000;
+
+  // Ensure currentPage stays within bounds when pages change to prevent temporary
+  // renders of an undefined page (which caused the carousel glitch).
+  useEffect(() => {
+    setPage(([prev, dir]) => {
+      if (pages.length === 0) return [0, 0];
+      const idx = Math.min(prev, pages.length - 1);
+      return [idx, idx > prev ? 1 : -1];
+    });
+  }, [pages.length]);
 
   const paginate = useCallback(
     (dir: number) => {
@@ -104,13 +116,29 @@ export default function NewsInsights() {
     [],
   );
 
-  // Autoplay
+  // Autoplay: use a per-slide timeout tied to currentPage so it reliably
+  // advances when the progress bar completes and resets cleanly on page change.
   useEffect(() => {
-    if (isPlaying && !isHovered && pages.length > 1) {
-      intervalRef.current = setInterval(() => paginate(1), AUTOPLAY_MS);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [isPlaying, isHovered, paginate, pages.length]);
+
+    if (isPlaying && !isHovered && pages.length > 1) {
+      timeoutRef.current = setTimeout(() => paginate(1), AUTOPLAY_MS);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isPlaying, isHovered, paginate, pages.length, currentPage]);
 
   // Drag
   const handleDragEnd = useCallback(
@@ -121,7 +149,50 @@ export default function NewsInsights() {
     [paginate],
   );
 
-  if (pages.length === 0) return null;
+  // Keep track of last valid page index to avoid rendering empty content
+  // when `pages` changes length during async loads (prevents blank area).
+  const lastValidIndexRef = useRef(0);
+  useEffect(() => {
+    if (pages.length === 0) return;
+    if (pages[currentPage]) {
+      lastValidIndexRef.current = currentPage;
+    } else {
+      // clamp to nearest valid index
+      lastValidIndexRef.current = Math.min(lastValidIndexRef.current, pages.length - 1);
+    }
+  }, [pages, currentPage]);
+
+  // Determine the displayed index used for rendering (fallback to last valid)
+  const displayedIndex = pages[currentPage] ? currentPage : lastValidIndexRef.current;
+
+  // Measure the active slide height and keep wrapper min-height stable to
+  // prevent layout jumps while slides animate or images load.
+  const slideRef = useRef<HTMLDivElement | null>(null);
+  const [containerHeight, setContainerHeight] = useState<number | undefined>(undefined);
+  useLayoutEffect(() => {
+    const el = slideRef.current;
+    if (el) {
+      const h = Math.ceil(el.getBoundingClientRect().height);
+      setContainerHeight(h);
+    }
+  }, [displayedIndex, pages.length]);
+
+  if (pages.length === 0) {
+    return (
+      <section className="relative bg-[#FCFCFC] py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col items-center py-24 px-4">
+            <div className="w-24 h-24 bg-gradient-to-br from-lime/20 to-blue-300/20 flex items-center justify-center mb-6">
+              <BookOpen className="w-12 h-12 text-[#228bcb]" />
+            </div>
+            <h3 className="text-2xl font-semibold text-charcoal mb-3 text-center">Belum Ada Artikel</h3>
+            <p className="text-gray-500 text-center max-w-lg mb-6">Artikel terbaru sedang kami persiapkan. Kembali lagi nanti untuk membaca berita dan insight dari Yayasan.</p>
+            <Link to="/artikel" className="inline-flex items-center gap-2 px-5 py-2 bg-[#228bcb] text-white rounded-md font-medium hover:bg-[#1a6fa3] transition-colors">Lihat Halaman Artikel →</Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-[#FCFCFC] py-24">
@@ -167,38 +238,48 @@ export default function NewsInsights() {
           {/* Prev / Next arrows */}
           {pages.length > 1 && (
             <>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => paginate(-1)}
-                className="absolute -left-4 lg:-left-6 top-[28%] -translate-y-1/2 z-30 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-all duration-300"
+              <div
+                className="absolute -left-4 lg:-left-6 top-1/2 -translate-y-1/2 z-30"
                 style={{ opacity: isHovered ? 1 : 0, pointerEvents: isHovered ? 'auto' : 'none', transition: 'opacity .3s' }}
-                aria-label="Previous"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => paginate(1)}
-                className="absolute -right-4 lg:-right-6 top-[28%] -translate-y-1/2 z-30 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-all duration-300"
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => paginate(-1)}
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-colors duration-300"
+                  aria-label="Previous"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </motion.button>
+              </div>
+              <div
+                className="absolute -right-4 lg:-right-6 top-1/2 -translate-y-1/2 z-30"
                 style={{ opacity: isHovered ? 1 : 0, pointerEvents: isHovered ? 'auto' : 'none', transition: 'opacity .3s' }}
-                aria-label="Next"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => paginate(1)}
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-colors duration-300"
+                  aria-label="Next"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </motion.button>
+              </div>
             </>
           )}
 
-          {/* Slide viewport */}
-          <div className="overflow-hidden relative">
+          <div className="overflow-hidden relative" style={{ minHeight: containerHeight ? `${containerHeight}px` : undefined }}>
             <AnimatePresence initial={false} custom={direction}>
+              {/** Use a stable displayedIndex that falls back to the last valid page
+               * to avoid a momentary empty render when pages[currentPage] is undefined. */}
               <motion.div
-                key={currentPage}
+                ref={slideRef}
+                key={displayedIndex}
                 custom={direction}
                 variants={slideVariants}
                 initial="enter"
@@ -210,7 +291,7 @@ export default function NewsInsights() {
                 onDragEnd={handleDragEnd}
                 className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 will-change-transform"
               >
-                {pages[currentPage]?.map((post, i) => (
+                {(pages[displayedIndex] || []).map((post, i) => (
                   <motion.div
                     key={post.id}
                     custom={i}
@@ -219,7 +300,6 @@ export default function NewsInsights() {
                     animate="visible"
                   >
                     <Link to={`/artikel/${post.slug}`} className="group block">
-                      {/* Image */}
                       <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100">
                         <motion.img
                           src={post.featuredImage}
@@ -244,7 +324,6 @@ export default function NewsInsights() {
                         {post.title}
                       </h3>
 
-                      {/* Meta */}
                       <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
                         {post.author.photo && (
                           <img
