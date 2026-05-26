@@ -82,7 +82,7 @@ export default function ImpactSpotlight() {
               className="text-2xl lg:text-3xl font-bold text-white mb-1 tracking-tight"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
-              Pandu Gunandito
+              Bapak Ir. Pandu Gunandito
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
