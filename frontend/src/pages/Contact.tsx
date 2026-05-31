@@ -26,7 +26,7 @@ export default function Contact() {
     <>
       {/* Hero */}
       <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <img src="/src/assets/sekolahsmkmetland.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <img src="/src/assets/sekolahsmkmetland.webp" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative z-10 text-center px-6">
           <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Kontak</p>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">

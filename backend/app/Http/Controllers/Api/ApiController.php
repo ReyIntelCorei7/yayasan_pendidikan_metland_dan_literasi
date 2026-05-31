@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Cache;
 
 class ApiController extends Controller
 {
-    // Cache TTL in seconds (5 minutes)
-    private const TTL = 300;
+    // Cache TTL in seconds (1 hour). Cache is automatically invalidated by AppServiceProvider when data changes.
+    private const TTL = 3600;
 
     /**
      * Return a JSON response with ETag + Cache-Control headers.
@@ -25,7 +25,7 @@ class ApiController extends Controller
      */
     private function cachedJson(mixed $data, int $ttl = self::TTL): JsonResponse
     {
-        $etag = '"' . md5(serialize($data)) . '"';
+        $etag = '"' . md5(json_encode($data)) . '"';
         $request = request();
 
         if ($request->header('If-None-Match') === $etag) {
@@ -95,17 +95,33 @@ class ApiController extends Controller
         return $this->cachedJson($data);
     }
 
-    public function posts(): JsonResponse
+    public function posts(Request $request): JsonResponse
     {
-        $data = Cache::remember('api.posts', self::TTL, function () {
-            return Post::published()
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 15);
+        $category = $request->input('category');
+        $search = $request->input('search');
+
+        $cacheKey = "api.posts.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+
+        $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
+            $query = Post::published()
                 ->select(['id','title','slug','excerpt','featured_image','category','published_at','reading_time','author_name','author_photo','author_title','is_published', 'is_important'])
                 ->with(['tags:id,post_id,tag'])
                 ->orderByDesc('is_important')
-                ->orderByDesc('published_at')
-                ->get()
-                ->map(fn ($p) => $this->formatPost($p))
-                ->toArray();
+                ->orderByDesc('published_at');
+
+            if ($category && $category !== 'All') {
+                $query->where('category', $category);
+            }
+
+            if ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            }
+
+            $paginator = $query->paginate($perPage);
+            $paginator->getCollection()->transform(fn ($p) => $this->formatPost($p));
+            return $paginator->toArray();
         });
 
         return $this->cachedJson($data);
@@ -204,23 +220,45 @@ class ApiController extends Controller
         return $this->cachedJson($data);
     }
 
-    public function books(): JsonResponse
+    public function books(Request $request): JsonResponse
     {
-        $data = Cache::remember('api.books', self::TTL, function () {
-            return Book::published()
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 12);
+        $category = $request->input('category');
+        $search = $request->input('search');
+
+        $cacheKey = "api.books.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+
+        $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
+            $query = Book::published()
                 ->select(['id','title','author','description','category','cover_image','pdf_file','order'])
-                ->orderBy('order')
-                ->get()
-                ->map(fn ($b) => [
-                    'id'          => (string) $b->id,
-                    'title'       => $b->title,
-                    'author'      => $b->author,
-                    'description' => $b->description,
-                    'category'    => $b->category,
-                    'coverImage'  => $b->cover_image ? asset('storage/' . $b->cover_image) : null,
-                    'pdfUrl'      => asset('storage/' . $b->pdf_file),
-                    'order'       => $b->order,
-                ])->toArray();
+                ->orderBy('order');
+
+            if ($category && $category !== 'Semua') {
+                $query->where('category', $category);
+            }
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('author', 'like', "%{$search}%");
+                });
+            }
+
+            $paginator = $query->paginate($perPage);
+            
+            $paginator->getCollection()->transform(fn ($b) => [
+                'id'          => (string) $b->id,
+                'title'       => $b->title,
+                'author'      => $b->author,
+                'description' => $b->description,
+                'category'    => $b->category,
+                'coverImage'  => $b->cover_image ? asset('storage/' . $b->cover_image) : null,
+                'pdfUrl'      => asset('storage/' . $b->pdf_file),
+                'order'       => $b->order,
+            ]);
+
+            return $paginator->toArray();
         });
 
         return $this->cachedJson($data);

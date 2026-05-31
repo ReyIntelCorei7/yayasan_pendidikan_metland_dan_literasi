@@ -51,7 +51,7 @@ export default function ImpactSpotlight() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.img
-            src="/src/assets/MS_ketuayayasan.jpg"
+            src="/src/assets/MS_ketuayayasan.webp"
             alt="Foto kepala yayasan metland"
             className="w-full h-full object-cover min-h-[400px] lg:min-h-[520px]"
             style={{ y: imageY }}

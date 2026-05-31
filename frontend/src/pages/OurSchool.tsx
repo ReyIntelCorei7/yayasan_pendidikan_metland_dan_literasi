@@ -25,7 +25,7 @@ const schools = [
     name: 'SMK Pariwisata Metland School',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
-    image: '/src/assets/sekolahsmkmetland.png',
+    image: '/src/assets/sekolahsmkmetland.webp',
     color: '#228bcb',
   },
   {
@@ -33,7 +33,7 @@ const schools = [
     name: 'SMK Metland',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
-    image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
+    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
     color: '#228bcb',
   },
   {
@@ -41,7 +41,7 @@ const schools = [
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: '/src/assets/sekolahsmkmetland.png',
+    image: '/src/assets/sekolahsmkmetland.webp',
     color: '#228bcb',
   },
 ];
@@ -52,7 +52,7 @@ export default function OurSchool() {
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="/src/assets/sekolahsmkmetland.png"
+          src="/src/assets/sekolahsmkmetland.webp"
           alt="foto sekolah smk metland"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />

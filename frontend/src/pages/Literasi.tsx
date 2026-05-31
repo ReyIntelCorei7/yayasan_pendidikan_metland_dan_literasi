@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ExternalLink, BookOpen } from 'lucide-react';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
@@ -121,7 +121,13 @@ export default function Literasi() {
   });
   const booksY = useTransform(scrollYProgress, [0, 1], [0, -120]);
 
-  const { books, loading, activeCategory, setActiveCategory, filteredBooks } = useBooks();
+  const { 
+    books, loading, loadingMore, 
+    activeCategory, setActiveCategory, 
+    searchQuery, setSearchQuery, 
+    hasMore, loadMore 
+  } = useBooks();
+  
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
   return (
@@ -188,6 +194,7 @@ export default function Literasi() {
                 <img
                   src={book.src}
                   alt="Buku"
+                  loading="eager"
                   className="w-32 lg:w-40 h-44 lg:h-56 object-cover"
                   style={{
                     boxShadow: '0 30px 60px rgba(0,0,0,0.15)',
@@ -291,6 +298,7 @@ export default function Literasi() {
                 <img
                   src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
                   alt="Perpustakaan"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
                 {/* Glassmorphism overlay card */}
@@ -464,6 +472,7 @@ export default function Literasi() {
                         <img
                           src={book.coverImage || BOOK_COVER_PLACEHOLDER}
                           alt={book.title}
+                          loading="lazy"
                           className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
                           style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
                         />
@@ -485,6 +494,7 @@ export default function Literasi() {
                       <img
                         src={cover}
                         alt={`E-Book ${i + 1}`}
+                        loading="lazy"
                         className="w-full aspect-[3/4] object-cover hover:scale-105 transition-transform duration-500"
                         style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
                       />
@@ -521,20 +531,30 @@ export default function Literasi() {
             </div>
           </ScrollReveal>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-3 mb-10">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
-                    ? 'bg-[#1C1C1C] text-white'
-                    : 'border border-gray-300 text-gray-500 hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
-                  }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Category Filter & Search Bar */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-10">
+            <div className="flex flex-wrap gap-3">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
+                      ? 'bg-[#1C1C1C] text-white'
+                      : 'border border-gray-300 text-gray-500 hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            
+            <input
+              type="text"
+              placeholder="Cari e-book..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-64 focus:outline-none focus:border-[#1C1C1C]"
+            />
           </div>
 
           {/* Book Grid */}
@@ -550,9 +570,9 @@ export default function Literasi() {
                 </div>
               ))}
             </div>
-          ) : filteredBooks.length > 0 ? (
+          ) : books.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredBooks.map((book, i) => (
+              {books.map((book, i) => (
                 <ScrollReveal key={book.id} delay={i * 0.05}>
                   <motion.div
                     whileHover={{ y: -4 }}
@@ -563,6 +583,7 @@ export default function Literasi() {
                       <img
                         src={book.coverImage || BOOK_COVER_PLACEHOLDER}
                         alt={book.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         style={{ boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}
                       />
@@ -589,6 +610,19 @@ export default function Literasi() {
               <BookOpen className="w-16 h-16 text-gray-200 mx-auto mb-4" />
               <p className="text-gray-400 text-lg">Belum ada buku tersedia</p>
               <p className="text-gray-300 text-sm mt-1">Buku digital akan segera ditambahkan</p>
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {hasMore && (
+            <div className="flex justify-center mt-12">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="px-8 py-3 bg-white text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white border border-[#1C1C1C] text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loadingMore ? 'Memuat...' : 'Muat Lebih Banyak'}
+              </button>
             </div>
           )}
         </div>

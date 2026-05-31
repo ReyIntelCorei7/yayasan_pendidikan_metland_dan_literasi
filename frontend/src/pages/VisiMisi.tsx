@@ -19,7 +19,7 @@ export default function VisiMisi() {
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="/src/assets/sekolahsmkmetlandcibitung.jpg"
+          src="/src/assets/sekolahsmkmetlandcibitung.webp"
           alt="foto sekolah smk metland cibitung"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />

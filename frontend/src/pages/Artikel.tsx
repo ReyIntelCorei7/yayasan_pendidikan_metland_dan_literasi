@@ -193,27 +193,17 @@ function SkeletonHero() {
 
 /* ─── Main Page ──────────────────────────────────────────────── */
 export default function Artikel() {
-  const { posts, loading, error } = usePosts();
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(20);
+  const { 
+    posts, loading, loadingMore, error,
+    activeCategory, setActiveCategory,
+    searchQuery, setSearchQuery,
+    hasMore, loadMore 
+  } = usePosts();
 
-  useEffect(() => { setVisibleCount(20); }, [activeCategory, searchQuery]);
+  // Use a static list of categories for filter bar because server pagination might hide some categories
+  const categories = ['All', 'Berita', 'Artikel', 'Event', 'Pengumuman', 'Prestasi'];
 
-  const categories = useMemo(
-    () => ['All', ...new Set(posts.map((p) => p.category))],
-    [posts]
-  );
-
-  const filtered = useMemo(
-    () =>
-      posts
-        .filter((p) => activeCategory === 'All' || p.category === activeCategory)
-        .filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase())),
-    [posts, activeCategory, searchQuery]
-  );
-
-  const displayed = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const displayed = posts;
 
   // Layout slots
   const hero        = displayed[0];        // 1 hero
@@ -228,7 +218,7 @@ export default function Artikel() {
       {/* ═══ Page Hero ══════════════════════════════════════════ */}
       <section className="relative h-[40vh] min-h-[280px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
-          src="/src/assets/sekolahsmkmetlandcibitung.jpg"
+          src="/src/assets/sekolahsmkmetlandcibitung.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
@@ -335,7 +325,7 @@ export default function Artikel() {
                 transition={{ duration: 0.3 }}
               >
                 {/* Empty State */}
-                {filtered.length === 0 && (
+                {displayed.length === 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -453,13 +443,14 @@ export default function Artikel() {
                 )}
 
                 {/* Load More */}
-                {filtered.length > displayed.length && (
+                {hasMore && (
                   <div className="flex justify-center mt-16">
                     <button
-                      onClick={() => setVisibleCount((prev) => prev + 12)}
-                      className="px-8 py-3 bg-white text-charcoal hover:bg-lime hover:text-white border border-gray-200 hover:border-lime text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
+                      onClick={loadMore}
+                      disabled={loadingMore}
+                      className="px-8 py-3 bg-white text-charcoal hover:bg-lime hover:text-white border border-gray-200 hover:border-lime text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Muat Lebih Banyak
+                      {loadingMore ? 'Memuat...' : 'Muat Lebih Banyak'}
                     </button>
                   </div>
                 )}

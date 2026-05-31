@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
-import hero1 from '../../assets/sekolahsmkmetland.png';
-import hero2 from '../../assets/sekolahsmkmetlandcibitung.jpg';
+import hero1 from '../../assets/sekolahsmkmetland.webp';
+import hero2 from '../../assets/sekolahsmkmetlandcibitung.webp';
 import hero3 from '../../assets/kepalasekolahsmkmetland.jpeg';
 
 const heroImages = [hero1, hero2, hero3];

@@ -25,7 +25,7 @@ const schools = [
     name: 'SMK Pariwisata Metland School',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
-    image: '/src/assets/sekolahsmkmetland.png',
+    image: '/src/assets/sekolahsmkmetland.webp',
     color: '#228bcb',
   },
   {
@@ -33,7 +33,7 @@ const schools = [
     name: 'SMK Metland',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
-    image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
+    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
     color: '#228bcb',
   },
   {
@@ -41,7 +41,7 @@ const schools = [
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: '/src/assets/sekolahsmkmetland.png',
+    image: '/src/assets/sekolahsmkmetland.webp',
     color: '#228bcb',
   },
 ];
