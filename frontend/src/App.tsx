@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import RootLayout from './components/layout/RootLayout';
 import PageTransition from './components/animations/PageTransition';
+import LoadingScreen from './components/ui/LoadingScreen';
 
 // Lazy-loaded pages
 const Home = lazy(() => import('./pages/Home'));
@@ -21,22 +22,21 @@ const Programs = lazy(() => import('./pages/Programs'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail'));
 const Impact = lazy(() => import('./pages/Impact'));
 
-function LoadingFallback() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-8 h-8 border-2 border-lime border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-gray-400">Loading...</p>
-      </div>
-    </div>
-  );
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
 }
 
 function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-    <Suspense fallback={<LoadingFallback />}>
+    <Suspense fallback={<LoadingScreen />}>
       <PageTransition locationKey={location.pathname}>
         <Routes location={location}>
           <Route element={<RootLayout />}>
@@ -70,6 +70,9 @@ function AnimatedRoutes() {
 
             <Route path="/news" element={<Artikel />} />
             <Route path="/news/:slug" element={<ArtikelDetail />} />
+
+            {/* 404 Route */}
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </PageTransition>
@@ -80,6 +83,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AnimatedRoutes />
     </BrowserRouter>
   );

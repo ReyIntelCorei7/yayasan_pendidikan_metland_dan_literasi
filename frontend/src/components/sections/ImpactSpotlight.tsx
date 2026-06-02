@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
+import ketuaYayasanImg from '../../assets/MS_ketuayayasan.webp';
 
 export default function ImpactSpotlight() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -21,9 +22,9 @@ export default function ImpactSpotlight() {
             <div>
               <ScrollReveal>
                 <div className='flex items-center gap-3'>
-                  <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
                   <p
-                    className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+                    className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
                     Sambutan Ketua Yayasan Pendidikan
@@ -51,7 +52,7 @@ export default function ImpactSpotlight() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.img
-            src="/src/assets/MS_ketuayayasan.webp"
+            src={ketuaYayasanImg}
             alt="Foto kepala yayasan metland"
             className="w-full h-full object-cover min-h-[400px] lg:min-h-[520px]"
             style={{ y: imageY }}
@@ -65,16 +66,22 @@ export default function ImpactSpotlight() {
 
         {/* Text Side — dark section matching footer palette */}
         <div
-          className="lg:w-[42%] p-12 lg:p-16 flex flex-col justify-center relative"
+          className="lg:w-[42%] p-12 lg:p-16 flex flex-col justify-center relative overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%)' }}
         >
-          {/* Decorative accent line */}
+          {/* Geometric Background Pattern */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+          <div className="absolute -right-20 -bottom-20 w-64 h-64 border border-white/5 rounded-full pointer-events-none" />
+          <div className="absolute -right-10 -bottom-10 w-48 h-48 border border-white/5 rounded-full pointer-events-none" />
+          
+          <div className="relative z-10">
+            {/* Decorative accent line */}
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-12 h-[2px] bg-[#228bcb] origin-left mb-8"
+            className="w-12 h-[2px] bg-[#3D8ABF] origin-left mb-8"
           />
 
           <ScrollReveal delay={0.2}>
@@ -87,7 +94,7 @@ export default function ImpactSpotlight() {
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
             <p
-              className="text-xs text-[#228bcb] tracking-[0.2em] uppercase"
+              className="text-xs text-[#3D8ABF] tracking-[0.2em] uppercase"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
               Ketua Yayasan Pendidikan Metland
@@ -115,7 +122,7 @@ export default function ImpactSpotlight() {
             <Link to="/profil" className="inline-block mt-8">
               <motion.span
                 className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full text-sm font-medium cursor-pointer"
-                whileHover={{ backgroundColor: '#228bcb', color: '#fff', borderColor: 'rgba(34,139,203,1)' }}
+                whileHover={{ backgroundColor: '#3D8ABF', color: '#fff', borderColor: 'rgba(61,138,191,1)' }}
                 transition={{ duration: 0.25 }}
               >
                 Selengkapnya
@@ -125,6 +132,7 @@ export default function ImpactSpotlight() {
               </motion.span>
             </Link>
           </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>

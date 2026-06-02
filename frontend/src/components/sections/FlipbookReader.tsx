@@ -19,21 +19,37 @@ function ease(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-// Component to display offscreen PDF render canvases in the DOM
+// Component to display offscreen PDF render canvases without DOM stealing
 const PageCanvasWrapper = ({ canvas }: { canvas: HTMLCanvasElement | null }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
   useEffect(() => {
-    if (!ref.current) return;
-    ref.current.innerHTML = '';
+    const localCanvas = canvasRef.current;
+    if (!localCanvas) return;
+    const ctx = localCanvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Clear existing content
+    ctx.clearRect(0, 0, localCanvas.width, localCanvas.height);
+    
     if (canvas) {
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      canvas.style.display = 'block';
-      canvas.style.objectFit = 'fill';
-      ref.current.appendChild(canvas);
+      // Set dimensions to match source
+      localCanvas.width = canvas.width;
+      localCanvas.height = canvas.height;
+      // Copy image data to prevent DOM node stealing
+      ctx.drawImage(canvas, 0, 0);
     }
   }, [canvas]);
-  return <div ref={ref} className="w-full h-full block overflow-hidden" />;
+  
+  return (
+    <div className="w-full h-full block overflow-hidden bg-[#faf6ed]">
+      <canvas 
+        ref={canvasRef} 
+        className="w-full h-full block" 
+        style={{ objectFit: 'fill' }} 
+      />
+    </div>
+  );
 };
 
 export default function FlipbookReader({ book, onClose }: Props) {
@@ -43,6 +59,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
   const [error, setError]       = useState(false);
   const [isDouble, setDouble]   = useState(window.innerWidth >= 900);
   const [scale, setScale]       = useState(1);
+  const [pdfRatio, setPdfRatio] = useState(0.707); // Default A4 ratio
 
   // ── Cover opening animation state ──
   const [showCover, setShowCover]   = useState(true);
@@ -71,6 +88,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
   const spreadRef = useRef(1);
   const npRef     = useRef(0);
   const dblRef    = useRef(isDouble);
+  const pdfRatioRef = useRef(pdfRatio);
 
   // Page dimensions
   const [dims, setDims] = useState({ w: 380, h: 537 });
@@ -81,6 +99,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
   useEffect(() => { npRef.current = numPages; }, [numPages]);
   useEffect(() => { dblRef.current = isDouble; }, [isDouble]);
   useEffect(() => { dimsRef.current = dims; }, [dims]);
+  useEffect(() => { pdfRatioRef.current = pdfRatio; }, [pdfRatio]);
 
   // Responsive
   useEffect(() => {
@@ -98,18 +117,21 @@ export default function FlipbookReader({ book, onClose }: Props) {
   // Compute page dimensions
   const computeDims = useCallback(() => {
     if (!containerRef.current) return;
-    const cw = containerRef.current.clientWidth - 48;
+    const cw = containerRef.current.clientWidth - 32;
     const ch = containerRef.current.clientHeight - 24;
-    const ratio = 0.707;
+    const ratio = pdfRatioRef.current;
+    
     let pH = ch * 0.88, pW = pH * ratio;
+    
     if (dblRef.current) {
       const mx = (cw - 20) / 2;
       if (pW > mx) { pW = mx; pH = pW / ratio; }
     } else {
       if (pW > cw) { pW = cw; pH = pW / ratio; }
     }
-    const w = Math.max(Math.floor(pW * scale), 160);
-    const h = Math.max(Math.floor(pH * scale), 226);
+    
+    const w = Math.max(Math.floor(pW * scale), 120);
+    const h = Math.max(Math.floor(pH * scale), 160);
     setDims({ w, h }); dimsRef.current = { w, h };
   }, [scale]);
 
@@ -118,7 +140,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
     const ro = new ResizeObserver(computeDims);
     if (containerRef.current) ro.observe(containerRef.current);
     return () => ro.disconnect();
-  }, [computeDims, isDouble]);
+  }, [computeDims, isDouble, pdfRatio]);
 
   // Load PDF
   useEffect(() => {
@@ -126,6 +148,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
     setLoading(true); setError(false);
     pdfRef.current = null; pageCache.current.clear();
     const path = book.pdfUrl.replace(/^https?:\/\/[^/]+/, '');
+    
     pdfjsLib.getDocument({
       url: path,
       cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/',
@@ -134,8 +157,23 @@ export default function FlipbookReader({ book, onClose }: Props) {
       if (cancelled) return;
       pdfRef.current = doc; npRef.current = doc.numPages;
       setNumPages(doc.numPages); setSpread(1); spreadRef.current = 1;
+      
+      // Fetch first page to determine aspect ratio
+      return doc.getPage(1);
+    }).then(page => {
+      if (!page || cancelled) return;
+      const vp = page.getViewport({ scale: 1 });
+      const ratio = vp.width / vp.height;
+      setPdfRatio(ratio);
+      
       setLoading(false);
-    }).catch(() => { if (!cancelled) { setError(true); setLoading(false); } });
+    }).catch(() => { 
+      if (!cancelled) { 
+        setError(true); 
+        setLoading(false); 
+      } 
+    });
+    
     return () => { cancelled = true; };
   }, [book.pdfUrl]);
 
@@ -348,7 +386,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
               <div 
                 className="book-wrapper"
                 style={{
-                  transform: `rotateX(10deg) rotateY(-5deg) scale(${isDouble ? 1 : 0.7})`,
+                  transform: `rotateX(10deg) rotateY(-5deg) scale(${isDouble ? 1 : (window.innerWidth < 450 ? 0.65 : 0.85)})`,
                   transition: 'transform 0.5s ease-out',
                 }}
               >
@@ -584,7 +622,8 @@ export default function FlipbookReader({ book, onClose }: Props) {
                       padding: 0,
                       margin: 0,
                       display: 'block',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      background: '#faf6ed'
                     }}
                   >
                     {rightPageNum && rightPageNum >= 1 && rightPageNum <= numPages ? (
@@ -689,28 +728,28 @@ export default function FlipbookReader({ book, onClose }: Props) {
           <footer className="shrink-0 flex items-center justify-center gap-4 py-3 px-4
             bg-black/50 backdrop-blur-md border-t border-white/[0.07]">
             <button onClick={() => startPageFlip('prev')} disabled={!canPrev}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
+              className="flex items-center gap-1.5 px-3 md:px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
-              <ChevronLeft className="w-4 h-4"/><span className="hidden sm:inline">Prev</span>
+              <ChevronLeft className="w-5 md:w-4 h-5 md:h-4"/><span className="hidden sm:inline">Prev</span>
             </button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <motion.span key={label} initial={{ opacity:0, y:4 }} animate={{ opacity:1, y:0 }}
-                className="text-white/70 text-sm font-mono tabular-nums min-w-[52px] text-center">
+                className="text-white/70 text-xs md:text-sm font-mono tabular-nums min-w-[32px] md:min-w-[52px] text-right">
                 {label}
               </motion.span>
-              <div className="w-28 h-1 bg-white/10 rounded-full overflow-hidden">
+              <div className="w-16 sm:w-28 h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <motion.div className="h-full bg-emerald-400 rounded-full"
                   animate={{ width:`${(spread/numPages)*100}%` }}
                   transition={{ duration:0.4, ease:'easeOut' }}/>
               </div>
-              <span className="text-gray-600 text-sm font-mono">{numPages}</span>
+              <span className="text-gray-600 text-xs md:text-sm font-mono min-w-[24px]">{numPages}</span>
             </div>
             <button onClick={() => startPageFlip('next')} disabled={!canNext}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500
+              className="flex items-center gap-1.5 px-3 md:px-4 py-2 text-sm text-gray-500
                 hover:text-emerald-400 disabled:opacity-20 disabled:cursor-not-allowed
                 transition-all rounded-lg hover:bg-white/5">
-              <span className="hidden sm:inline">Next</span><ChevronRight className="w-4 h-4"/>
+              <span className="hidden sm:inline">Next</span><ChevronRight className="w-5 md:w-4 h-5 md:h-4"/>
             </button>
           </footer>
         )}

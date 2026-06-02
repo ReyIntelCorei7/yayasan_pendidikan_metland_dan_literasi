@@ -37,10 +37,10 @@ export default function PartnerLogos() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <p
-          className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-6 sm:mb-10 text-center"
+          className="text-[10px] sm:text-xs text-primary uppercase tracking-widest mb-6 sm:mb-10 text-center font-semibold"
           style={{ fontFamily: "'Geist', Inter, sans-serif" }}
         >
-          Our Partners &amp; Supporters
+          Mitra &amp; Pendukung Kami
         </p>
       </div>
 

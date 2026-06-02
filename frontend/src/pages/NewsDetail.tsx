@@ -26,7 +26,7 @@ export default function NewsDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-lime animate-spin" />
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
           <p className="text-sm text-gray-400">Loading article...</p>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function NewsDetail() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-light mb-4">Article Not Found</h1>
-          <Link to="/news" className="text-lime hover:underline">← Back to News</Link>
+          <Link to="/news" className="text-primary hover:underline">← Back to News</Link>
         </div>
       </div>
     );
@@ -49,7 +49,7 @@ export default function NewsDetail() {
   return (
     <>
       {/* Reading Progress Bar */}
-      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-lime z-[60] origin-left" style={{ scaleX }} />
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-primary z-[60] origin-left" style={{ scaleX }} />
 
       {/* Hero */}
       <section className="pt-32 pb-16 bg-[#FCFCFC]">
@@ -57,7 +57,7 @@ export default function NewsDetail() {
           <Link to="/news" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-charcoal mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to News
           </Link>
-          <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-4">{post.category}</span>
+          <span className="text-xs text-primary bg-primary/10 rounded-full px-3 py-1 inline-block mb-4">{post.category}</span>
           <h1 className="text-3xl lg:text-5xl font-light leading-tight">{post.title}</h1>
           <div className="flex items-center gap-4 mt-6 text-sm text-gray-400">
             {post.author.photo && (
@@ -124,7 +124,7 @@ export default function NewsDetail() {
           <span className="text-sm text-gray-400">Share</span>
           <div className="flex gap-2">
             {shareIcons.map((item) => (
-              <a key={item.label} href="#" className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-lime hover:border-lime transition-colors">
+              <a key={item.label} href="#" className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-colors">
                 {item.svg}
               </a>
             ))}
@@ -143,7 +143,7 @@ export default function NewsDetail() {
                   <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
                     <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   </div>
-                  <h3 className="text-base font-medium mt-4 group-hover:text-lime transition-colors">{p.title}</h3>
+                  <h3 className="text-base font-medium mt-4 group-hover:text-primary transition-colors">{p.title}</h3>
                 </Link>
               ))}
             </div>

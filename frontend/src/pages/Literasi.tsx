@@ -154,20 +154,19 @@ export default function Literasi() {
         </motion.div>
 
         {/* Hero body — 2 column grid */}
-        <div className="flex-1 grid grid-cols-[3fr_2fr] px-8 lg:px-16 gap-8">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-[3fr_2fr] px-6 lg:px-16 gap-8 relative z-10">
           {/* Left — headline */}
           <h1
-            className="font-sans font-black text-[#1C1C1C] self-center"
+            className="font-sans font-black text-[#1C1C1C] self-center text-center md:text-left break-words"
             style={{
-              fontSize: 'clamp(56px, 7.5vw, 110px)',
-              letterSpacing: '-3px',
-              lineHeight: '1.0',
-              whiteSpace: 'nowrap',
+              fontSize: 'clamp(42px, 8vw, 110px)',
+              letterSpacing: '-2px',
+              lineHeight: '1.1',
             }}
           >
             <StaggerWords text="Membangun Budaya" delay={0.3} />
-            <br />
-            <StaggerWords text="Membaca." delay={0.6} />
+            <br className="hidden sm:block" />
+            <StaggerWords text=" Membaca." delay={0.6} />
           </h1>
 
           {/* Right — floating books */}
@@ -214,7 +213,7 @@ export default function Literasi() {
         >
           <a
             href="#program-literasi"
-            className="inline-flex items-center gap-3 bg-[#1C1C1C] text-white px-8 py-4 text-sm font-medium tracking-wide hover:bg-lime hover:text-[#1C1C1C] transition-colors duration-300"
+            className="inline-flex items-center gap-3 bg-[#1C1C1C] text-white px-8 py-4 text-sm font-medium tracking-wide hover:bg-primary hover:text-[#1C1C1C] transition-colors duration-300"
           >
             ↓ Jelajahi Program
           </a>
@@ -224,27 +223,27 @@ export default function Literasi() {
       {/* ═══════════════════════════════════════════════════════════════
           Section 2 — STRIP STATISTIK (hitam)
           ═══════════════════════════════════════════════════════════════ */}
-      <section className="bg-[#1C1C1C] py-6 lg:py-8">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center lg:justify-between items-center">
+      <section className="bg-[#1C1C1C] py-8 lg:py-10">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 lg:gap-0 items-center justify-between">
             {stats.map((stat, i) => (
-              <div key={stat.label} className="flex items-center">
-                <div className="text-center px-6 lg:px-8 py-4">
-                  <div className="font-bold text-lime mb-1" style={{ fontSize: 'clamp(36px, 5vw, 60px)' }}>
+              <div key={stat.label} className="flex items-center justify-center relative w-full">
+                <div className="text-center px-2 lg:px-8">
+                  <div className="font-bold text-primary mb-1" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
                     <CountUpTrigger
                       end={stat.num}
                       suffix={stat.suffix}
                       duration={2.5}
                       separator="."
-                      className="font-bold text-lime"
+                      className="font-bold text-primary"
                     />
                   </div>
-                  <p className="text-gray-400 text-xs lg:text-sm uppercase tracking-widest font-normal">
+                  <p className="text-gray-400 text-[10px] sm:text-xs lg:text-sm uppercase tracking-widest font-normal">
                     {stat.label}
                   </p>
                 </div>
                 {i < stats.length - 1 && (
-                  <div className="hidden lg:block w-px h-16 bg-gray-700" />
+                  <div className="hidden lg:block w-px h-16 bg-gray-700 absolute right-0" />
                 )}
               </div>
             ))}
@@ -261,7 +260,7 @@ export default function Literasi() {
             {/* Left column — text */}
             <ScrollReveal direction="left">
               <div>
-                <p className="text-lime text-xs font-semibold tracking-[3px] uppercase mb-6">
+                <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-6">
                   Mengapa Literasi Penting
                 </p>
                 <h2
@@ -294,7 +293,7 @@ export default function Literasi() {
 
             {/* Right column — image */}
             <ScrollReveal direction="right">
-              <div className="relative" style={{ aspectRatio: '3/4' }}>
+              <div className="relative mx-auto w-full max-w-md md:max-w-none max-h-[600px] overflow-hidden rounded-xl" style={{ aspectRatio: '3/4' }}>
                 <img
                   src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
                   alt="Perpustakaan"
@@ -318,7 +317,7 @@ export default function Literasi() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <div className="mb-16">
-              <p className="text-lime text-xs font-semibold tracking-[3px] uppercase mb-4">
+              <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-4">
                 Koleksi Kami
               </p>
               <h2
@@ -348,7 +347,7 @@ export default function Literasi() {
                       suffix={item.suffix}
                       duration={2}
                       separator="."
-                      className="font-black text-lime"
+                      className="font-black text-primary"
                     />
                   </div>
                   <h3 className="font-semibold text-[#1C1C1C] text-base mb-2">
@@ -357,7 +356,7 @@ export default function Literasi() {
                   <p className="text-gray-500 text-sm leading-relaxed">
                     {item.desc}
                   </p>
-                  <div className="mt-6 h-0.5 w-0 bg-lime group-hover:w-full transition-all duration-500" />
+                  <div className="mt-6 h-0.5 w-0 bg-primary group-hover:w-full transition-all duration-500" />
                 </motion.div>
               </ScrollReveal>
             ))}
@@ -387,7 +386,7 @@ export default function Literasi() {
             {programs.map((prog, i) => (
               <ScrollReveal key={prog.title} delay={i * 0.1}>
                 <motion.div
-                  className="group border-b border-gray-700 py-8 lg:py-10 flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-8 cursor-pointer hover:bg-lime/5 px-4 -mx-4 transition-colors duration-300"
+                  className="group border-b border-gray-700 py-8 lg:py-10 flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-8 cursor-pointer hover:bg-primary/5 px-4 -mx-4 transition-colors duration-300"
                   whileHover="hover"
                 >
                   {/* Number */}
@@ -396,7 +395,7 @@ export default function Literasi() {
                   </span>
 
                   {/* Title */}
-                  <h3 className="font-semibold text-white text-xl lg:text-2xl group-hover:text-lime transition-colors duration-300 shrink-0 lg:w-56">
+                  <h3 className="font-semibold text-white text-xl lg:text-2xl group-hover:text-primary transition-colors duration-300 shrink-0 lg:w-56">
                     {prog.title}
                   </h3>
 
@@ -412,7 +411,7 @@ export default function Literasi() {
       </section>
 
       {/* section 6 e-library feature */}
-      <section className="bg-lime py-24 lg:py-32 overflow-hidden">
+      <section className="bg-primary py-24 lg:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left — text */}
@@ -448,10 +447,10 @@ export default function Literasi() {
 
             {/* Right — 3 latest book cards from API */}
             <ScrollReveal direction="right">
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-10 lg:mt-0">
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} className="animate-pulse">
+                    <div key={i} className={`animate-pulse ${i === 2 ? 'hidden sm:block' : ''}`}>
                       <div className="w-full aspect-[3/4] bg-[#1C1C1C]/10 rounded" />
                       <div className="h-3 bg-[#1C1C1C]/10 rounded mt-2 w-3/4" />
                       <div className="h-2 bg-[#1C1C1C]/10 rounded mt-1 w-1/2" />
@@ -465,7 +464,7 @@ export default function Literasi() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1, duration: 0.5 }}
-                      className="group cursor-pointer"
+                      className={`group cursor-pointer ${i === 2 ? 'hidden sm:block' : ''}`}
                       onClick={() => setSelectedBook(book)}
                     >
                       <div className="overflow-hidden">
@@ -477,8 +476,8 @@ export default function Literasi() {
                           style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
                         />
                       </div>
-                      <h4 className="font-semibold text-[#1C1C1C] text-xs mt-2 line-clamp-2">{book.title}</h4>
-                      <p className="text-[#1C1C1C]/50 text-[10px] mt-0.5">{book.author}</p>
+                      <h4 className="font-semibold text-[#1C1C1C] text-xs sm:text-sm mt-2 line-clamp-2">{book.title}</h4>
+                      <p className="text-[#1C1C1C]/50 text-[10px] mt-0.5 truncate">{book.author}</p>
                     </motion.div>
                   ))
                 ) : (
@@ -489,7 +488,7 @@ export default function Literasi() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.08, duration: 0.5 }}
-                      className="overflow-hidden"
+                      className={`overflow-hidden ${i === 2 ? 'hidden sm:block' : ''}`}
                     >
                       <img
                         src={cover}
@@ -515,7 +514,7 @@ export default function Literasi() {
           {/* Header */}
           <ScrollReveal>
             <div className="mb-10">
-              <p className="text-lime text-xs font-semibold tracking-[3px] uppercase mb-4">
+              <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-4">
                 Perpustakaan Digital
               </p>
               <h2
@@ -532,34 +531,34 @@ export default function Literasi() {
           </ScrollReveal>
 
           {/* Category Filter & Search Bar */}
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-10">
-            <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col md:flex-row gap-5 justify-between items-start md:items-center mb-10 w-full">
+            <input
+              type="text"
+              placeholder="Cari e-book..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm w-full md:w-64 focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] md:order-2"
+            />
+            
+            <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide md:order-1 -mx-6 px-6 md:mx-0 md:px-0">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2 text-sm font-medium transition-all duration-200 ${activeCategory === cat
-                      ? 'bg-[#1C1C1C] text-white'
-                      : 'border border-gray-300 text-gray-500 hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
+                  className={`px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap shrink-0 ${activeCategory === cat
+                      ? 'bg-[#1C1C1C] text-white shadow-md'
+                      : 'bg-white border border-gray-200 text-gray-500 hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
                     }`}
                 >
                   {cat}
                 </button>
               ))}
             </div>
-            
-            <input
-              type="text"
-              placeholder="Cari e-book..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded text-sm w-full md:w-64 focus:outline-none focus:border-[#1C1C1C]"
-            />
           </div>
 
           {/* Book Grid */}
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="animate-pulse">
                   <div className="w-full bg-gray-100" style={{ aspectRatio: '3/4' }} />
@@ -571,7 +570,7 @@ export default function Literasi() {
               ))}
             </div>
           ) : books.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {books.map((book, i) => (
                 <ScrollReveal key={book.id} delay={i * 0.05}>
                   <motion.div
@@ -588,7 +587,7 @@ export default function Literasi() {
                         style={{ boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}
                       />
                     </div>
-                    <span className="inline-block text-xs font-semibold px-2 py-0.5 bg-lime text-[#1C1C1C]">
+                    <span className="inline-block text-xs font-semibold px-2 py-0.5 bg-primary text-[#1C1C1C]">
                       {book.category}
                     </span>
                     <h3 className="font-semibold text-[#1C1C1C] text-sm mt-2 line-clamp-2">
@@ -665,7 +664,7 @@ export default function Literasi() {
           >
             <a href="/contact">
               <motion.span
-                className="inline-flex items-center gap-3 bg-lime text-[#1C1C1C] px-12 py-5 text-sm font-bold tracking-wide cursor-pointer"
+                className="inline-flex items-center gap-3 bg-primary text-[#1C1C1C] px-12 py-5 text-sm font-bold tracking-wide cursor-pointer"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >

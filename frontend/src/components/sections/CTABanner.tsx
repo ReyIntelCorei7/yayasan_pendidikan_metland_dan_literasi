@@ -4,19 +4,21 @@ import { motion } from 'framer-motion';
 export default function CTABanner() {
   return (
     <section
-      className="py-20 lg:py-28 relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%)' }}
+      className="py-20 lg:py-28 relative overflow-hidden bg-primary"
+      style={{ background: 'linear-gradient(135deg, #3D8ABF 0%, #1B4567 100%)' }}
     >
+      {/* Geometric Pattern */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
       {/* Animated gradient orbs */}
       <motion.div
         className="absolute top-1/2 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] pointer-events-none"
-        style={{ background: 'rgba(34, 139, 203, 0.08)' }}
+        style={{ background: 'rgba(61, 138, 191, 0.08)' }}
         animate={{ x: [0, 40, 0], y: [0, -20, 0] }}
         transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute top-1/2 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px] pointer-events-none"
-        style={{ background: 'rgba(34, 139, 203, 0.05)' }}
+        style={{ background: 'rgba(61, 138, 191, 0.05)' }}
         animate={{ x: [0, -40, 0], y: [0, 20, 0] }}
         transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut', delay: 2 }}
       />
@@ -45,17 +47,17 @@ export default function CTABanner() {
         >
           <Link to="/contact">
             <motion.span
-              className="inline-flex items-center gap-2 bg-[#228bcb] text-white px-8 py-4 rounded text-sm font-medium cursor-pointer"
-              whileHover={{ scale: 1.04, backgroundColor: '#1b78b3' }}
+              className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded text-sm font-semibold cursor-pointer shadow-lg shadow-black/10"
+              whileHover={{ scale: 1.04, backgroundColor: '#FAFAF8' }}
               whileTap={{ scale: 0.97 }}
             >
-              Hubungi Kami <span>→</span>
+              Hubungi Kami <span className="ml-1 text-primary">→</span>
             </motion.span>
           </Link>
           <Link to="/profil">
             <motion.span
-              className="inline-flex items-center border border-white/30 text-white px-8 py-4 rounded text-sm font-medium cursor-pointer"
-              whileHover={{ borderColor: '#228bcb', color: '#228bcb' }}
+              className="inline-flex items-center border border-white/50 text-white px-8 py-4 rounded text-sm font-semibold cursor-pointer bg-white/5 backdrop-blur-sm"
+              whileHover={{ borderColor: '#fff', backgroundColor: 'rgba(255,255,255,0.1)' }}
               whileTap={{ scale: 0.97 }}
             >
               Pelajari Lebih Lanjut

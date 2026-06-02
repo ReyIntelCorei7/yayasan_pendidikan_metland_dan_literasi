@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import heroImg from '../assets/sekolahsmkmetlandcibitung.webp';
 
 /* ─── Team Data ─── */
 const pengurus = [
@@ -42,7 +43,7 @@ const orgChartData = {
 };
 
 /* ─── Connector Component ─── */
-function VerticalLine({ height = 32, color = '#228bcb' }: { height?: number; color?: string }) {
+function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; color?: string }) {
   return (
     <div className="flex justify-center">
       <div style={{ width: 2, height, background: color, borderRadius: 1 }} />
@@ -63,9 +64,9 @@ function ChartNode({
   const base = 'rounded-xl px-6 py-3.5 text-center transition-all duration-300';
   const variants = {
     primary: 'bg-charcoal text-white shadow-lg shadow-charcoal/10',
-    accent: 'bg-[#228bcb] text-white shadow-lg shadow-[#228bcb]/20',
-    default: 'bg-white border border-gray-200 hover:border-[#228bcb]/40 hover:shadow-md',
-    muted: 'bg-gray-50 border border-gray-100 hover:border-[#228bcb]/30 hover:bg-white',
+    accent: 'bg-[#3D8ABF] text-white shadow-lg shadow-[#3D8ABF]/20',
+    default: 'bg-white border border-gray-200 hover:border-[#3D8ABF]/40 hover:shadow-md',
+    muted: 'bg-gray-50 border border-gray-100 hover:border-[#3D8ABF]/30 hover:bg-white',
   };
   return <div className={`${base} ${variants[variant]} ${className}`}>{children}</div>;
 }
@@ -75,15 +76,21 @@ export default function StrukturOrganisasi() {
     <>
       {/* ════════════ HERO ════════════ */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-charcoal/80 z-10" />
         <img
-          src="/src/assets/sekolahsmkmetlandcibitung.webp"
+          src={heroImg}
           alt="Sekolah SMK Metland Cibitung"
-          className="absolute inset-0 w-full h-full object-cover opacity-25"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
-        <div className="relative z-10 text-center px-6">
-          <h1 className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Profil Yayasan</h1>
-          <p className="text-gray-300 mt-1 max-w-2xl mx-auto">Susunan pengurus Yayasan Pendidikan Metland yang berdedikasi membangun pendidikan berkualitas.</p>
+        <div className="relative z-20 text-center px-6 mt-16">
+          <WordReveal
+            text="Profil Yayasan"
+            tag="h1"
+            className="text-4xl lg:text-5xl font-light text-white mb-4"
+          />
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
+            Susunan pengurus Yayasan Pendidikan Metland yang berdedikasi membangun pendidikan berkualitas.
+          </motion.p>
         </div>
       </section>
 
@@ -93,7 +100,7 @@ export default function StrukturOrganisasi() {
           {/* Section Header */}
           <ScrollReveal>
             <div className="text-center mb-16">
-              <div className="w-12 h-[3px] bg-[#228bcb] mx-auto mb-6" />
+              <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
               <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">Bagan Organisasi</h2>
               <p className="text-gray-400 text-sm max-w-lg mx-auto">
                 Struktur tata kelola yang transparan dan akuntabel untuk memastikan pengelolaan pendidikan yang profesional.
@@ -106,7 +113,7 @@ export default function StrukturOrganisasi() {
             <div className="flex flex-col items-center">
               {/* Level 1 — Rapat Pembina */}
               <ChartNode variant="default">
-                <p className="text-[10px] text-[#228bcb] uppercase tracking-[0.15em] mb-0.5 font-medium">Yayasan Pendidikan Metland</p>
+                <p className="text-[10px] text-[#3D8ABF] uppercase tracking-[0.15em] mb-0.5 font-medium">Yayasan Pendidikan Metland</p>
                 <p className="font-semibold text-sm">{orgChartData.top}</p>
               </ChartNode>
 
@@ -115,12 +122,12 @@ export default function StrukturOrganisasi() {
               {/* Level 2 — Dewan Pengawas & Pembina */}
               <div className="relative w-full max-w-md">
                 {/* Horizontal connector */}
-                <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-[#228bcb]/20" />
+                <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-[#3D8ABF]/20" />
                 <div className="grid grid-cols-2 gap-6">
                   {orgChartData.secondLevel.map((d) => (
                     <div key={d} className="relative">
                       <div className="flex justify-center">
-                        <div style={{ width: 2, height: 16, background: 'rgba(34,139,203,0.2)' }} />
+                        <div style={{ width: 2, height: 16, background: 'rgba(61,138,191,0.2)' }} />
                       </div>
                       <ChartNode variant="default">
                         <p className="text-xs font-semibold text-charcoal">{d}</p>
@@ -138,7 +145,7 @@ export default function StrukturOrganisasi() {
                 <p className="text-[11px] mt-0.5 text-black">{orgChartData.pengurus.subtitle}</p>
               </ChartNode>
 
-              <VerticalLine color="rgba(34,139,203,0.25)" />
+              <VerticalLine color="rgba(61,138,191,0.25)" />
 
               {/* Level 4 — Bidang */}
               <div className="relative w-full max-w-2xl">
@@ -186,7 +193,7 @@ export default function StrukturOrganisasi() {
           {/* Section Header */}
           <ScrollReveal>
             <div className="text-center mb-20">
-              <div className="w-12 h-[3px] bg-[#228bcb] mx-auto mb-6" />
+              <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
               <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">Tim Pengurus</h2>
               <p className="text-gray-400 text-sm max-w-lg mx-auto">
                 Para profesional yang berdedikasi tinggi dalam memajukan pendidikan berkualitas.
@@ -201,7 +208,7 @@ export default function StrukturOrganisasi() {
                 <div>
                   {/* Group Label */}
                   <div className="flex items-center gap-4 mb-3">
-                    <span className="text-5xl font-extralight text-[#228bcb]/15 leading-none select-none">
+                    <span className="text-5xl font-extralight text-[#3D8ABF]/15 leading-none select-none">
                       {String(gi + 1).padStart(2, '0')}
                     </span>
                     <div>
@@ -224,9 +231,9 @@ export default function StrukturOrganisasi() {
                         transition={{ delay: mi * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                         className="group"
                       >
-                        <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#228bcb]/25 hover:shadow-lg hover:shadow-[#228bcb]/5 transition-all duration-500">
+                        <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#3D8ABF]/25 hover:shadow-lg hover:shadow-[#3D8ABF]/5 transition-all duration-500">
                           {/* Photo */}
-                          <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-[#228bcb]/30 transition-all duration-500">
+                          <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-[#3D8ABF]/30 transition-all duration-500">
                             <img
                               src={member.photo}
                               alt={member.name}
@@ -237,7 +244,7 @@ export default function StrukturOrganisasi() {
                           {/* Info */}
                           <div className="text-center">
                             <h4 className="font-medium text-charcoal text-sm leading-snug">{member.name}</h4>
-                            <p className="text-[11px] text-[#228bcb] mt-1.5 font-medium tracking-wide uppercase">{member.title}</p>
+                            <p className="text-[11px] text-[#3D8ABF] mt-1.5 font-medium tracking-wide uppercase">{member.title}</p>
                           </div>
                         </div>
                       </motion.div>

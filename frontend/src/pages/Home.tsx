@@ -13,7 +13,9 @@ export default function Home() {
     <div className="homepage-dark">
       <HeroSection />
       <MarqueeStrip />
+      <WhatWeDo />
       <ImpactSpotlight />
+      <ImpactNumbers />
       <ProgramsGrid />
       <NewsInsights />
       <PartnerLogos />

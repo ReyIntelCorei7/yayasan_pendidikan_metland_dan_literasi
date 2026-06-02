@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import logoYayasan from '../../assets/logoyayasan.png';
 
 const footerLinks = {
   'Our School': [
@@ -41,8 +42,8 @@ export default function Footer() {
   return (
     <footer className="relative bg-gradient-to-br from-[#0F0F1E] via-[#1A1A2E] to-[#16213E] text-white pt-20 pb-8 overflow-hidden">
       {/* Gradient accent lines */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#228bcb]/10 to-transparent rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#228bcb]/10 to-transparent rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#3D8ABF]/10 to-transparent rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#3D8ABF]/10 to-transparent rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
@@ -56,14 +57,14 @@ export default function Footer() {
           >
             <Link to="/" className="flex items-center gap-3 mb-6 group">
               <img
-                src="/src/assets/logoyayasan.png"
+                src={logoYayasan}
                 alt="Yayasan Pendidikan Metland"
                 className="h-10 w-auto transition-transform group-hover:scale-110 duration-300"
                 loading="eager"
                 width={128}
                 height={32}
               />
-              <span className="mt-2 font-semibold text-sm text-white group-hover:text-[#228bcb] transition-colors duration-200">
+              <span className="mt-2 font-semibold text-sm text-white group-hover:text-[#3D8ABF] transition-colors duration-200">
                 Yayasan Pendidikan Metland
               </span>
             </Link>
@@ -81,7 +82,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <h4 className="text-xs font-semibold uppercase tracking-widest text-[#228bcb] mb-6">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[#3D8ABF] mb-6">
                 {heading}
               </h4>
               <ul className="space-y-3">
@@ -106,7 +107,7 @@ export default function Footer() {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#228bcb] mb-6">
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-[#3D8ABF] mb-6">
               Hubungi Kami
             </h4>
             <div className="space-y-4 mb-6">
@@ -139,7 +140,7 @@ export default function Footer() {
                   aria-label={label}
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#228bcb]/20 text-gray-400 hover:text-[#228bcb] flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-[#228bcb]/30"
+                  className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#3D8ABF]/20 text-gray-400 hover:text-[#3D8ABF] flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-[#3D8ABF]/30"
                 >
                   {icon}
                 </motion.a>

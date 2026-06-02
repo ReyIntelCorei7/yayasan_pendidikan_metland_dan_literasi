@@ -3,12 +3,12 @@ import { cn } from '../../lib/utils';
 interface DividerProps {
   className?: string;
   orientation?: 'horizontal' | 'vertical';
-  color?: 'lime' | 'gray' | 'white';
+  color?: 'primary' | 'gray' | 'white';
 }
 
 export default function Divider({ className, orientation = 'horizontal', color = 'gray' }: DividerProps) {
   const colorStyles = {
-    lime: 'bg-lime',
+    primary: 'bg-primary',
     gray: 'bg-gray-200',
     white: 'bg-white/10',
   };

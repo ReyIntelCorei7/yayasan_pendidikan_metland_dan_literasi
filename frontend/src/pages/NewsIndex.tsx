@@ -58,7 +58,7 @@ export default function NewsIndex() {
                     onClick={() => setActiveCategory(cat)}
                     className={`px-4 py-2 text-sm rounded-full transition-colors ${
                       activeCategory === cat
-                        ? 'bg-lime text-charcoal'
+                        ? 'bg-primary text-charcoal'
                         : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                     }`}
                   >
@@ -73,7 +73,7 @@ export default function NewsIndex() {
                   placeholder="Search articles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-lime/50 w-full md:w-64"
+                  className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary/50 w-full md:w-64"
                 />
               </div>
             </div>
@@ -103,8 +103,8 @@ export default function NewsIndex() {
                         <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
                           <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                         </div>
-                        <span className="text-xs text-lime bg-lime/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">{post.category}</span>
-                        <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-lime transition-colors">{post.title}</h3>
+                        <span className="text-xs text-primary bg-primary/10 rounded-full px-3 py-1 inline-block mb-3 mt-4">{post.category}</span>
+                        <h3 className="text-base font-medium leading-snug text-charcoal group-hover:text-primary transition-colors">{post.title}</h3>
                         <p className="text-sm text-gray-400 mt-2 line-clamp-2">{post.excerpt}</p>
                         <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
                           <span>{post.author.name}</span>

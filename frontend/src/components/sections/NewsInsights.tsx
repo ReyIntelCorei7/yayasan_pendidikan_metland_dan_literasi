@@ -60,7 +60,7 @@ function ProgressBar({ active, onClick, isPlaying, duration }: {
     >
       {active && (
         <motion.div
-          className="absolute inset-y-0 left-0 bg-[#228bcb] rounded-full"
+          className="absolute inset-y-0 left-0 bg-[#3D8ABF] rounded-full"
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
           transition={isPlaying ? { duration, ease: 'linear' } : { duration: 0.3 }}
@@ -182,12 +182,12 @@ export default function NewsInsights() {
       <section className="relative bg-[#FCFCFC] py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col items-center py-24 px-4">
-            <div className="w-24 h-24 bg-gradient-to-br from-lime/20 to-blue-300/20 flex items-center justify-center mb-6">
-              <BookOpen className="w-12 h-12 text-[#228bcb]" />
+            <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-blue-300/20 flex items-center justify-center mb-6">
+              <BookOpen className="w-12 h-12 text-[#3D8ABF]" />
             </div>
             <h3 className="text-2xl font-semibold text-charcoal mb-3 text-center">Belum Ada Artikel</h3>
             <p className="text-gray-500 text-center max-w-lg mb-6">Artikel terbaru sedang kami persiapkan. Kembali lagi nanti untuk membaca berita dan insight dari Yayasan.</p>
-            <Link to="/artikel" className="inline-flex items-center gap-2 px-5 py-2 bg-[#228bcb] text-white rounded-md font-medium hover:bg-[#1a6fa3] transition-colors">Lihat Halaman Artikel →</Link>
+            <Link to="/artikel" className="inline-flex items-center gap-2 px-5 py-2 bg-[#3D8ABF] text-white rounded-md font-medium hover:bg-[#1a6fa3] transition-colors">Lihat Halaman Artikel →</Link>
           </div>
         </div>
       </section>
@@ -203,9 +203,9 @@ export default function NewsInsights() {
           <div>
             <ScrollReveal>
               <div className='flex items-center gap-3'>
-                <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+                <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
                 <p
-                  className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+                  className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
                   style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
                   Artikel
@@ -213,7 +213,7 @@ export default function NewsInsights() {
               </div>
             </ScrollReveal>
             <WordReveal
-              text="News & Insights"
+              text="Berita & Artikel"
               tag="h2"
               className="text-4xl lg:text-6xl font-light text-charcoal"
             />
@@ -221,7 +221,7 @@ export default function NewsInsights() {
           <div className="flex items-center gap-4 mt-4 md:mt-0">
             <Link
               to="/artikel"
-              className="text-sm font-medium text-charcoal hover:text-[#228bcb] transition-colors group"
+              className="text-sm font-medium text-charcoal hover:text-[#3D8ABF] transition-colors group"
             >
               Lihat Semua
               <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
@@ -246,7 +246,7 @@ export default function NewsInsights() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => paginate(-1)}
-                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-colors duration-300"
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#3D8ABF] hover:text-white hover:border-[#3D8ABF] transition-colors duration-300"
                   aria-label="Previous"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -262,7 +262,7 @@ export default function NewsInsights() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => paginate(1)}
-                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#228bcb] hover:text-white hover:border-[#228bcb] transition-colors duration-300"
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur shadow-lg border border-gray-100 flex items-center justify-center text-charcoal hover:bg-[#3D8ABF] hover:text-white hover:border-[#3D8ABF] transition-colors duration-300"
                   aria-label="Next"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -299,8 +299,8 @@ export default function NewsInsights() {
                     initial="hidden"
                     animate="visible"
                   >
-                    <Link to={`/artikel/${post.slug}`} className="group block">
-                      <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100">
+                    <Link to={`/artikel/${post.slug}`} className="group block h-full">
+                      <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100 shadow-md group-hover:shadow-xl transition-shadow duration-300 card-glow border border-gray-100 group-hover:border-primary/20">
                         <motion.img
                           src={post.featuredImage}
                           alt={post.title}
@@ -312,13 +312,13 @@ export default function NewsInsights() {
                       </div>
 
                       {/* Category */}
-                      <span className="text-xs text-[#228bcb] font-medium rounded-full px-3 py-1 inline-block mb-3 mt-4 bg-[#228bcb]/5">
+                      <span className="text-xs text-[#3D8ABF] font-medium rounded-full px-3 py-1 inline-block mb-3 mt-4 bg-[#3D8ABF]/5">
                         {post.category}
                       </span>
 
                       {/* Title */}
                       <h3
-                        className="text-base font-medium leading-snug text-charcoal group-hover:text-[#228bcb] transition-colors duration-200 line-clamp-2"
+                        className="text-base font-medium leading-snug text-charcoal group-hover:text-[#3D8ABF] transition-colors duration-200 line-clamp-2"
                         style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                       >
                         {post.title}
@@ -371,7 +371,7 @@ export default function NewsInsights() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsPlaying((v) => !v)}
-                className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#228bcb] hover:border-[#228bcb] transition-colors duration-200"
+                className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#3D8ABF] hover:border-[#3D8ABF] transition-colors duration-200"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? (

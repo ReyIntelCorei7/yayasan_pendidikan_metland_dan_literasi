@@ -26,8 +26,8 @@ export default function Impact() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {impactStats.map((stat: any, i: number) => (
               <ScrollReveal key={stat.id} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl border border-gray-100 hover:border-lime/30 hover:shadow-lg transition-all duration-300 text-center">
-                  <div className="w-12 h-[2px] bg-lime mx-auto mb-6" />
+                <div className="p-8 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-300 text-center">
+                  <div className="w-12 h-[2px] bg-primary mx-auto mb-6" />
                   <div className="text-5xl font-extralight text-charcoal">
                     <CountUpTrigger end={stat.value} suffix={stat.suffix} />
                   </div>

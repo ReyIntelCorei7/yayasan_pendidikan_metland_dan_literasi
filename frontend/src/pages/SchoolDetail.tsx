@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Zap, Star, Sparkles } from 'lucide-react';
+import { Sparkles, Users, Award, Calendar, BookOpen, Globe, Palette, Code, GraduationCap, UtensilsCrossed, Building2, Briefcase, Heart, Shield, TreePine, Monitor } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CTABanner from '../components/sections/CTABanner';
 
@@ -10,7 +10,7 @@ function FloatingShapes() {
       <motion.div
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
-        className="absolute top-10 left-5 w-12 h-12 rounded-full bg-lime/10 blur-xl"
+        className="absolute top-10 left-5 w-12 h-12 rounded-full bg-primary/10 blur-xl"
       />
       <motion.div
         animate={{ y: [0, 20, 0] }}
@@ -20,7 +20,7 @@ function FloatingShapes() {
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 3, repeat: Infinity }}
-        className="absolute bottom-20 left-1/3 w-20 h-20 rounded-full border-2 border-lime/20"
+        className="absolute bottom-20 left-1/3 w-20 h-20 rounded-full border-2 border-primary/20"
       />
       
       <motion.div
@@ -104,7 +104,7 @@ export default function SchoolDetail() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-light mb-4">Sekolah Tidak Ditemukan</h1>
-          <Link to="/our-school" className="text-lime hover:underline">← Kembali ke Our School</Link>
+          <Link to="/our-school" className="text-primary hover:underline">← Kembali ke Our School</Link>
         </div>
       </div>
     );
@@ -124,7 +124,7 @@ export default function SchoolDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-[#228bcb] mb-2 tracking-wide"
+            className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-[#3D8ABF] mb-2 tracking-wide"
           >
             {school.name}
           </motion.h1>
@@ -132,7 +132,7 @@ export default function SchoolDetail() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lime text-sm md:text-base font-semibold"
+            className="text-primary text-sm md:text-base font-semibold"
           >
             {school.tagline}
           </motion.p>
@@ -148,79 +148,103 @@ export default function SchoolDetail() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               transition={{ duration: 0.8 }}
-              className="w-12 h-[2px] bg-lime mb-6 origin-left"
+              className="w-12 h-[2px] bg-primary mb-6 origin-left"
             />
             <h2 className="text-3xl font-light text-charcoal mb-6">Tentang {school.name}</h2>
             <p className="text-gray-500 leading-relaxed text-base">{school.description}</p>
           </ScrollReveal>
           <ScrollReveal direction="right">
-            <h3 className="text-xl font-medium text-charcoal mb-6 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-lime" />
-              Program Unggulan
-            </h3>
-            <div className="space-y-3">
-              {school.features.map((f, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  className="flex items-center gap-4 p-4 bg-white rounded-2xl border-2 border-lime/20 hover:border-lime/50 cursor-pointer transition-all group"
-                >
+            <h3 className="text-lg font-semibold text-charcoal mb-8 tracking-tight">Program Unggulan</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {school.features.map((f, i) => {
+                // Pick a contextual icon based on keywords
+                const iconMap: Record<string, typeof BookOpen> = {
+                  'Kurikulum': BookOpen, 'Bilingual': Globe, 'DKV': Palette,
+                  'PPLG': Code, 'D3': GraduationCap, 'D4': GraduationCap,
+                  'Kuliner': UtensilsCrossed, 'Perhotelan': Building2,
+                  'Akuntansi': Briefcase, 'Karakter': Heart, 'Aman': Shield,
+                  'Motorik': TreePine, 'Digital': Monitor, 'Career': Briefcase,
+                  'Beasiswa': Award, 'Kerjasama': Globe, 'Ekstra': Sparkles,
+                  'Stimulasi': Heart, 'Lingkungan': TreePine,
+                };
+                const matchedKey = Object.keys(iconMap).find(k => f.includes(k));
+                const Icon = matchedKey ? iconMap[matchedKey] : BookOpen;
+                
+                // Rotating accent colors
+                const accents = [
+                  { bg: 'bg-blue-50', border: 'border-l-[#3D8ABF]', text: 'text-[#3D8ABF]' },
+                  { bg: 'bg-amber-50', border: 'border-l-amber-400', text: 'text-amber-500' },
+                  { bg: 'bg-emerald-50', border: 'border-l-emerald-400', text: 'text-emerald-500' },
+                  { bg: 'bg-violet-50', border: 'border-l-violet-400', text: 'text-violet-500' },
+                  { bg: 'bg-rose-50', border: 'border-l-rose-400', text: 'text-rose-500' },
+                ];
+                const accent = accents[i % accents.length];
+                
+                return (
                   <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                    className="w-8 h-8 rounded-full bg-lime/20 flex items-center justify-center shrink-0 group-hover:bg-lime/30"
+                    key={i}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: i * 0.08 }}
+                    whileHover={{ x: 4 }}
+                    className={`flex items-center gap-4 p-4 rounded-xl ${accent.bg} border-l-[3px] ${accent.border} cursor-default transition-all duration-300 group`}
                   >
-                    <Star className="w-4 h-4 text-lime" />
+                    <div className={`w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0`}>
+                      <Icon className={`w-[18px] h-[18px] ${accent.text}`} strokeWidth={1.8} />
+                    </div>
+                    <span className="text-sm text-charcoal/80 font-medium leading-snug">{f}</span>
                   </motion.div>
-                  <span className="text-sm text-charcoal font-medium">{f}</span>
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
           </ScrollReveal>
         </div>
       </section>
 
       {/* Statistics Section */}
-      <section className="relative bg-gradient-to-br from-charcoal via-charcoal to-blue-900 py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-charcoal to-[#1A2530] py-24 overflow-hidden">
         <FloatingShapes />
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <ScrollReveal>
-            <h2 className="text-3xl font-light text-white mb-4 text-center">Fakta &amp; Angka</h2>
-            <p className="text-center text-gray-400 mb-16">Pencapaian dan pertumbuhan {school.name}</p>
+            <h2 className="text-3xl font-light text-white mb-3 text-center">Fakta &amp; Angka</h2>
+            <p className="text-center text-gray-400 mb-14 max-w-2xl mx-auto text-sm md:text-base">Pencapaian dan pertumbuhan {school.name}</p>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
-            {school.stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                whileHover={{ scale: 1.08, rotateY: 10 }}
-                className="relative group"
-              >
-                <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 text-center hover:border-lime/30 transition-all">
-                  <motion.div
-                    animate={{ y: [0, -5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    className="mb-4"
-                  >
-                    <Zap className="w-8 h-8 text-lime mx-auto" />
-                  </motion.div>
-                  <motion.h3
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: i * 0.15 + 0.2 }}
-                    className="text-4xl font-black bg-gradient-to-r from-lime to-blue-400 bg-clip-text text-transparent mb-2"
-                  >
-                    {stat.value}
-                  </motion.h3>
-                  <p className="text-gray-300 font-medium text-sm">{stat.label}</p>
-                </div>
-              </motion.div>
-            ))}
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {school.stats.map((stat, i) => {
+              const Icon = i === 0 ? Users : i === 1 ? Award : Calendar;
+              
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: i * 0.15 }}
+                  whileHover={{ y: -5 }}
+                  className="relative group"
+                >
+                  <div className="flex items-center gap-6 p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm group-hover:bg-white/[0.05] group-hover:border-primary/40 transition-all duration-300 shadow-lg">
+                    {/* Icon Container */}
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-6 h-6 text-primary group-hover:text-blue-300 transition-colors" strokeWidth={1.5} />
+                    </div>
+                    
+                    {/* Text Container */}
+                    <div>
+                      <h3
+                        className="text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-sm group-hover:text-primary transition-colors duration-300"
+                        style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                      >
+                        {stat.value}
+                      </h3>
+                      <p className="text-gray-400 font-medium text-xs md:text-sm uppercase tracking-wider">
+                        {stat.label}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -231,7 +255,7 @@ export default function SchoolDetail() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <h2 className="text-3xl font-light text-charcoal mb-12 flex items-center gap-3">
-              <Sparkles className="w-8 h-8 text-lime" />
+              <Sparkles className="w-8 h-8 text-primary" />
               Sekolah Lainnya
             </h2>
           </ScrollReveal>
@@ -257,12 +281,12 @@ export default function SchoolDetail() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <motion.div>
-                      <p className="text-white text-xs font-bold bg-lime/80 inline-block px-3 py-1 rounded-full">{s.level}</p>
+                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{s.level}</p>
                     </motion.div>
                   </motion.div>
                   <motion.h3
-                    whileHover={{ color: '#228bcb' }}
-                    className="text-sm font-semibold text-charcoal transition-colors group-hover:text-lime"
+                    whileHover={{ color: '#3D8ABF' }}
+                    className="text-sm font-semibold text-charcoal transition-colors group-hover:text-primary"
                   >
                     {s.name}
                   </motion.h3>
@@ -274,7 +298,7 @@ export default function SchoolDetail() {
       </section>
 
       {/* CTA Banner */}
-      <section className="relative bg-gradient-to-r from-lime via-blue-400 to-lime py-12 overflow-hidden">
+      <section className="relative bg-gradient-to-r from-primary via-blue-400 to-primary py-12 overflow-hidden">
         <FloatingShapes />
         <div className="relative z-10">
           <CTABanner />

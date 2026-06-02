@@ -39,7 +39,7 @@ function AuthorBadge({ post, light = false }: { post: any; light?: boolean }) {
 function CatBadge({ cat, light = false }: { cat: string; light?: boolean }) {
   return (
     <span className={`inline-block text-[10px] font-bold tracking-[2px] uppercase px-2 py-0.5 rounded mb-2
-      ${light ? 'bg-lime text-white' : 'bg-lime/10 text-lime'}`}>
+      ${light ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}`}>
       {cat}
     </span>
   );
@@ -62,7 +62,7 @@ function HeroCard({ post }: { post: any }) {
       {/* Text overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
         <AuthorBadge post={post} light />
-        <h2 className="mt-2 text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight line-clamp-2 group-hover:text-lime transition-colors duration-300">
+        <h2 className="mt-2 text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
           {post.title}
         </h2>
       </div>
@@ -85,7 +85,7 @@ function SubHeroCard({ post }: { post: any }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-xl" />
       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
         <AuthorBadge post={post} light />
-        <h3 className="mt-1.5 text-base md:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300">
+        <h3 className="mt-1.5 text-base md:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
           {post.title}
         </h3>
       </div>
@@ -106,12 +106,12 @@ function RecommendedCard({ post }: { post: any }) {
         />
       </div>
       <CatBadge cat={post.category} />
-      <h3 className="text-xl font-bold text-charcoal leading-snug mb-2 group-hover:text-lime transition-colors duration-300 line-clamp-2">
+      <h3 className="text-xl font-bold text-charcoal leading-snug mb-2 group-hover:text-primary transition-colors duration-300 line-clamp-2">
         {post.title}
       </h3>
       <AuthorBadge post={post} />
       <p className="text-sm text-gray-400 leading-relaxed mt-3 line-clamp-3">{post.excerpt}</p>
-      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[1.5px] text-lime mt-4 group-hover:gap-2.5 transition-all duration-300">
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[1.5px] text-primary mt-4 group-hover:gap-2.5 transition-all duration-300">
         Read More <ArrowRight className="w-3.5 h-3.5" />
       </span>
     </Link>
@@ -139,7 +139,7 @@ function ListCard({ post, index }: { post: any; index: number }) {
         {/* Text */}
         <div className="flex-1 min-w-0">
           <CatBadge cat={post.category} />
-          <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300 mb-1">
+          <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300 mb-1">
             {post.title}
           </h4>
           <div className="flex items-center gap-1.5 text-xs text-gray-400">
@@ -173,7 +173,7 @@ function SpotlightCard({ post }: { post: any }) {
         <Calendar className="w-3 h-3" />
         <span>{fmtDate(post.publishedAt)}</span>
       </div>
-      <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-lime transition-colors duration-300">
+      <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
         {post.title}
       </h4>
     </Link>
@@ -228,7 +228,7 @@ export default function Artikel() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lime text-lg font-bold tracking-[3px] uppercase mb-4 block"
+            className="text-primary text-lg font-bold tracking-[3px] uppercase mb-4 block"
           >
             Berita &amp; Informasi
           </motion.span>
@@ -282,7 +282,7 @@ export default function Artikel() {
                       whileTap={{ scale: 0.97 }}
                       className={`px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                         activeCategory === cat
-                          ? 'bg-lime text-white shadow-md shadow-lime/20'
+                          ? 'bg-primary text-white shadow-md shadow-primary/20'
                           : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
@@ -297,7 +297,7 @@ export default function Artikel() {
                 placeholder="Cari artikel..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-lime/50 focus:ring-2 focus:ring-lime/10 w-full md:w-64 transition-all duration-200"
+                className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 w-full md:w-64 transition-all duration-200"
               />
             </div>
           </motion.div>
@@ -338,7 +338,7 @@ export default function Artikel() {
                     <p className="text-gray-400 text-sm">Coba ubah kata kunci atau pilih kategori lain.</p>
                     <button
                       onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
-                      className="mt-6 inline-flex items-center gap-2 text-sm text-lime font-medium hover:underline"
+                      className="mt-6 inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
                     >
                       Reset filter
                     </button>
@@ -379,7 +379,7 @@ export default function Artikel() {
                         {Recommended && (
                           <>
                             <h2 className="text-3xl font-black text-charcoal mb-6 leading-tight">
-                              Editor's <span className="text-lime">Picks</span>
+                              Editor's <span className="text-primary">Picks</span>
                             </h2>
                             <RecommendedCard post={Recommended} />
                           </>
@@ -397,7 +397,7 @@ export default function Artikel() {
 
                       {/* RIGHT — spotlight sidebar */}
                       <div>
-                        <h3 className="text-xs font-black tracking-[3px] uppercase text-charcoal border-b-2 border-lime pb-2 mb-5">
+                        <h3 className="text-xs font-black tracking-[3px] uppercase text-charcoal border-b-2 border-primary pb-2 mb-5">
                           Spotlight
                         </h3>
                         <div className="flex flex-col gap-6">
@@ -430,7 +430,7 @@ export default function Artikel() {
                               />
                             </div>
                             <CatBadge cat={post.category} />
-                            <h3 className="text-base font-semibold text-charcoal leading-snug group-hover:text-lime transition-colors duration-300 mb-2 line-clamp-2">
+                            <h3 className="text-base font-semibold text-charcoal leading-snug group-hover:text-primary transition-colors duration-300 mb-2 line-clamp-2">
                               {post.title}
                             </h3>
                             <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3">{post.excerpt}</p>
@@ -448,7 +448,7 @@ export default function Artikel() {
                     <button
                       onClick={loadMore}
                       disabled={loadingMore}
-                      className="px-8 py-3 bg-white text-charcoal hover:bg-lime hover:text-white border border-gray-200 hover:border-lime text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-8 py-3 bg-white text-charcoal hover:bg-primary hover:text-white border border-gray-200 hover:border-primary text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {loadingMore ? 'Memuat...' : 'Muat Lebih Banyak'}
                     </button>

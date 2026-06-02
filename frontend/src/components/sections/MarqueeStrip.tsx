@@ -29,16 +29,16 @@ export default function MarqueeStrip() {
       {/* Top divider */}
       <div className="section-divider w-full absolute top-0" />
 
-      {/* Main Ticker Row — stroke text using accent color */}
+      {/* Main Ticker — single premium gradient text */}
       <div className="fade-mask-x overflow-hidden">
         <motion.div
-          className="flex whitespace-nowrap animate-ticker"
+          className="flex whitespace-nowrap animate-[marquee_25s_linear_infinite]"
           style={{ x }}
         >
           {[...Array(4)].map((_, i) => (
             <span
               key={i}
-              className="text-stroke text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight select-none shrink-0"
+              className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight select-none shrink-0 opacity-90 py-2"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
               {fullText}

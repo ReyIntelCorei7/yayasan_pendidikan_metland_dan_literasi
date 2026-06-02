@@ -3,46 +3,51 @@ import { motion } from 'framer-motion';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 
+import heroImg from '../assets/sekolahsmkmetland.webp';
+import tkSdImg from '../assets/tk_sdmetropolitan.jpeg';
+import smkPariwisataImg from '../assets/sekolahsmkmetland.webp';
+import smkMetlandImg from '../assets/sekolahsmkmetlandcibitung.webp';
+
 const schools = [
   {
     slug: 'tk-tunas-metropolitan',
     name: 'TK Tunas Metropolitan',
     level: 'Taman Kanak-Kanak',
     tagline: 'Menanamkan cinta belajar sejak dini',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#228bcb',
+    image: tkSdImg,
+    color: '#10B981',
   },
   {
     slug: 'sd-tunas-metropolitan',
     name: 'SD Tunas Metropolitan',
     level: 'Sekolah Dasar',
     tagline: 'Fondasi kokoh untuk masa depan cerah',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#228bcb',
+    image: tkSdImg,
+    color: '#E5A320',
   },
   {
     slug: 'smk-pariwisata-metland-school',
     name: 'SMK Pariwisata Metland School',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#228bcb',
+    image: smkPariwisataImg,
+    color: '#3D8ABF',
   },
   {
     slug: 'smk-metland',
     name: 'SMK Metland',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
-    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
-    color: '#228bcb',
+    image: smkMetlandImg,
+    color: '#2E6F9E',
   },
   {
     slug: 'metland-college',
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#228bcb',
+    image: smkPariwisataImg,
+    color: '#8B5CF6',
   },
 ];
 
@@ -51,14 +56,21 @@ export default function OurSchool() {
     <>
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-charcoal/80 z-10" />
         <img
-          src="/src/assets/sekolahsmkmetland.webp"
+          src={heroImg}
           alt="foto sekolah smk metland"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
         />
-        <div className="relative z-10 text-center px-6">
-          <h1 className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Unit Pendidikan</h1>
-          <p className="text-gray-300 mt-1 max-w-2xl mx-auto">Yayasan Pendidikan Metland mengelola 5 unit pendidikan berkualitas dari jenjang TK hingga perguruan tinggi.</p>
+        <div className="relative z-20 text-center px-6 mt-16">
+          <WordReveal
+            text="Unit Pendidikan"
+            tag="h1"
+            className="text-4xl lg:text-5xl font-light text-white mb-4"
+          />
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
+            Yayasan Pendidikan Metland mengelola 5 unit pendidikan berkualitas dari jenjang TK hingga perguruan tinggi.
+          </motion.p>
         </div>
       </section>
 
@@ -68,26 +80,40 @@ export default function OurSchool() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {schools.map((school, i) => (
               <ScrollReveal key={school.slug} delay={i * 0.1}>
-                <Link to={`/our-school/${school.slug}`} className="group block">
-                  <div className="relative aspect-[16/10] overflow-hidden mb-5">
-                    <img
-                      src={school.image}
-                      alt={school.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <span className="text-xs px-3 py-1 rounded-full" style={{ background: school.color + '33', color: school.color }}>
-                        {school.level}
+                <Link to={`/our-school/${school.slug}`} className="group block h-full">
+                  <motion.div 
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="relative overflow-hidden border border-gray-100 transition-all duration-500 h-full bg-white shadow-md hover:shadow-xl rounded-2xl"
+                    style={{ '--hover-color': school.color } as React.CSSProperties}
+                  >
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <img
+                        src={school.image}
+                        alt={school.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <div className="absolute bottom-4 left-4">
+                        <span className="text-xs px-3 py-1.5 rounded-full font-medium text-white shadow-sm" style={{ background: school.color }}>
+                          {school.level}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 
+                        className="font-semibold text-charcoal text-xl transition-colors duration-300"
+                        onMouseEnter={(e) => (e.currentTarget.style.color = school.color)}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+                      >
+                        {school.name}
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-2">{school.tagline}</p>
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold mt-4 group-hover:gap-2 transition-all uppercase tracking-wide" style={{ color: school.color }}>
+                        Selengkapnya <span>→</span>
                       </span>
                     </div>
-                  </div>
-                  <h3 className="font-semibold text-charcoal text-lg group-hover:text-lime transition-colors duration-300">{school.name}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{school.tagline}</p>
-                  <span className="inline-flex items-center gap-1 text-lime text-xs font-medium mt-3 group-hover:gap-2 transition-all">
-                    Selengkapnya <span>→</span>
-                  </span>
+                  </motion.div>
                 </Link>
               </ScrollReveal>
             ))}

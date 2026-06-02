@@ -176,7 +176,7 @@ export default function HeroSection() {
           className="hidden lg:flex items-center gap-3 absolute left-8 top-1/2 -translate-y-1/2 z-20"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg) translateY(50%)' }}
         >
-          <div className="w-2 h-2 rounded-full bg-[#228bcb] animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-[#3D8ABF] animate-pulse" />
           <span
             className="text-xs text-white/40 tracking-[0.3em] uppercase font-medium"
             style={{ fontFamily: "'Geist', Inter, sans-serif" }}
@@ -235,7 +235,7 @@ export default function HeroSection() {
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="w-16 h-[2px] bg-[#228bcb] origin-left mt-6 mb-5"
+                className="w-16 h-[2px] bg-[#3D8ABF] origin-left mt-6 mb-5"
               />
 
               {/* Subtitle */}
@@ -258,7 +258,7 @@ export default function HeroSection() {
               >
                 <a
                   href="/profil"
-                  className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#228bcb] text-white text-sm font-semibold rounded-full hover:bg-[#1b78b3] transition-all duration-300 shadow-lg shadow-[#228bcb]/25 hover:shadow-[#228bcb]/40 hover:scale-[1.03]"
+                  className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#3D8ABF] text-white text-sm font-semibold rounded-full hover:bg-[#2E6F9E] transition-all duration-300 shadow-lg shadow-[#3D8ABF]/25 hover:shadow-[#3D8ABF]/40 hover:scale-[1.03]"
                 >
                   Tentang Kami
                   <svg
@@ -279,6 +279,20 @@ export default function HeroSection() {
           </div>
         </div>
 
+        {/* ── Mobile Slide Indicators ── */}
+        <div className="flex md:hidden items-center justify-center gap-2 mb-6 mt-4">
+          {heroImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === currentIndex ? 'w-8 bg-[#3D8ABF]' : 'w-3 bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
         {/* ─── Stats Strip (Bottom) ─── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -297,9 +311,9 @@ export default function HeroSection() {
                   transition={{ delay: 0.9 + index * 0.1, duration: 0.6 }}
                   className="group px-4 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-white/[0.03] transition-colors duration-500"
                 >
-                  <div className="flex items-start justify-between mb-1">
+                  <div className="flex items-start justify-between mb-2">
                     <div
-                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight"
+                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight drop-shadow-md"
                       style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                     >
                       {stat.isLetter ? (
@@ -308,12 +322,12 @@ export default function HeroSection() {
                         <AnimatedCounter end={stat.value} suffix={stat.suffix} separator="." />
                       )}
                     </div>
-                    <div className="text-[#228bcb]/60 group-hover:text-[#228bcb] transition-colors duration-300 scale-90">
+                    <div className="text-[#3D8ABF]/60 group-hover:text-[#3D8ABF] transition-colors duration-300 scale-90">
                       {stat.icon}
                     </div>
                   </div>
-                  <div className="text-xs sm:text-sm font-semibold text-white/80 mb-0.5">{stat.label}</div>
-                  <p className="text-[0.65rem] sm:text-xs text-white/40 leading-relaxed">{stat.description}</p>
+                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1">{stat.label}</div>
+                  <p className="text-[0.65rem] sm:text-xs text-white/50 leading-relaxed max-w-[90%]">{stat.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -328,7 +342,7 @@ export default function HeroSection() {
               onClick={() => setCurrentIndex(i)}
               className={`rounded-full transition-all duration-500 ${
                 i === currentIndex
-                  ? 'w-2 h-8 bg-[#228bcb]'
+                  ? 'w-2 h-8 bg-[#3D8ABF]'
                   : 'w-2 h-2 bg-white/25 hover:bg-white/50'
               }`}
               aria-label={`Go to slide ${i + 1}`}
@@ -336,39 +350,43 @@ export default function HeroSection() {
           ))}
         </div>
 
-        {/* ── Mobile Slide Indicators ── */}
-        <div className="flex md:hidden items-center justify-center gap-2 pb-4">
-          {heroImages.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === currentIndex ? 'w-8 bg-[#228bcb]' : 'w-3 bg-white/30 hover:bg-white/50'
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
-      {/* Wave */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg
-          viewBox="0 0 1440 320"
-          className="w-full h-[140px]"
-          preserveAspectRatio="none"
-        >
-          <path
-            fill="#228bcb"
-            d="
-              M0,160
-              C240,260 480,260 720,220
-              C960,180 1200,120 1440,240
-              L1440,320
-              L0,320
-              Z
-            "
-          />
-        </svg>
+      {/* Animated Wave — sits behind the stats strip */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-[5]">
+        <style>{`
+          @keyframes waveScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+
+        {/* Layer 1 — main wave */}
+        <div style={{ width: '200%', animation: 'waveScroll 18s linear infinite' }}>
+          <svg
+            viewBox="0 0 2880 120"
+            className="block w-full h-[45px] sm:h-[54px] md:h-[63px] lg:h-[75px]"
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="#3D8ABF"
+              d="M0,40 C180,100 360,10 540,60 C720,110 900,20 1080,70 C1260,120 1440,30 1440,40 C1620,100 1800,10 1980,60 C2160,110 2340,20 2520,70 C2700,120 2880,30 2880,40 L2880,120 L0,120 Z"
+            />
+          </svg>
+        </div>
+
+        {/* Layer 2 — secondary wave (faster, translucent) */}
+        <div style={{ width: '200%', animation: 'waveScroll 12s linear infinite', marginTop: '-30px' }}>
+          <svg
+            viewBox="0 0 2880 120"
+            className="block w-full h-[36px] sm:h-[42px] md:h-[51px] lg:h-[60px]"
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="rgba(61,138,191,0.45)"
+              d="M0,60 C160,10 320,100 480,50 C640,0 800,90 960,40 C1120,0 1280,80 1440,60 C1600,10 1760,100 1920,50 C2080,0 2240,90 2400,40 C2560,0 2720,80 2880,60 L2880,120 L0,120 Z"
+            />
+          </svg>
+        </div>
       </div>
     </section>
   );

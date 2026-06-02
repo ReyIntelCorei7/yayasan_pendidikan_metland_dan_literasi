@@ -15,7 +15,7 @@ export default function ProgramDetail() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-light mb-4">Program Not Found</h1>
-          <Link to="/programs" className="text-lime hover:underline">← Back to Programs</Link>
+          <Link to="/programs" className="text-primary hover:underline">← Back to Programs</Link>
         </div>
       </div>
     );
@@ -30,7 +30,7 @@ export default function ProgramDetail() {
         <img src={program.image} alt={program.title} className="absolute inset-0 w-full h-full object-cover opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pb-16 w-full">
-          <span className="text-xs text-lime bg-lime/20 rounded-full px-3 py-1 uppercase">{program.category}</span>
+          <span className="text-xs text-primary bg-primary/20 rounded-full px-3 py-1 uppercase">{program.category}</span>
           <WordReveal text={program.title} tag="h1" className="text-4xl lg:text-6xl font-light text-white mt-4" delay={0.2} />
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-white/70 mt-3 text-lg">{program.tagline}</motion.p>
         </div>
