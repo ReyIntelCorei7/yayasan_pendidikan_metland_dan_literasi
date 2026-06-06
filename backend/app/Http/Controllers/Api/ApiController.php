@@ -31,12 +31,12 @@ class ApiController extends Controller
         if ($request->header('If-None-Match') === $etag) {
             return response()->json(null, 304)
                 ->header('ETag', $etag)
-                ->header('Cache-Control', "public, max-age={$ttl}, stale-while-revalidate=60");
+                ->header('Cache-Control', "public, max-age=0, s-maxage={$ttl}, must-revalidate");
         }
 
         return response()->json($data)
             ->header('ETag', $etag)
-            ->header('Cache-Control', "public, max-age={$ttl}, stale-while-revalidate=60")
+            ->header('Cache-Control', "public, max-age=0, s-maxage={$ttl}, must-revalidate")
             ->header('Vary', 'Accept-Encoding');
     }
 
@@ -102,7 +102,8 @@ class ApiController extends Controller
         $category = $request->input('category');
         $search = $request->input('search');
 
-        $cacheKey = "api.posts.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+        $version = Cache::get('api.posts.version', 1);
+        $cacheKey = "api.posts.v{$version}.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
 
         $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
             $query = Post::published()
@@ -227,7 +228,8 @@ class ApiController extends Controller
         $category = $request->input('category');
         $search = $request->input('search');
 
-        $cacheKey = "api.books.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+        $version = Cache::get('api.books.version', 1);
+        $cacheKey = "api.books.v{$version}.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
 
         $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
             $query = Book::published()

@@ -14,8 +14,12 @@ async function fetchApi<T>(endpoint: string, params?: Record<string, string | nu
     });
     const queryString = searchParams.toString();
     if (queryString) {
-      url += `?${queryString}`;
+      url += `?${queryString}&_t=${Date.now()}`;
+    } else {
+      url += `?_t=${Date.now()}`;
     }
+  } else {
+    url += `?_t=${Date.now()}`;
   }
 
   const response = await fetch(url);

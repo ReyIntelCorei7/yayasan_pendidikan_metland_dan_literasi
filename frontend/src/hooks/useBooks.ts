@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 
 export interface Book {
@@ -22,42 +22,59 @@ export default function useBooks() {
   
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  
-  // Track last fetch to prevent duplicate requests
-  const fetchIdRef = useRef(0);
 
   useEffect(() => {
-    let cancelled = false;
-    const currentFetchId = ++fetchIdRef.current;
+    const controller = new AbortController();
 
     async function fetchBooks() {
       try {
-        if (page === 1) setLoading(true);
-        else setLoadingMore(true);
+        if (page === 1) {
+          setLoading(true);
+          setBooks([]);
+        } else {
+          setLoadingMore(true);
+        }
 
-        const response = await api.books.list({
+        const params: Record<string, string | number> = {
           page,
           per_page: 12,
-          category: activeCategory === 'Semua' ? undefined : activeCategory,
-          search: searchQuery || undefined,
+        };
+        if (activeCategory && activeCategory !== 'Semua') {
+          params.category = activeCategory;
+        }
+        if (searchQuery) {
+          params.search = searchQuery;
+        }
+
+        console.log('[useBooks] Fetching with params:', params);
+
+        const response = await api.books.list(params);
+
+        if (controller.signal.aborted) return;
+
+        console.log('[useBooks] Response received:', {
+          dataLength: response?.data?.length,
+          currentPage: response?.current_page,
+          lastPage: response?.last_page,
+          total: response?.total,
         });
 
-        if (cancelled || currentFetchId !== fetchIdRef.current) return;
-
-        setBooks(prev => page === 1 ? response.data : [...prev, ...response.data]);
-        setHasMore(response.current_page < response.last_page);
-        setError(null);
-        
-        if (page === 1 && response.data.length === 0) {
-          setError('Gagal memuat buku atau tidak ada buku ditemukan.');
+        if (response && response.data) {
+          setBooks(prev => page === 1 ? response.data : [...prev, ...response.data]);
+          setHasMore(response.current_page < response.last_page);
+          setError(null);
+        } else {
+          console.error('[useBooks] Unexpected response format:', response);
+          setBooks([]);
+          setError('Format respons tidak sesuai');
         }
-      } catch (err) {
-        console.error('Failed to fetch books:', err);
-        if (cancelled || currentFetchId !== fetchIdRef.current) return;
+      } catch (err: any) {
+        if (controller.signal.aborted) return;
+        console.error('[useBooks] Failed to fetch books:', err);
         if (page === 1) setBooks([]);
-        setError('Gagal memuat buku');
+        setError('Gagal memuat buku: ' + (err?.message || 'Unknown error'));
       } finally {
-        if (!cancelled && currentFetchId === fetchIdRef.current) {
+        if (!controller.signal.aborted) {
           setLoading(false);
           setLoadingMore(false);
         }
@@ -65,27 +82,31 @@ export default function useBooks() {
     }
 
     fetchBooks();
-    return () => { cancelled = true; };
+    return () => { controller.abort(); };
   }, [page, activeCategory, searchQuery]);
 
   // Reset when filters change
-  const handleSetCategory = (cat: string) => {
-    if (cat === activeCategory) return;
-    setActiveCategory(cat);
-    setPage(1);
-  };
+  const handleSetCategory = useCallback((cat: string) => {
+    setActiveCategory(prev => {
+      if (prev === cat) return prev;
+      setPage(1);
+      return cat;
+    });
+  }, []);
 
-  const handleSetSearch = (query: string) => {
-    if (query === searchQuery) return;
-    setSearchQuery(query);
-    setPage(1);
-  };
+  const handleSetSearch = useCallback((query: string) => {
+    setSearchQuery(prev => {
+      if (prev === query) return prev;
+      setPage(1);
+      return query;
+    });
+  }, []);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (!loading && !loadingMore && hasMore) {
       setPage(p => p + 1);
     }
-  };
+  }, [loading, loadingMore, hasMore]);
 
   return {
     books,

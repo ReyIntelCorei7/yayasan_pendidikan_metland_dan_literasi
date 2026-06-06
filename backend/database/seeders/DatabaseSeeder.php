@@ -16,6 +16,21 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Admins
+        \App\Models\User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadminypm@metland.id',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'super_admin',
+        ]);
+
+        \App\Models\User::create([
+            'name' => 'Admin Konten',
+            'email' => 'adminypm@metland.id',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'admin_konten',
+        ]);
+
         // Programs
         $programs = [
             ['title' => 'Higher Life Learning', 'slug' => 'higher-life-learning', 'category' => 'education', 'tagline' => 'Empowering through quality education', 'description' => 'Providing access to world-class education for underprivileged youth across Africa. Our scholarship programs cover tuition, accommodation, and mentorship from primary school through university.', 'image' => 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80', 'is_featured' => true, 'order' => 1, 'stats' => [['label' => 'Students Enrolled', 'value' => '15,000+'], ['label' => 'Schools Supported', 'value' => '120'], ['label' => 'Countries', 'value' => '6']]],
