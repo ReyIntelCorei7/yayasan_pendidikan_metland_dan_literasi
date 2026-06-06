@@ -69,8 +69,8 @@ const config: Config = {
         '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em' }],
       },
       animation: {
-        marquee: 'marquee 20s linear infinite',
-        'marquee-reverse': 'marquee-reverse 28s linear infinite',
+        marquee: 'marquee 12s linear infinite',
+        'marquee-reverse': 'marquee-reverse 20s linear infinite',
         float: 'float 6s ease-in-out infinite',
         'float-slow': 'float-slow 8s ease-in-out infinite',
         'float-slower': 'float-slower 10s ease-in-out infinite',
@@ -78,7 +78,7 @@ const config: Config = {
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(-25%)' },
         },
         'marquee-reverse': {
           '0%': { transform: 'translateX(-50%)' },
