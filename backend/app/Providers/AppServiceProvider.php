@@ -82,5 +82,9 @@ class AppServiceProvider extends ServiceProvider
         // Team Members
         TeamMember::saved(fn () => Cache::forget('api.team'));
         TeamMember::deleted(fn () => Cache::forget('api.team'));
+
+        // Banners
+        \App\Models\Banner::saved(fn () => Cache::forget('api.banners'));
+        \App\Models\Banner::deleted(fn () => Cache::forget('api.banners'));
     }
 }

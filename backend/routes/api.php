@@ -18,4 +18,6 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
 
     Route::get('/books', [ApiController::class, 'books']);
     Route::get('/books/{id}', [ApiController::class, 'bookById']);
+
+    Route::get('/banners', [ApiController::class, 'banners']);
 });

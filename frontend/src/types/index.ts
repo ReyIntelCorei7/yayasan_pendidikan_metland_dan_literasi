@@ -59,6 +59,13 @@ export interface Partner {
   isActive: boolean;
 }
 
+export interface Banner {
+  id: string;
+  title?: string;
+  image: string;
+  order: number;
+}
+
 export interface TeamMember {
   id: string;
   name: string;

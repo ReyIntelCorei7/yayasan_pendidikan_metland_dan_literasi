@@ -287,6 +287,23 @@ class ApiController extends Controller
 
         return $this->cachedJson($data);
     }
+    public function banners(): JsonResponse
+    {
+        $data = Cache::remember('api.banners', self::TTL, function () {
+            return \App\Models\Banner::where('is_active', true)
+                ->orderBy('order')
+                ->get()
+                ->map(fn ($b) => [
+                    'id'    => (string) $b->id,
+                    'title' => $b->title,
+                    'image' => $this->storageUrl($b->image),
+                    'order' => $b->order,
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
 
     private function storageUrl(?string $path): ?string
     {

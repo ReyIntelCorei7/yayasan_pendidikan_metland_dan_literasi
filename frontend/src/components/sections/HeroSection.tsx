@@ -4,8 +4,9 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import hero1 from '../../assets/sekolahsmkmetland.webp';
 import hero2 from '../../assets/sekolahsmkmetlandcibitung.webp';
 import hero3 from '../../assets/kepalasekolahsmkmetland.jpeg';
+import useBanners from '../../hooks/useBanners';
 
-const heroImages = [hero1, hero2, hero3];
+const defaultHeroImages = [hero1, hero2, hero3];
 
 /* ──────────────── Animated Counter ──────────────── */
 function AnimatedCounter({
@@ -115,16 +116,31 @@ const statsData = [
 
 /* ──────────────── Main Component ──────────────── */
 export default function HeroSection() {
+  const { banners, loading } = useBanners();
+  
+  // While loading: don't show anything yet (avoid flash of default images)
+  // After loading: use API banners, or fall back to defaults if API returned empty/failed
+  const activeImages = loading
+    ? []
+    : banners && banners.length > 0
+      ? banners.map(b => b.image)
+      : defaultHeroImages;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Reset slide index when images change (e.g. banners loaded from API)
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [activeImages.length]);
 
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentIndex((prev) => (prev + 1) % activeImages.length);
     }, 6000);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, activeImages.length]);
 
   return (
     <section
@@ -134,9 +150,10 @@ export default function HeroSection() {
     >
       {/* ── Background Slideshow ── */}
       <AnimatePresence mode="wait">
+        {activeImages.length > 0 && (
         <motion.img
           key={currentIndex}
-          src={heroImages[currentIndex]}
+          src={activeImages[currentIndex]}
           alt=""
           initial={{ opacity: 0, scale: 1.08 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -145,6 +162,7 @@ export default function HeroSection() {
           className="absolute inset-0 w-full h-full object-cover object-center"
           loading="eager"
         />
+        )}
       </AnimatePresence>
 
       {/* ── Dark Overlays ── */}
@@ -281,7 +299,7 @@ export default function HeroSection() {
 
         {/* ── Mobile Slide Indicators ── */}
         <div className="flex md:hidden items-center justify-center gap-2 mb-6 mt-4">
-          {heroImages.map((_, i) => (
+          {activeImages.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
@@ -336,7 +354,7 @@ export default function HeroSection() {
 
         {/* ── Slide Indicators (vertical, right side) ── */}
         <div className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-3 z-20">
-          {heroImages.map((_, i) => (
+          {activeImages.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
