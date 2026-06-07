@@ -1,87 +1,94 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Post } from '../types';
-import { posts as staticPosts } from '../data/posts';
 import api from '../services/api';
 
-// ─── Module-level shared state ────────────────────────────────────────────────
-// Shared across all hook instances so only ONE network request happens at a time.
-
-let cachedPosts: Post[] | null = null;
-let cacheTimestamp = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
-/** The in-flight promise, shared so concurrent callers wait on the same request */
-let pendingPromise: Promise<Post[]> | null = null;
-
-function isCacheValid(): boolean {
-  return cachedPosts !== null && Date.now() - cacheTimestamp < CACHE_DURATION;
-}
-
-/** Fetch with a hard timeout; resolves to static data if API is too slow or fails */
-function fetchWithTimeout(timeoutMs = 5000): Promise<Post[]> {
-  if (pendingPromise) return pendingPromise; // deduplicate concurrent calls
-
-  const fetchPromise = api.posts.list() as Promise<Post[]>;
-  const timeoutPromise = new Promise<Post[]>((_, reject) =>
-    setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
-  );
-
-  pendingPromise = Promise.race([fetchPromise, timeoutPromise])
-    .then((data) => {
-      cachedPosts = data;
-      cacheTimestamp = Date.now();
-      return data;
-    })
-    .catch((err) => {
-      console.warn('[usePosts] API failed, using static data:', err);
-      return staticPosts as Post[];
-    })
-    .finally(() => {
-      pendingPromise = null; // allow future fetches
-    });
-
-  return pendingPromise;
-}
-
-// ─── usePosts ─────────────────────────────────────────────────────────────────
-
 export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>(cachedPosts ?? staticPosts as Post[]);
-  const [loading, setLoading] = useState(!isCacheValid());
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchIdRef = useRef(0);
 
   useEffect(() => {
-    // Already have fresh cached data — no need to fetch
-    if (isCacheValid()) {
-      setPosts(cachedPosts!);
-      setLoading(false);
-      return;
+    let cancelled = false;
+    const currentFetchId = ++fetchIdRef.current;
+
+    async function fetchPosts() {
+      try {
+        if (page === 1) setLoading(true);
+        else setLoadingMore(true);
+
+        const response = await api.posts.list({
+          page,
+          per_page: 15,
+          category: activeCategory === 'All' ? undefined : activeCategory,
+          search: searchQuery || undefined,
+        });
+
+        if (cancelled || currentFetchId !== fetchIdRef.current) return;
+
+        setPosts(prev => page === 1 ? response.data : [...prev, ...response.data]);
+        setHasMore(response.current_page < response.last_page);
+        setError(null);
+        
+        if (page === 1 && response.data.length === 0) {
+          setError('Gagal memuat artikel atau tidak ada artikel ditemukan.');
+        }
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+        if (cancelled || currentFetchId !== fetchIdRef.current) return;
+        if (page === 1) setPosts([]);
+        setError('Gagal memuat artikel terbaru.');
+      } finally {
+        if (!cancelled && currentFetchId === fetchIdRef.current) {
+          setLoading(false);
+          setLoadingMore(false);
+        }
+      }
     }
 
-    let cancelled = false;
+    fetchPosts();
+    return () => { cancelled = true; };
+  }, [page, activeCategory, searchQuery]);
 
-    fetchWithTimeout(5000)
-      .then((data) => {
-        if (cancelled) return;
-        // If data is static fallback (not from API), show a soft warning
-        if (data === staticPosts) {
-          setError('Tidak dapat memuat artikel terbaru. Menampilkan data offline.');
-        }
-        setPosts(data);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+  const handleSetCategory = (cat: string) => {
+    if (cat === activeCategory) return;
+    setActiveCategory(cat);
+    setPage(1);
+  };
 
-    return () => {
-      cancelled = true;
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const handleSetSearch = (query: string) => {
+    if (query === searchQuery) return;
+    setSearchQuery(query);
+    setPage(1);
+  };
 
-  return { posts, loading, error };
+  const loadMore = () => {
+    if (!loading && !loadingMore && hasMore) {
+      setPage(p => p + 1);
+    }
+  };
+
+  return { 
+    posts, 
+    loading, 
+    loadingMore, 
+    error,
+    activeCategory,
+    setActiveCategory: handleSetCategory,
+    searchQuery,
+    setSearchQuery: handleSetSearch,
+    hasMore,
+    loadMore
+  };
 }
-
-// ─── usePost ──────────────────────────────────────────────────────────────────
 
 export function usePost(slug: string | undefined) {
   const [post, setPost] = useState<Post | null>(null);
@@ -96,30 +103,13 @@ export function usePost(slug: string | undefined) {
 
     let cancelled = false;
 
-    // Check module-level cache first
-    if (isCacheValid() && cachedPosts) {
-      const found = cachedPosts.find((p) => p.slug === slug) ?? null;
-      setPost(found);
-      setLoading(false);
-      return;
-    }
-
-    const fetchPromise = api.posts.bySlug(slug) as Promise<Post>;
-    const timeoutPromise = new Promise<Post>((_, reject) =>
-      setTimeout(() => reject(new Error('Request timeout')), 5000)
-    );
-
-    Promise.race([fetchPromise, timeoutPromise])
+    api.posts.bySlug(slug)
       .then((data) => {
         if (!cancelled) setPost(data);
       })
       .catch((err) => {
-        console.warn('[usePost] API failed, using static data:', err);
-        if (!cancelled) {
-          const fallback = staticPosts.find((p) => p.slug === slug) ?? null;
-          setPost(fallback);
-          if (!fallback) setError('Artikel tidak ditemukan.');
-        }
+        console.warn('[usePost] API failed:', err);
+        if (!cancelled) setError('Artikel tidak ditemukan.');
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

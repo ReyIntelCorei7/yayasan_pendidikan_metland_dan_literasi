@@ -412,10 +412,7 @@
     width: 6px;
   }
 
-  .book-cover-front {
-    width: calc(50% - 3px);
-  }
-
+  .book-cover-front,
   .book-cover-back {
     width: calc(50% - 3px);
   }
@@ -444,5 +441,24 @@
   .book-shadow {
     bottom: -20px;
     height: 25px;
+  }
+}
+
+@media (max-width: 400px) {
+  .book-spine {
+    width: 4px;
+  }
+  
+  .book-cover-front,
+  .book-cover-back {
+    width: calc(50% - 2px);
+  }
+  
+  .book-page {
+    padding: 0.5rem;
+  }
+  
+  .cover-outside {
+    padding: 1rem 0.5rem;
   }
 }

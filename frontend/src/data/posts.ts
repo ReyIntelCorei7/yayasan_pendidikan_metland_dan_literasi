@@ -41,7 +41,7 @@ export const posts: Post[] = [
     slug: 'power-clean-water-stories-from-field',
     excerpt: 'Meet the communities transformed by access to clean water and sanitation, and learn about the health improvements that followed.',
     body: 'Water is life. This simple truth drives our clean water initiative across Africa...',
-    featuredImage: '/src/assets/berita1.jpg',
+    featuredImage: '/src/assets/berita1.webp',
     category: 'Education',
     publishedAt: '2024-02-20',
     readingTime: 6,

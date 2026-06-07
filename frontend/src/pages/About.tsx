@@ -57,10 +57,10 @@ export default function About() {
               <ScrollReveal key={i} direction={i % 2 === 0 ? 'left' : 'right'} delay={i * 0.1}>
                 <div className={`flex items-center mb-12 ${i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                   <div className={`w-1/2 ${i % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
-                    <span className="text-lime font-medium text-lg">{item.year}</span>
+                    <span className="text-primary font-medium text-lg">{item.year}</span>
                     <p className="text-gray-500 text-sm mt-1">{item.text}</p>
                   </div>
-                  <div className="w-4 h-4 bg-lime rounded-full border-4 border-offwhite relative z-10 shrink-0" />
+                  <div className="w-4 h-4 bg-primary rounded-full border-4 border-offwhite relative z-10 shrink-0" />
                   <div className="w-1/2" />
                 </div>
               </ScrollReveal>
@@ -81,7 +81,7 @@ export default function About() {
                 </div>
                 <h3 className="font-medium text-charcoal">{member.name}</h3>
                 <p className="text-sm text-gray-400 mt-1">{member.title}</p>
-                <p className="text-xs text-lime mt-1">{member.department}</p>
+                <p className="text-xs text-primary mt-1">{member.department}</p>
               </motion.div>
             ))}
           </StaggerGrid>

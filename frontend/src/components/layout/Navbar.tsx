@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useNavScroll } from '../../hooks/useNavScroll';
+import logoYayasan from '../../assets/logoyayasan.png';
 import type { NavItem } from '../../types';
 
 const navItems: NavItem[] = [
@@ -69,7 +70,7 @@ export default function Navbar() {
                 transition={{ duration: 0.5 }}
               >
                <div className="img">
-                <img src="/src/assets/logoyayasan.png" alt="Logo YPM Putih" width={30} height={30} style={{paddingBottom: "5px"}}/>
+                <img src={logoYayasan} alt="Logo YPM Putih" width={30} height={30} style={{paddingBottom: "5px"}}/>
                </div>
               </motion.div>
               <motion.span
@@ -139,7 +140,7 @@ export default function Navbar() {
             {/* Desktop CTA */}
             <Link to="/contact" className="hidden lg:block">
               <motion.span
-                className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#228bcb]"
+                className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#3D8ABF]"
                 whileTap={{ scale: 0.97 }}
               >
                 <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
@@ -183,7 +184,7 @@ export default function Navbar() {
             {/* Mobile Menu Header — Logo left, Close right */}
             <div className="flex items-center justify-between px-6 h-20">
               <Link to="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3">
-                <img src="/src/assets/logoyayasan.png" alt="Logo YPM" width={30} height={30} style={{ paddingBottom: '5px' }} />
+                <img src={logoYayasan} alt="Logo YPM" width={30} height={30} style={{ paddingBottom: '5px' }} />
                 <span className="font-semibold text-lg tracking-tight text-[#111]">
                   Yayasan Pendidikan Metland
                 </span>
@@ -215,7 +216,7 @@ export default function Navbar() {
                         <button
                           onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
                           className={`w-full flex items-center justify-between py-3 text-lg font-medium border-b border-gray-100 ${
-                            location.pathname.startsWith(item.href) ? 'text-lime-dark' : 'text-charcoal'
+                            location.pathname.startsWith(item.href) ? 'text-primary-dark' : 'text-charcoal'
                           }`}
                         >
                           {item.label}
@@ -256,7 +257,7 @@ export default function Navbar() {
                         to={item.href}
                         onClick={() => setIsMobileOpen(false)}
                         className={`block py-3 text-lg font-medium border-b border-gray-100 ${
-                          location.pathname === item.href ? 'text-lime-dark' : 'text-charcoal'
+                          location.pathname === item.href ? 'text-primary-dark' : 'text-charcoal'
                         }`}
                       >
                         {item.label}
@@ -268,7 +269,7 @@ export default function Navbar() {
               <Link
                 to="/contact"
                 onClick={() => setIsMobileOpen(false)}
-                className="block w-full text-white bg-[#228bcb] text-center py-4 rounded-md font-medium text-sm mt-6"
+                className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-medium text-sm mt-6"
               >
                 → Contact
               </Link>

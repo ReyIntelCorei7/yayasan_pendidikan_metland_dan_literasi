@@ -246,7 +246,7 @@ function DefaultLeftPage() {
       <p
         className="font-semibold uppercase mb-4"
         style={{
-          color: '#228bcb',
+          color: '#3D8ABF',
           fontSize: 'clamp(8px, 1vw, 11px)',
           letterSpacing: '2.5px',
         }}
@@ -274,7 +274,7 @@ function DefaultLeftPage() {
         style={{
           width: '36px',
           height: '3px',
-          background: '#228bcb',
+          background: '#3D8ABF',
           borderRadius: '2px',
         }}
       />
@@ -332,7 +332,7 @@ function MiniStat({ value, label }: { value: string; label: string }) {
       <div
         className="font-bold"
         style={{
-          color: '#228bcb',
+          color: '#3D8ABF',
           fontSize: 'clamp(12px, 1.5vw, 18px)',
           lineHeight: '1.2',
         }}

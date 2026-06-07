@@ -13,10 +13,10 @@ export default function WhatWeDo() {
     <section className="bg-[#FCFCFC] py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
-          <p className="text-xs text-lime uppercase tracking-[0.2em] mb-4">Our Focus Areas</p>
+          <p className="text-xs text-primary uppercase tracking-[0.2em] mb-4">Fokus Utama Kami</p>
         </ScrollReveal>
         <WordReveal
-          text="What We Do"
+          text="Apa yang Kami Lakukan"
           tag="h2"
           className="text-4xl lg:text-5xl font-light text-charcoal mb-16"
         />
@@ -33,7 +33,7 @@ export default function WhatWeDo() {
               >
                 {/* Top border accent */}
                 <motion.div
-                  className="absolute top-0 left-0 right-0 h-[3px] bg-lime origin-left"
+                  className="absolute top-0 left-0 right-0 h-[3px] bg-primary origin-left"
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.3 }}
@@ -45,7 +45,7 @@ export default function WhatWeDo() {
                 </span>
 
                 {/* Icon */}
-                <Icon className="w-8 h-8 text-lime mb-4 relative z-10" />
+                <Icon className="w-8 h-8 text-primary mb-4 relative z-10" />
 
                 {/* Content */}
                 <h3 className="text-xl font-medium mb-3 relative z-10">{program.title}</h3>
@@ -53,7 +53,7 @@ export default function WhatWeDo() {
 
                 {/* Learn More */}
                 <Link to={`/programs/${program.slug}`} className="relative inline-block text-sm font-medium text-charcoal z-10">
-                  <span>Learn More →</span>
+                  <span>Selengkapnya →</span>
                   <motion.div
                     className="absolute bottom-0 left-0 right-0 h-px bg-charcoal origin-left"
                     initial={{ scaleX: 0 }}

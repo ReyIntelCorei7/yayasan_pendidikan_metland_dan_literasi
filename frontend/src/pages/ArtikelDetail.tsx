@@ -124,7 +124,7 @@ export default function ArtikelDetail() {
           <p className="text-gray-400 mb-8 text-sm">Artikel yang kamu cari mungkin telah dihapus atau tidak tersedia.</p>
           <Link
             to="/artikel"
-            className="inline-flex items-center gap-2 bg-lime text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-lime-hover transition-colors"
+            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-primary-hover transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Kembali ke Artikel
           </Link>
@@ -137,7 +137,7 @@ export default function ArtikelDetail() {
     <>
       {/* ─── Reading Progress Bar ─────────────────────────── */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[3px] bg-lime z-[60] origin-left"
+        className="fixed top-0 left-0 right-0 h-[3px] bg-primary z-[60] origin-left"
         style={{ scaleX }}
       />
 
@@ -147,7 +147,7 @@ export default function ArtikelDetail() {
           <div className="mb-6">
             <Link
               to="/artikel"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-lime hover:underline uppercase tracking-wider"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline uppercase tracking-wider"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Kembali ke Artikel
             </Link>
@@ -156,7 +156,7 @@ export default function ArtikelDetail() {
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-block text-xs font-bold tracking-[2px] uppercase text-lime bg-lime/10 rounded-full px-3 py-1 mb-4"
+            className="inline-block text-xs font-bold tracking-[2px] uppercase text-primary bg-primary/10 rounded-full px-3 py-1 mb-4"
           >
             {post.category}
           </motion.span>
@@ -236,7 +236,7 @@ export default function ArtikelDetail() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="text-lg lg:text-xl text-gray-500 leading-relaxed mb-10 border-l-4 border-lime pl-5"
+              className="text-lg lg:text-xl text-gray-500 leading-relaxed mb-10 border-l-4 border-primary pl-5"
             >
               {post.excerpt}
             </motion.p>
@@ -250,7 +250,7 @@ export default function ArtikelDetail() {
           >
             {bodyIsHtml ? (
               <div
-                className="prose prose-lg max-w-none prose-headings:text-charcoal prose-headings:font-bold prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-lime prose-a:no-underline hover:prose-a:underline prose-strong:text-charcoal prose-img:rounded-xl"
+                className="prose prose-lg max-w-none prose-headings:text-charcoal prose-headings:font-bold prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-charcoal prose-img:rounded-xl"
                 dangerouslySetInnerHTML={{ __html: post.body }}
               />
             ) : (
@@ -267,7 +267,7 @@ export default function ArtikelDetail() {
                 {post.tags.map((tag) => (
                   <motion.span
                     key={tag}
-                    whileHover={{ scale: 1.05, backgroundColor: '#228bcb', color: '#fff' }}
+                    whileHover={{ scale: 1.05, backgroundColor: '#3D8ABF', color: '#fff' }}
                     className="text-xs font-medium bg-gray-100 text-gray-500 rounded-full px-4 py-1.5 cursor-default transition-colors duration-200"
                   >
                     #{tag}
@@ -293,7 +293,7 @@ export default function ArtikelDetail() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-lime hover:border-lime transition-colors duration-200"
+                    className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-colors duration-200"
                     title={item.label}
                   >
                     {item.svg}
@@ -304,7 +304,7 @@ export default function ArtikelDetail() {
                   onClick={handleCopy}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-lime hover:border-lime transition-colors duration-200"
+                  className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-colors duration-200"
                   title="Salin tautan"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -347,10 +347,10 @@ export default function ArtikelDetail() {
                         loading="lazy"
                       />
                     </div>
-                    <span className="inline-block text-xs font-bold tracking-[1px] uppercase text-lime bg-lime/10 rounded px-2 py-0.5 mb-2">
+                    <span className="inline-block text-xs font-bold tracking-[1px] uppercase text-primary bg-primary/10 rounded px-2 py-0.5 mb-2">
                       {p.category}
                     </span>
-                    <h3 className="text-sm font-semibold text-white group-hover:text-lime transition-colors duration-300 line-clamp-2 mb-2">
+                    <h3 className="text-sm font-semibold text-white group-hover:text-primary transition-colors duration-300 line-clamp-2 mb-2">
                       {p.title}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -387,10 +387,10 @@ export default function ArtikelDetail() {
                         loading="lazy"
                       />
                     </div>
-                    <span className="inline-block text-xs font-bold tracking-[2px] uppercase text-lime bg-lime/10 rounded-full px-3 py-1 mb-3">
+                    <span className="inline-block text-xs font-bold tracking-[2px] uppercase text-primary bg-primary/10 rounded-full px-3 py-1 mb-3">
                       {p.category}
                     </span>
-                    <h3 className="text-base font-semibold text-charcoal group-hover:text-lime transition-colors duration-300 line-clamp-2 mb-2">
+                    <h3 className="text-base font-semibold text-charcoal group-hover:text-primary transition-colors duration-300 line-clamp-2 mb-2">
                       {p.title}
                     </h3>
                     <p className="text-xs text-gray-400">
@@ -408,7 +408,7 @@ export default function ArtikelDetail() {
       <section className="bg-charcoal py-20">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <ScrollReveal>
-            <span className="inline-block text-xs font-bold tracking-[3px] uppercase text-lime mb-4">
+            <span className="inline-block text-xs font-bold tracking-[3px] uppercase text-primary mb-4">
               Newsletter
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4" style={{ letterSpacing: '-1px' }}>
@@ -424,13 +424,13 @@ export default function ArtikelDetail() {
               <input
                 type="email"
                 placeholder="Alamat email Anda"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-lime/50 transition-colors"
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
               />
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-6 py-3 bg-lime text-white rounded-xl text-sm font-semibold hover:bg-lime-hover transition-colors shrink-0"
+                className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-hover transition-colors shrink-0"
               >
                 Berlangganan
               </motion.button>

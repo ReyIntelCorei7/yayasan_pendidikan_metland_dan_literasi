@@ -10,7 +10,7 @@ const schools = [
     level: 'Taman Kanak-Kanak',
     tagline: 'Menanamkan cinta belajar sejak dini',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#228bcb',
+    color: '#10B981', // Accent green
   },
   {
     slug: 'sd-tunas-metropolitan',
@@ -18,31 +18,31 @@ const schools = [
     level: 'Sekolah Dasar',
     tagline: 'Fondasi kokoh untuk masa depan cerah',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#228bcb',
+    color: '#E5A320', // Secondary gold
   },
   {
     slug: 'smk-pariwisata-metland-school',
     name: 'SMK Pariwisata Metland School',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Profesional di industri pariwisata dan perhotelan',
-    image: '/src/assets/sekolahsmkmetland.png',
-    color: '#228bcb',
+    image: '/src/assets/sekolahsmkmetland.webp',
+    color: '#3D8ABF', // Primary blue
   },
   {
     slug: 'smk-metland',
     name: 'SMK Metland',
     level: 'Sekolah Menengah Kejuruan',
     tagline: 'Mencetak tenaga terampil siap industri',
-    image: '/src/assets/sekolahsmkmetlandcibitung.jpg',
-    color: '#228bcb',
+    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
+    color: '#2E6F9E', // Darker blue
   },
   {
     slug: 'metland-college',
     name: 'Metland College',
     level: 'Perguruan Tinggi',
     tagline: 'Pendidikan tinggi vokasional berstandar global',
-    image: '/src/assets/sekolahsmkmetland.png',
-    color: '#228bcb',
+    image: '/src/assets/sekolahsmkmetland.webp',
+    color: '#8B5CF6', // Purple
   },
 ];
 
@@ -52,9 +52,9 @@ export default function ProgramsGrid() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <ScrollReveal>
           <div className='flex items-center gap-3'>
-            <div className="w-2 h-2 bg-[#228bcb] animate-pulse mb-4" />
+            <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
             <p
-              className="text-sm text-[#228bcb] uppercase tracking-[0.2em] mb-4"
+              className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
               Unit Pendidikan
@@ -63,13 +63,13 @@ export default function ProgramsGrid() {
         </ScrollReveal>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <WordReveal
-            text="Our School"
+            text="Sekolah Kami"
             tag="h2"
             className="text-4xl lg:text-6xl font-light text-charcoal"
           />
           <Link
             to="/our-school"
-            className="text-sm font-medium text-charcoal hover:text-[#228bcb] transition-colors mt-4 md:mt-0 group"
+            className="text-sm font-medium text-charcoal hover:text-[#3D8ABF] transition-colors mt-4 md:mt-0 group"
           >
             Lihat Semua
             <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
@@ -81,9 +81,13 @@ export default function ProgramsGrid() {
           {schools.map((school, i) => (
             <ScrollReveal key={school.slug} delay={i * 0.08}>
               <Link to={`/our-school/${school.slug}`} className="group block h-full">
-                <div className="relative overflow-hidden border border-gray-100 hover:border-[#228bcb]/20 transition-all duration-500 h-full bg-white shadow-lg hover:shadow-xl hover:shadow-[#228bcb]/5 card-glow">
+                <motion.div 
+                  whileHover={{ y: -10, scale: 1.01 }}
+                  className="relative overflow-hidden border border-gray-100 transition-all duration-500 h-full bg-white shadow-lg hover:shadow-2xl rounded-xl card-glow"
+                  style={{ '--hover-color': school.color } as React.CSSProperties}
+                >
                   {/* Image */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
                     <motion.img
                       src={school.image}
                       alt={school.name}
@@ -95,8 +99,8 @@ export default function ProgramsGrid() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                     <div className="absolute bottom-4 left-4">
                       <span
-                        className="text-xs px-3 py-1 rounded-full text-white"
-                        style={{ background: 'rgba(34,139,203,0.85)' }}
+                        className="text-xs px-3 py-1.5 rounded-full text-white font-medium shadow-md"
+                        style={{ background: school.color }}
                       >
                         {school.level}
                       </span>
@@ -104,19 +108,24 @@ export default function ProgramsGrid() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5 lg:p-6">
+                  <div className="p-6 lg:p-7">
                     <h3
-                      className="font-semibold text-charcoal text-lg group-hover:text-[#228bcb] transition-colors duration-300"
+                      className="font-semibold text-charcoal text-xl transition-colors duration-300"
                       style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = school.color)}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = '')}
                     >
                       {school.name}
                     </h3>
-                    <p className="text-sm text-gray-400 mt-1">{school.tagline}</p>
-                    <span className="inline-flex items-center gap-1 text-[#228bcb] text-xs font-medium mt-4 group-hover:gap-2 transition-all">
+                    <p className="text-sm text-gray-400 mt-2">{school.tagline}</p>
+                    <span 
+                      className="inline-flex items-center gap-1 text-xs font-semibold mt-5 group-hover:gap-2 transition-all uppercase tracking-wide"
+                      style={{ color: school.color }}
+                    >
                       Selengkapnya <span>→</span>
                     </span>
                   </div>
-                </div>
+                </motion.div>
               </Link>
             </ScrollReveal>
           ))}

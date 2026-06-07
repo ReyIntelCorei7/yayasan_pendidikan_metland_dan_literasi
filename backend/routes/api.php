@@ -3,8 +3,8 @@
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Support\Facades\Route;
 
-// Public API - No authentication required
-Route::prefix('v1')->group(function () {
+// Public API - No authentication required, but with rate limiting (60 requests per minute)
+Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     Route::get('/programs', [ApiController::class, 'programs']);
     Route::get('/programs/{slug}', [ApiController::class, 'programBySlug']);
 
@@ -18,4 +18,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/books', [ApiController::class, 'books']);
     Route::get('/books/{id}', [ApiController::class, 'bookById']);
+
+    Route::get('/banners', [ApiController::class, 'banners']);
 });

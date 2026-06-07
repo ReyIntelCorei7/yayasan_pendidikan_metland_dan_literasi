@@ -5,19 +5,19 @@ import WordReveal from '../animations/WordReveal';
 
 const impactRows = [
   {
-    stat: { value: 45000, suffix: '+', label: 'Lives Transformed' },
-    heading: 'Changing lives across the continent',
-    description: 'Through our education, health, and livelihoods programs, we have directly impacted over 45,000 individuals across six African countries, creating lasting change that ripples through communities.',
+    stat: { value: 25, suffix: '+', label: 'Tahun Pengalaman' },
+    heading: 'Mengabdi untuk Pendidikan Indonesia',
+    description: 'Sejak didirikan, Yayasan Pendidikan Metland terus berkomitmen memberikan layanan pendidikan terbaik dengan mengedepankan pembentukan karakter dan kompetensi akademik siswa.',
   },
   {
-    stat: { value: 120, suffix: '', label: 'Schools Supported' },
-    heading: 'Building infrastructure for learning',
-    description: 'We have built, renovated, and supported 120 schools across Africa, providing safe and conducive learning environments that inspire students to dream bigger.',
+    stat: { value: 3000, suffix: '+', label: 'Siswa Terdidik' },
+    heading: 'Membangun Generasi Unggul',
+    description: 'Kami telah mendidik ribuan siswa dari jenjang Taman Kanak-Kanak hingga Perguruan Tinggi, membekali mereka dengan keterampilan yang relevan dengan kebutuhan industri masa depan.',
   },
   {
-    stat: { value: 1000000, suffix: '+', label: 'Meals Served' },
-    heading: 'Nourishing bodies and minds',
-    description: 'Our feeding programs ensure that no student goes hungry. With over one million meals served, we are removing one of the biggest barriers to education in Africa.',
+    stat: { value: 150, suffix: '+', label: 'Penghargaan' },
+    heading: 'Prestasi dan Pengakuan',
+    description: 'Dedikasi kami dalam dunia pendidikan telah diakui melalui berbagai penghargaan tingkat regional maupun nasional, membuktikan kualitas pendidikan yang konsisten.',
   },
 ];
 
@@ -26,10 +26,10 @@ export default function ImpactNumbers() {
     <section className="bg-[#FCFCFC] py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
-          <p className="text-xs text-lime uppercase tracking-[0.2em] mb-4">By The Numbers</p>
+          <p className="text-xs text-primary uppercase tracking-[0.2em] mb-4">Dalam Angka</p>
         </ScrollReveal>
         <WordReveal
-          text="Our Impact in Numbers"
+          text="Dampak Kami"
           tag="h2"
           className="text-4xl lg:text-5xl font-light text-charcoal mb-20"
         />
@@ -50,10 +50,10 @@ export default function ImpactNumbers() {
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:w-1/2"
               >
-                <div className="w-12 h-[2px] bg-lime mb-6" />
+                <div className="w-12 h-[2px] bg-primary mb-6" />
                 <div className="text-6xl lg:text-7xl xl:text-8xl font-extralight text-charcoal">
                   <CountUpTrigger end={row.stat.value} suffix="" />
-                  <span className="text-lime">{row.stat.suffix}</span>
+                  <span className="text-primary">{row.stat.suffix}</span>
                 </div>
                 <p className="text-base text-gray-500 mt-2">{row.stat.label}</p>
               </motion.div>

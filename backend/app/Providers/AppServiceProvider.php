@@ -31,13 +31,13 @@ class AppServiceProvider extends ServiceProvider
     {
         // Posts
         Post::saved(function (Post $post) {
-            Cache::forget('api.posts');
+            Cache::put('api.posts.version', time());
             if ($post->slug) {
                 Cache::forget("api.post.{$post->slug}");
             }
         });
         Post::deleted(function (Post $post) {
-            Cache::forget('api.posts');
+            Cache::put('api.posts.version', time());
             if ($post->slug) {
                 Cache::forget("api.post.{$post->slug}");
             }
@@ -45,11 +45,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Books
         Book::saved(function (Book $book) {
-            Cache::forget('api.books');
+            Cache::put('api.books.version', time());
             Cache::forget("api.book.{$book->id}");
         });
         Book::deleted(function (Book $book) {
-            Cache::forget('api.books');
+            Cache::put('api.books.version', time());
             Cache::forget("api.book.{$book->id}");
         });
 
@@ -82,5 +82,9 @@ class AppServiceProvider extends ServiceProvider
         // Team Members
         TeamMember::saved(fn () => Cache::forget('api.team'));
         TeamMember::deleted(fn () => Cache::forget('api.team'));
+
+        // Banners
+        \App\Models\Banner::saved(fn () => Cache::forget('api.banners'));
+        \App\Models\Banner::deleted(fn () => Cache::forget('api.banners'));
     }
 }
