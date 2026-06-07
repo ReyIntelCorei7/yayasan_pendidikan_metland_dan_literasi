@@ -8,8 +8,7 @@ const pengurus = [
     category: 'Pembina',
     description: 'Memberikan arahan strategis dan pengawasan terhadap pengelolaan yayasan.',
     members: [
-      { name: 'Dr. H. Budi Santoso, M.M.', title: 'Ketua Pembina', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80' },
-      { name: 'Ir. Siti Rahmawati, M.T.', title: 'Anggota Pembina', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' },
+      { name: 'Bapak Ir. Pandu Gunandito', title: 'Ketua Pembina', photo: '/src/assets/MS_ketuayayasan.jpg' },
     ],
   },
   {
@@ -248,6 +247,23 @@ export default function StrukturOrganisasi() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ════════════ MEMBERS LIST ════════════ */}
+      <section className="bg-white py-24">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          {/* Section Header */}
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <div className="w-12 h-[3px] bg-[#228bcb] mx-auto mb-6" />
+              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">Daftar Anggota</h2>
+              <p className="text-gray-400 text-sm max-w-lg mx-auto">
+                Seluruh anggota pengurus dan jajaran Yayasan Pendidikan Metland.
+              </p>
+            </div>
+
+          </ScrollReveal>
+          </div>
       </section>
     </>
   );
