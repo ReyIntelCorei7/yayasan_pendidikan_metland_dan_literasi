@@ -25,7 +25,7 @@ export default function CTABanner() {
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl lg:text-5xl font-light text-white leading-tight">
-          Bergabung Bersama Kami
+          Hubungi Kami
         </h2>
 
         <motion.p
@@ -52,15 +52,6 @@ export default function CTABanner() {
               whileTap={{ scale: 0.97 }}
             >
               Hubungi Kami <span className="ml-1 text-primary">→</span>
-            </motion.span>
-          </Link>
-          <Link to="/profil">
-            <motion.span
-              className="inline-flex items-center border border-white/50 text-white px-8 py-4 rounded text-sm font-semibold cursor-pointer bg-white/5 backdrop-blur-sm"
-              whileHover={{ borderColor: '#fff', backgroundColor: 'rgba(255,255,255,0.1)' }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Pelajari Lebih Lanjut
             </motion.span>
           </Link>
         </motion.div>

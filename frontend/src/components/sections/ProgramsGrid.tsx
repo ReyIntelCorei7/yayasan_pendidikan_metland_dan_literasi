@@ -48,18 +48,18 @@ const schools = [
 
 export default function ProgramsGrid() {
   return (
-    <section className="bg-offwhite py-24 relative">
+    <section className="bg-offwhite py-16 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <ScrollReveal>
-          <div className='flex items-center gap-3'>
-            <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
-            <p
-              className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
-              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
-            >
-              Unit Pendidikan
-            </p>
-          </div>
+          <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
+                  <p
+                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
+                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                  >
+                    Unit Pendidikan
+                  </p>
+                </div>
         </ScrollReveal>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <WordReveal

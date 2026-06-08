@@ -181,7 +181,7 @@ export default function NewsInsights() {
     return (
       <section className="relative bg-[#FCFCFC] py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col items-center py-24 px-4">
+          <div className="flex flex-col items-center px-4">
             <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-blue-300/20 flex items-center justify-center mb-6">
               <BookOpen className="w-12 h-12 text-[#3D8ABF]" />
             </div>

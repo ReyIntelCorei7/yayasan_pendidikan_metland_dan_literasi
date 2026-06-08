@@ -144,7 +144,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden"
+      className="relative min-h-screen min-w-screen overflow-hidden bg-[#020c1b]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -159,7 +159,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.6, ease: 'easeOut' }}
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full min-w-full min-h-full object-cover object-center"
           loading="eager"
         />
         )}
@@ -241,8 +241,8 @@ export default function HeroSection() {
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light italic mt-1"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mt-1"
+                  style={{ fontFamily: "'Eras ITC', 'Eras ITC Bold', sans-serif", fontWeight: 700 }}
                 >
                   Metland
                 </motion.span>

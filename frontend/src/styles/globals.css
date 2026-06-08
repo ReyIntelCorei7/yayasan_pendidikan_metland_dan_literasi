@@ -15,6 +15,7 @@
 
   body {
     @apply font-sans text-charcoal antialiased bg-[#FCFCFC] overflow-x-hidden;
+    min-width: 100vw;
   }
 
   ::selection {

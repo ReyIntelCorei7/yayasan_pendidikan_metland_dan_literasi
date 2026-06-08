@@ -16,15 +16,15 @@ export default function ImpactSpotlight() {
   return (
     <section ref={sectionRef}>
       {/* Section Header */}
-      <div className="bg-[#FCFCFC] py-16 pb-0">
+      <div className="bg-[#FCFCFC] py-2 pb-0">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-4">
             <div>
               <ScrollReveal>
-                <div className='flex items-center gap-3'>
+                <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
                   <p
-                    className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
+                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
                     Sambutan Ketua Yayasan Pendidikan
@@ -34,7 +34,7 @@ export default function ImpactSpotlight() {
               <WordReveal
                 text="Sambutan Ketua Yayasan"
                 tag="h2"
-                className="text-4xl lg:text-6xl font-light text-charcoal"
+                className=""
               />
             </div>
           </div>
@@ -104,8 +104,7 @@ export default function ImpactSpotlight() {
           <WordReveal
             text="Membangun Masa Depan Melalui Pendidikan Berkualitas"
             tag="h2"
-            className="text-3xl lg:text-4xl font-light text-white"
-            delay={0.4}
+            className=""
           />
 
           <ScrollReveal delay={0.6}>

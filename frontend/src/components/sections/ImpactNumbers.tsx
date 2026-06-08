@@ -23,15 +23,23 @@ const impactRows = [
 
 export default function ImpactNumbers() {
   return (
-    <section className="bg-[#FCFCFC] py-24">
+    <section className="bg-[#FCFCFC] py-4">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
-          <p className="text-xs text-primary uppercase tracking-[0.2em] mb-4">Dalam Angka</p>
+          <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
+                  <p
+                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
+                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                  >
+                    Dalam Rangka
+                  </p>
+                </div>
         </ScrollReveal>
         <WordReveal
           text="Dampak Kami"
           tag="h2"
-          className="text-4xl lg:text-5xl font-light text-charcoal mb-20"
+          className="mb-8"
         />
 
         <div className="space-y-24">

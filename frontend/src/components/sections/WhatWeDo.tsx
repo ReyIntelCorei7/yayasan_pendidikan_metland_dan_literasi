@@ -10,15 +10,23 @@ const featured = programs.filter((p) => p.isFeatured).slice(0, 3);
 
 export default function WhatWeDo() {
   return (
-    <section className="bg-[#FCFCFC] py-24">
+    <section className="bg-[#FCFCFC] py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ScrollReveal>
-          <p className="text-xs text-primary uppercase tracking-[0.2em] mb-4">Fokus Utama Kami</p>
+          <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
+                  <p
+                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
+                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+                  >
+                    Fokus Utama Kami
+                  </p>
+                </div>
         </ScrollReveal>
         <WordReveal
           text="Apa yang Kami Lakukan"
           tag="h2"
-          className="text-4xl lg:text-5xl font-light text-charcoal mb-16"
+          className=""
         />
 
         <div className="grid md:grid-cols-3 gap-8">

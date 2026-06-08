@@ -13,11 +13,11 @@ export default function Home() {
     <div className="homepage-dark">
       <HeroSection />
       <MarqueeStrip />
-      <WhatWeDo />
+      <NewsInsights />
       <ImpactSpotlight />
+      <WhatWeDo />
       <ImpactNumbers />
       <ProgramsGrid />
-      <NewsInsights />
       <PartnerLogos />
       <CTABanner />
     </div>
