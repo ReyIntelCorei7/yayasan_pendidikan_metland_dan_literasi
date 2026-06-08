@@ -3,7 +3,7 @@ import CountUpTrigger from '../animations/CountUpTrigger';
 import ScrollReveal from '../animations/ScrollReveal';
 import WordReveal from '../animations/WordReveal';
 
-const impactRows = [
+const experienceRows = [
   {
     stat: { value: 25, suffix: '+', label: 'Tahun Pengalaman' },
     heading: 'Mengabdi untuk Pendidikan Indonesia',
@@ -21,7 +21,7 @@ const impactRows = [
   },
 ];
 
-export default function ImpactNumbers() {
+export default function ExperienceNumbers() {
   return (
     <section className="bg-[#FCFCFC] py-4">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -43,7 +43,7 @@ export default function ImpactNumbers() {
         />
 
         <div className="space-y-24">
-          {impactRows.map((row, i) => (
+          {experienceRows.map((row, i) => (
             <div
               key={i}
               className={`flex flex-col gap-12 lg:gap-16 ${

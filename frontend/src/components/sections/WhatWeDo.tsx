@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, HeartPulse, Sprout } from 'lucide-react';
 import WordReveal from '../animations/WordReveal';
@@ -58,17 +57,7 @@ export default function WhatWeDo() {
                 {/* Content */}
                 <h3 className="text-xl font-medium mb-3 relative z-10">{program.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed mb-6 relative z-10">{program.description}</p>
-
-                {/* Learn More */}
-                <Link to={`/programs/${program.slug}`} className="relative inline-block text-sm font-medium text-charcoal z-10">
-                  <span>Selengkapnya →</span>
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px bg-charcoal origin-left"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </Link>
+              
               </motion.div>
             );
           })}

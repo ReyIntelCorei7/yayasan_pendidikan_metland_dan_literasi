@@ -5,7 +5,7 @@ import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import ketuaYayasanImg from '../../assets/MS_ketuayayasan.webp';
 
-export default function ImpactSpotlight() {
+export default function ExperienceSpotlight() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
