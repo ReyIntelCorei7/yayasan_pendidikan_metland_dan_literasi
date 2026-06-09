@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const tickerWords = [
   'PENDIDIKAN',
@@ -14,12 +15,15 @@ const separator = ' • ';
 const fullText = tickerWords.join(separator) + separator;
 
 export default function MarqueeStrip() {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   });
   const x = useTransform(scrollYProgress, [0, 1], ['0%', '-8%']);
+
+  const fullText = t('marquee.words');
 
   return (
     <section

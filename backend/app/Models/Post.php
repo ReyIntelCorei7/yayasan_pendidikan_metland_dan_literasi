@@ -31,6 +31,9 @@ class Post extends Model
         'is_important'  => 'boolean',
         'published_at'  => 'date',
         'reading_time'  => 'integer',
+        'title'         => 'array',
+        'excerpt'       => 'array',
+        'body'          => 'array',
     ];
 
     public function tags(): HasMany

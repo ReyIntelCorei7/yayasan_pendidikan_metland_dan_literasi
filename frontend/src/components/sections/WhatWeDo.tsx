@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, HeartPulse, Sprout } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import { programs } from '../../data/programs';
+import { getTrans } from '../../i18n';
 
 const icons = [BookOpen, HeartPulse, Sprout];
 const featured = programs.filter((p) => p.isFeatured).slice(0, 3);
 
 export default function WhatWeDo() {
+  const { t, i18n } = useTranslation();
   return (
     <section className="bg-[#FCFCFC] py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -19,12 +22,12 @@ export default function WhatWeDo() {
                     className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
-                    Fokus Utama Kami
+                    {t('what_we_do.subtitle')}
                   </p>
                 </div>
         </ScrollReveal>
         <WordReveal
-          text="Apa yang Kami Lakukan"
+          text={t('what_we_do.title')}
           tag="h2"
           className=""
         />
@@ -56,12 +59,12 @@ export default function WhatWeDo() {
                 <Icon className="w-8 h-8 text-primary mb-4 relative z-10" />
 
                 {/* Content */}
-                <h3 className="text-xl font-medium mb-3 relative z-10">{program.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6 relative z-10">{program.description}</p>
+                <h3 className="text-xl font-medium mb-3 relative z-10">{getTrans(program.title, i18n.language)}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mb-6 relative z-10">{getTrans(program.description, i18n.language)}</p>
 
                 {/* Learn More */}
                 <Link to={`/programs/${program.slug}`} className="relative inline-block text-sm font-medium text-charcoal z-10">
-                  <span>Selengkapnya →</span>
+                  <span>{t('what_we_do.read_more')} →</span>
                   <motion.div
                     className="absolute bottom-0 left-0 right-0 h-px bg-charcoal origin-left"
                     initial={{ scaleX: 0 }}

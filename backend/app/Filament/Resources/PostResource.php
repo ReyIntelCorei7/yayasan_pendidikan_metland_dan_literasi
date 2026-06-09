@@ -35,23 +35,11 @@ class PostResource extends Resource
     {
         return $schema->components([
             Section::make('Informasi Artikel')->schema([
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Judul Artikel')
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, $set) =>
-                        $operation === 'create' ? $set('slug', Str::slug($state)) : null
-                    ),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
                     ->label('Slug URL'),
-                Textarea::make('excerpt')
-                    ->required()
-                    ->rows(3)
-                    ->label('Ringkasan / Excerpt'),
                 Select::make('category')
                     ->options([
                         'Berita'      => 'Berita',
@@ -65,12 +53,37 @@ class PostResource extends Resource
                     ->label('Kategori'),
             ])->columns(2),
 
-            Section::make('Konten')->schema([
-                RichEditor::make('body')
-                    ->required()
-                    ->label('Isi Artikel')
-                    ->columnSpanFull(),
-            ]),
+            Section::make('Konten (Bilingual)')->schema([
+                \Filament\Forms\Components\Tabs::make('Translations')->tabs([
+                    \Filament\Forms\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
+                        TextInput::make('title.id')
+                            ->required()
+                            ->maxLength(255)
+                            ->label('Judul Artikel (ID)')
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (string $operation, $state, $set) =>
+                                $operation === 'create' ? $set('slug', Str::slug($state)) : null
+                            ),
+                        Textarea::make('excerpt.id')
+                            ->required()
+                            ->rows(3)
+                            ->label('Ringkasan / Excerpt (ID)'),
+                        RichEditor::make('body.id')
+                            ->required()
+                            ->label('Isi Artikel (ID)'),
+                    ]),
+                    \Filament\Forms\Components\Tabs\Tab::make('English (EN)')->schema([
+                        TextInput::make('title.en')
+                            ->maxLength(255)
+                            ->label('Judul Artikel (EN)'),
+                        Textarea::make('excerpt.en')
+                            ->rows(3)
+                            ->label('Ringkasan / Excerpt (EN)'),
+                        RichEditor::make('body.en')
+                            ->label('Isi Artikel (EN)'),
+                    ]),
+                ]),
+            ])->columnSpanFull(),
 
             Section::make('Penulis & Media')->schema([
                 TextInput::make('author_name')
@@ -125,11 +138,11 @@ class PostResource extends Resource
                     ->label('Gambar')
                     ->square()
                     ->size(48),
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('title.id')
                     ->searchable()
                     ->sortable()
-                    ->limit(50)
-                    ->label('Judul'),
+                    ->label('Judul Artikel')
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
                     ->label('Kategori'),

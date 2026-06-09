@@ -1,6 +1,8 @@
 import usePartners from '../../hooks/usePartners';
+import { useTranslation } from 'react-i18next';
 
 export default function PartnerLogos() {
+  const { t } = useTranslation();
   const { partners, loading } = usePartners();
   const activePartners = partners.filter((p) => p.isActive);
 
@@ -40,7 +42,7 @@ export default function PartnerLogos() {
         <div className="section-divider w-full absolute top-0" />
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-[10px] sm:text-xs text-primary uppercase tracking-widest mb-6 sm:mb-10 text-center font-semibold" style={{ fontFamily: "'Geist', Inter, sans-serif" }}>
-            Mitra &amp; Pendukung Kami
+            {t('partner_logos.subtitle')}
           </p>
           <div className="flex justify-center space-x-8 animate-pulse opacity-50">
             <div className="w-24 h-12 bg-gray-200 rounded"></div>
@@ -66,7 +68,7 @@ export default function PartnerLogos() {
           className="text-[10px] sm:text-xs text-primary uppercase tracking-widest mb-6 sm:mb-10 text-center font-semibold"
           style={{ fontFamily: "'Geist', Inter, sans-serif" }}
         >
-          Mitra &amp; Pendukung Kami
+          {t('partner_logos.subtitle')}
         </p>
       </div>
 

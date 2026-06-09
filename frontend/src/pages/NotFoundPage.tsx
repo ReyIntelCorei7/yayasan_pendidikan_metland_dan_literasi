@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import logoYayasan from '../assets/logoyayasan.png';
 
 export default function NotFoundPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-offwhite flex flex-col items-center justify-center px-6 relative overflow-hidden">
       {/* Subtle background element */}
@@ -21,11 +24,11 @@ export default function NotFoundPage() {
         </h1>
         
         <h2 className="text-2xl md:text-3xl font-medium text-charcoal mb-4">
-          Halaman Tidak Ditemukan
+          {t('not_found.title')}
         </h2>
         
         <p className="text-gray-500 max-w-md mb-8">
-          Maaf, halaman yang Anda cari mungkin telah dipindahkan, dihapus, atau tidak pernah ada.
+          {t('not_found.subtitle')}
         </p>
         
         <Link to="/">
@@ -34,7 +37,7 @@ export default function NotFoundPage() {
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-md font-medium shadow-lg shadow-primary/20 hover:bg-primary-600 transition-colors"
           >
-            Kembali ke Beranda
+            {t('not_found.back_home')}
           </motion.span>
         </Link>
       </motion.div>

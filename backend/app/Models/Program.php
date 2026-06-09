@@ -24,6 +24,9 @@ class Program extends Model
     protected $casts = [
         'is_featured' => 'boolean',
         'order' => 'integer',
+        'title' => 'array',
+        'tagline' => 'array',
+        'description' => 'array',
     ];
 
     public function stats(): HasMany

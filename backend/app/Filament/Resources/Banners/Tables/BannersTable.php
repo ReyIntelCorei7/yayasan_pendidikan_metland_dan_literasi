@@ -16,7 +16,7 @@ class BannersTable
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TextColumn::make('title.id')->label('Judul')
                     ->searchable(),
                 ImageColumn::make('image'),
                 TextColumn::make('order')

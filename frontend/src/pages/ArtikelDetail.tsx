@@ -5,6 +5,8 @@ import { usePost, usePosts } from '../hooks/usePosts';
 import { useMemo, useRef, useState } from 'react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
+import { getTrans } from '../i18n';
+import { useTranslation } from 'react-i18next';
 
 /* ─── Share icons ───────────────────────────────────────────── */
 const shareTargets = [
@@ -78,6 +80,7 @@ export default function ArtikelDetail() {
   const { slug } = useParams();
   const { post, loading } = usePost(slug);
   const { posts: allPosts } = usePosts();
+  const { i18n } = useTranslation();
   const [copied, setCopied] = useState(false);
   /* Scroll progress bar */
   const { scrollYProgress } = useScroll();
@@ -168,7 +171,7 @@ export default function ArtikelDetail() {
             className="text-3xl lg:text-5xl font-bold text-charcoal leading-tight mb-8"
             style={{ letterSpacing: '-0.5px' }}
           >
-            {post.title}
+            {getTrans(post.title, i18n.language)}
           </motion.h1>
 
           <motion.div
@@ -238,7 +241,7 @@ export default function ArtikelDetail() {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="text-lg lg:text-xl text-gray-500 leading-relaxed mb-10 border-l-4 border-primary pl-5"
             >
-              {post.excerpt}
+              {getTrans(post.excerpt, i18n.language)}
             </motion.p>
           )}
 
@@ -251,11 +254,11 @@ export default function ArtikelDetail() {
             {bodyIsHtml ? (
               <div
                 className="prose prose-lg max-w-none prose-headings:text-charcoal prose-headings:font-bold prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-charcoal prose-img:rounded-xl"
-                dangerouslySetInnerHTML={{ __html: post.body }}
+                dangerouslySetInnerHTML={{ __html: getTrans(post.body, i18n.language) }}
               />
             ) : (
               <div className="prose prose-lg max-w-none">
-                <p className="text-gray-600 leading-relaxed">{post.body}</p>
+                <p className="text-gray-600 leading-relaxed">{getTrans(post.body, i18n.language)}</p>
               </div>
             )}
           </motion.div>
@@ -351,7 +354,7 @@ export default function ArtikelDetail() {
                       {p.category}
                     </span>
                     <h3 className="text-sm font-semibold text-white group-hover:text-primary transition-colors duration-300 line-clamp-2 mb-2">
-                      {p.title}
+                      {getTrans(p.title, i18n.language)}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-gray-400">
                       <Calendar className="w-3 h-3" />
@@ -391,7 +394,7 @@ export default function ArtikelDetail() {
                       {p.category}
                     </span>
                     <h3 className="text-base font-semibold text-charcoal group-hover:text-primary transition-colors duration-300 line-clamp-2 mb-2">
-                      {p.title}
+                      {getTrans(p.title, i18n.language)}
                     </h3>
                     <p className="text-xs text-gray-400">
                       {new Date(p.publishedAt).toLocaleDateString('id-ID', { month: 'long', day: 'numeric', year: 'numeric' })}

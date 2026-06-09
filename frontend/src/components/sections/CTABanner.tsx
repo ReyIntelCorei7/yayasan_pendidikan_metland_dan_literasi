@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export default function CTABanner() {
+  const { t } = useTranslation();
   return (
     <section
       className="py-20 lg:py-28 relative overflow-hidden bg-primary"
@@ -25,7 +27,7 @@ export default function CTABanner() {
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl lg:text-5xl font-light text-white leading-tight">
-          Hubungi Kami
+          {t('cta_banner.title')}
         </h2>
 
         <motion.p
@@ -35,7 +37,7 @@ export default function CTABanner() {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-gray-400 mt-4 mb-10"
         >
-          Jadilah bagian dari perjalanan membangun pendidikan berkualitas untuk masa depan Indonesia.
+          {t('cta_banner.subtitle')}
         </motion.p>
 
         <motion.div
@@ -51,7 +53,7 @@ export default function CTABanner() {
               whileHover={{ scale: 1.04, backgroundColor: '#FAFAF8' }}
               whileTap={{ scale: 0.97 }}
             >
-              Hubungi Kami <span className="ml-1 text-primary">→</span>
+              {t('cta_banner.btn')} <span className="ml-1 text-primary">→</span>
             </motion.span>
           </Link>
         </motion.div>

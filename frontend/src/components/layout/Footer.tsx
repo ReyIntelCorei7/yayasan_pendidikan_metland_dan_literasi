@@ -1,24 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import logoYayasan from '../../assets/logoyayasan.png';
-
-const footerLinks = {
-  'Our School': [
-    { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan' },
-    { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan' },
-    { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school' },
-    { label: 'SMK Metland', href: '/our-school/smk-metland' },
-    { label: 'Metland College', href: '/our-school/metland-college' },
-  ],
-  'Navigasi': [
-    { label: 'Home', href: '/' },
-    { label: 'Visi & Misi', href: '/profil/visi-misi' },
-    { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi' },
-    { label: 'Artikel', href: '/artikel' },
-    { label: 'Literasi', href: '/literasi' },
-    { label: 'Contact', href: '/contact' },
-  ],
-};
 
 const socialIcons = [
   { icon: (
@@ -39,6 +22,26 @@ const socialIcons = [
 ];
 
 export default function Footer() {
+  const { t } = useTranslation();
+
+  const footerLinks = {
+    'Our School': [
+      { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan' },
+      { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan' },
+      { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school' },
+      { label: 'SMK Metland', href: '/our-school/smk-metland' },
+      { label: 'Metland College', href: '/our-school/metland-college' },
+    ],
+    [t('footer.nav_heading')]: [
+      { label: t('navbar.home'), href: '/' },
+      { label: 'Visi & Misi', href: '/profil/visi-misi' },
+      { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi' },
+      { label: t('navbar.articles'), href: '/artikel' },
+      { label: t('navbar.literacy'), href: '/literasi' },
+      { label: t('navbar.contact'), href: '/contact' },
+    ],
+  };
+
   return (
     <footer className="relative bg-gradient-to-br from-[#0F0F1E] via-[#1A1A2E] to-[#16213E] text-white pt-20 pb-8 overflow-hidden">
       {/* Gradient accent lines */}
@@ -69,7 +72,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed font-light">
-              Membangun generasi unggul melalui pendidikan berkualitas, berkarakter, dan berlandaskan nilai-nilai keislaman.
+              {t('footer.brand_desc')}
             </p>
           </motion.div>
 
@@ -108,25 +111,25 @@ export default function Footer() {
             viewport={{ once: true }}
           >
             <h4 className="text-xs font-semibold uppercase tracking-widest text-[#3D8ABF] mb-6">
-              Hubungi Kami
+              {t('footer.contact_heading')}
             </h4>
             <div className="space-y-4 mb-6">
               <div>
-                <p className="text-xs text-gray-500 mb-1">Email</p>
+                <p className="text-xs text-gray-500 mb-1">{t('footer.email')}</p>
                 <a href="mailto:yayasanpendidikanmetland@gmail.com" className="text-sm text-gray-400 hover:text-white transition-colors font-light">
                   yayasanpendidikanmetland@gmail.com
                 </a>
               </div>
               <div>
-                <p className="text-xs text-gray-500 mb-1">Telepon</p>
+                <p className="text-xs text-gray-500 mb-1">{t('footer.phone')}</p>
                 <a href="tel:+6218772072" className="text-sm text-gray-400 hover:text-white transition-colors font-light">
                   021 877 2072 0829
                 </a>
               </div>
               <div>
-                <p className="text-xs text-gray-500 mb-1">Lokasi</p>
+                <p className="text-xs text-gray-500 mb-1">{t('footer.location')}</p>
                 <p className="text-sm text-gray-400 font-light">
-                  M Gold Tower, Lantai 15, JL. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148, Indonesia
+                  {t('footer.address')}
                 </p>
               </div>
             </div>
@@ -161,17 +164,17 @@ export default function Footer() {
           className="flex flex-col sm:flex-row justify-between items-center gap-6"
         >
           <p className="text-xs text-gray-500 font-light">
-            © {new Date().getFullYear()} Yayasan Pendidikan Metland. Designed By Reynara Rehan Rhaditya.
+            © {new Date().getFullYear()} {t('footer.copyright')}
           </p>
           <div className="flex gap-8">
             <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
-              Kebijakan Privasi
+              {t('footer.privacy_policy')}
             </a>
             <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
-              Syarat & Ketentuan
+              {t('footer.terms_conditions')}
             </a>
             <a href="#" className="text-xs text-gray-500 hover:text-white transition-colors duration-200 font-light">
-              Cookie Policy
+              {t('footer.cookie_policy')}
             </a>
           </div>
         </motion.div>

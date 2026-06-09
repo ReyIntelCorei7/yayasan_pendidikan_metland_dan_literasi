@@ -1,0 +1,359 @@
+{
+  "navbar": {
+    "home": "Home",
+    "profile": "Profile",
+    "our_school": "Our School",
+    "articles": "Articles",
+    "literacy": "Literacy",
+    "contact": "Contact",
+    "language": "Language",
+    "vision_mission": "Vision & Mission",
+    "vision_mission_desc": "Foundation vision, mission, and values",
+    "organization_structure": "Organizational Structure",
+    "organization_structure_desc": "Foundation board and management structure",
+    "tk_tunas_desc": "Tunas Metropolitan Kindergarten",
+    "sd_tunas_desc": "Tunas Metropolitan Elementary School",
+    "metland_college_desc": "Metland College Higher Education"
+  },
+  "hero": {
+    "welcome": "Welcome",
+    "title_line1": "Yayasan Pendidikan",
+    "title_line2": "Metland",
+    "subtitle": "committed to creating an innovative and character-building learning environment for the future of Indonesia.",
+    "about_us": "About Us",
+    "education_unit": "Education Units",
+    "stats": {
+      "years": "Years of Experience",
+      "years_desc": "Committed to the world of education since 1998.",
+      "students": "Students",
+      "students_desc": "Nurturing a generation of character and achievement.",
+      "units": "Education Units",
+      "units_desc": "Spread across various regions with excellent facilities.",
+      "achievements": "Achievements",
+      "achievements_desc": "Achieving outstanding accomplishments in various fields."
+    }
+  },
+  "marquee": {
+    "words": "EDUCATION • CHARACTER • INNOVATION • FUTURE • INTEGRITY • EXCELLENCE • "
+  },
+  "what_we_do": {
+    "subtitle": "Our Main Focus",
+    "title": "What We Do",
+    "read_more": "Read More"
+  },
+  "impact_spotlight": {
+    "title": "Chairman's Welcome Message",
+    "subtitle": "Welcome Message from the Chairman",
+    "name": "Mr. Ir. Pandu Gunandito",
+    "role": "Chairman of Yayasan Pendidikan Metland",
+    "heading": "Building the Future Through Quality Education",
+    "speech": "Peace be upon you, and Allah's mercy and blessings. Praise be to Allah SWT for all His grace and gifts. Yayasan Pendidikan Metland is here with a strong commitment to educating the nation's life through quality, character-based education grounded in Islamic values. We believe that every child deserves the best education to achieve a bright future.",
+    "read_more": "Read More"
+  },
+  "programs_grid": {
+    "subtitle": "Education Units",
+    "title": "Our Schools",
+    "view_all": "View All",
+    "read_more": "Read More"
+  },
+  "schools": {
+    "tk_tunas": {
+      "level": "Kindergarten",
+      "tagline": "Instilling a love of learning from an early age"
+    },
+    "sd_tunas": {
+      "level": "Elementary School",
+      "tagline": "A solid foundation for a bright future"
+    },
+    "smk_pariwisata": {
+      "level": "Vocational High School",
+      "tagline": "Professionals in the tourism and hospitality industry"
+    },
+    "smk_metland": {
+      "level": "Vocational High School",
+      "tagline": "Producing skilled, industry-ready workers"
+    },
+    "metland_college": {
+      "level": "Higher Education",
+      "tagline": "Global standard vocational higher education"
+    }
+  },
+  "impact_numbers": {
+    "subtitle": "In the Context of",
+    "title": "Our Impact",
+    "desc1": "Since 1998, Yayasan Pendidikan Metland has been dedicated to creating quality education access for Indonesia's youth.",
+    "desc2": "Through our various education units, we remain committed to producing graduates who are innovative, possess strong character, and are ready to face future challenges.",
+    "rows": [
+      {
+        "label": "Years of Experience",
+        "heading": "Serving Education in Indonesia",
+        "description": "Since its establishment, Yayasan Pendidikan Metland remains committed to providing the best educational services by prioritizing character building and students' academic competence."
+      },
+      {
+        "label": "Students Educated",
+        "heading": "Building a Superior Generation",
+        "description": "We have educated thousands of students from Kindergarten to Higher Education, equipping them with relevant skills for future industry needs."
+      },
+      {
+        "label": "Awards",
+        "heading": "Achievements and Recognition",
+        "description": "Our dedication in the world of education has been recognized through various regional and national awards, proving our consistent quality of education."
+      }
+    ]
+  },
+  "news_insights": {
+    "subtitle": "Articles",
+    "title": "News & Articles",
+    "read_more": "Read More",
+    "view_all": "View All",
+    "empty_title": "No Articles Yet",
+    "empty_desc": "We are preparing the latest articles. Check back later to read news and insights from the Foundation.",
+    "empty_btn": "View Articles Page →"
+  },
+  "partner_logos": {
+    "subtitle": "Industry & Academic Partners",
+    "title": "Trusted by Leading Institutions"
+  },
+  "cta_banner": {
+    "title": "Contact Us",
+    "subtitle": "Be a part of the journey in building quality education for the future of Indonesia.",
+    "btn": "Contact Us"
+  },
+  "footer": {
+    "brand_desc": "Building a superior generation through quality, character-based education grounded in Islamic values.",
+    "nav_heading": "Navigation",
+    "contact_heading": "Contact Us",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "address": "M Gold Tower, 15th Floor, JL. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148, Indonesia",
+    "copyright": "Yayasan Pendidikan Metland. Designed By Reynara Rehan Rhaditya.",
+    "privacy_policy": "Privacy Policy",
+    "terms_conditions": "Terms & Conditions",
+    "cookie_policy": "Cookie Policy"
+  },
+  "contact": {
+    "alert_success": "Thank you for your message! We will get back to you shortly.",
+    "hero_tag": "Contact",
+    "hero_subtitle": "For more information about Yayasan Pendidikan Metland",
+    "form_title": "Send a Message",
+    "form_name": "Your Name",
+    "form_name_ph": "Full Name",
+    "form_email": "Email Address",
+    "form_email_ph": "email@example.com",
+    "form_subject": "Subject",
+    "form_subject_ph": "How can we help you?",
+    "form_message": "Message",
+    "form_message_ph": "Write your message here...",
+    "form_submit": "Send Message →",
+    "office_title": "Head Office",
+    "location_title": "Our Location"
+  },
+  "about": {
+    "hero_title": "About Yayasan Pendidikan Metland",
+    "hero_subtitle": "Two decades of transforming lives through education, character, and sustainable empowerment.",
+    "mission_title": "Our Mission",
+    "mission_desc": "To build an education system that integrates academic knowledge, practical skills, and superior character to prepare students to become future leaders.",
+    "vision_title": "Our Vision",
+    "vision_desc": "To become a leading educational institution nationally recognized for producing outstanding, innovative, and noble graduates.",
+    "journey_title": "Our Journey",
+    "team_title": "Our Leadership Team",
+    "journey": [
+      { "year": "1998", "text": "Foundation established with a vision to transform Indonesia through education." },
+      { "year": "2005", "text": "First scholarship program launched to support high-achieving students." },
+      { "year": "2010", "text": "Opened new education units across various regions." },
+      { "year": "2015", "text": "Reached thousands of successful alumni across various industries." },
+      { "year": "2020", "text": "Launched digital literacy initiatives, equipping youth with tech skills." },
+      { "year": "2024", "text": "Continuing to grow and produce global-standard excellent graduates." }
+    ]
+  },
+  "artikel": {
+    "back_to_article": "Back to Articles",
+    "read_time": "min read",
+    "share": "Share",
+    "copy_link": "Copy link",
+    "link_copied": "Link copied!",
+    "other_articles": "Other Articles",
+    "related_articles": "Related Articles",
+    "newsletter_tag": "Newsletter",
+    "newsletter_title": "Stay connected with us",
+    "newsletter_desc": "Get the latest news and information from Yayasan Pendidikan Metland straight to your email.",
+    "newsletter_placeholder": "Your email address",
+    "newsletter_btn": "Subscribe",
+    "not_found_title": "Article Not Found",
+    "not_found_desc": "The article you are looking for may have been removed or is unavailable."
+  },
+  "literasi": {
+    "hero_tag": "Literacy Program — Yayasan Pendidikan Metland",
+    "hero_title1": "Building a Reading",
+    "hero_title2": " Culture.",
+    "hero_btn": "↓ Explore Programs",
+    "why_tag": "Why Literacy Matters",
+    "why_title": "More than just reading.",
+    "why_desc1": "Literacy is not just the ability to read and write. In this digital age, literacy encompasses the ability to think critically, deeply understand information, and communicate ideas effectively.",
+    "why_desc2": "Yayasan Pendidikan Metland is committed to making literacy the foundation of all learning processes, ensuring every student grows into a smart, critical, and knowledgeable individual.",
+    "why_btn": "About Us",
+    "active_in": "Active program in",
+    "schools_count": "5 School Units",
+    "collection_tag": "Our Collection",
+    "collection_title": "Library Facilities",
+    "programs_title": "Literacy Programs",
+    "digital_tag": "Digital Library",
+    "digital_title": "5,000+ E-Books Available",
+    "digital_desc": "Access our digital library anytime, anywhere. Available 24/7 with a growing collection of e-books to support the learning needs of students and teachers.",
+    "digital_btn": "Access E-Library",
+    "digital_collection_title": "Digital Book Collection",
+    "search_placeholder": "Search e-books...",
+    "categories": {
+      "Semua": "All",
+      "Pendidikan": "Education",
+      "Literasi": "Literacy",
+      "Sains": "Science",
+      "Fiksi": "Fiction",
+      "Agama": "Religion",
+      "Umum": "General"
+    },
+    "empty_title": "No books available yet",
+    "empty_desc": "Digital books will be added soon",
+    "loading": "Loading...",
+    "load_more": "Load More",
+    "cta_title1": "Join the",
+    "cta_title2": "Literacy Movement",
+    "cta_desc": "Register yourself or your child for our literacy program and build a reading habit from an early age.",
+    "cta_btn": "Register Now",
+    "koleksi": [
+      { "count": "1,200+", "countNum": 1200, "suffix": "+", "title": "Textbooks & References", "desc": "Collection of textbooks and academic references for all levels of education." },
+      { "count": "450+", "countNum": 450, "suffix": "+", "title": "Journals & Magazines", "desc": "Scientific journals, educational magazines, and national and international periodicals." },
+      { "count": "5,000+", "countNum": 5000, "suffix": "+", "title": "E-Library", "desc": "24-hour digital library access with thousands of electronic books and online resources." },
+      { "count": "12", "countNum": 12, "suffix": "", "title": "Shared Study Rooms", "desc": "Comfortable and conducive group study and discussion room facilities." }
+    ],
+    "programs": [
+      { "title": "Reading Corner", "desc": "Free book reading program every Friday for all levels. Provides access to quality reading material for all students." },
+      { "title": "Literacy Club", "desc": "Monthly routine book discussions guided by experienced mentors. Building an active and critical reader community." },
+      { "title": "Writing Contest", "desc": "Annual scientific and fiction writing competition between schools. Honing creativity and thinking skills." },
+      { "title": "Book Review", "desc": "Interactive event dissecting the content and meaning of selected books. Deepening literacy understanding collaboratively." },
+      { "title": "Story Telling", "desc": "Developing storytelling and public presentation skills. Training self-confidence and communication skills." },
+      { "title": "Library Visit", "desc": "Educational visits to national and regional libraries. Inspiring the passion for reading from an early age." }
+    ],
+    "stats": [
+      { "label": "E-Books Available" },
+      { "label": "Physical Books" },
+      { "label": "Reading Rooms" },
+      { "label": "School Units" }
+    ],
+    "read_now": "Read Now",
+    "download": "Download PDF"
+  },
+  "strukturOrganisasi": {
+    "hero_tag": "Organizational Structure",
+    "hero_description": "The leadership structure of Yayasan Pendidikan Metland that supports professional education governance.",
+    "org_chart_title": "Organization Chart",
+    "org_chart_desc": "The foundation's coordination flow from trustees to education units.",
+    "team_title": "Foundation Management",
+    "team_desc": "The team guiding the foundation's strategy, oversight, and program implementation.",
+    "members_title": "Member List",
+    "members_desc": "Information about management members and supporting leadership at Yayasan Pendidikan Metland.",
+    "org_chart": {
+      "foundation_label": "Foundation",
+      "top": "Trustees Meeting",
+      "second_level": [
+        "Supervisory Board",
+        "Board of Trustees"
+      ],
+      "pengurus_title": "Foundation Management",
+      "pengurus_subtitle": "General Chair - Secretary - Treasurer",
+      "bidang": [
+        "Education Division",
+        "Finance Division",
+        "Public Relations & Partnership Division"
+      ]
+    },
+    "team_groups": [
+      {
+        "category": "Board of Trustees",
+        "description": "Provides main direction and ensures the foundation's vision stays consistent."
+      },
+      {
+        "category": "Supervisory Board",
+        "description": "Oversees governance, accountability, and the sustainability of foundation programs."
+      },
+      {
+        "category": "Daily Management",
+        "description": "Manages operations and coordinates education programs."
+      }
+    ],
+    "team_member_titles": {
+      "ketua_pembina": "Chair of the Trustees",
+      "ketua_pengawas": "Head of Supervisory Board",
+      "anggota_pengawas": "Supervisory Board Member",
+      "ketua_umum": "General Chair",
+      "sekretaris_umum": "General Secretary",
+      "bendahara_umum": "General Treasurer",
+      "bidang_pendidikan": "Education Division"
+    }
+  },
+  "common": {
+    "read_more": "Read More"
+  },
+  "ourSchool": {
+    "hero_tag": "Education Units",
+    "hero_description": "Yayasan Pendidikan Metland manages 5 quality education units from kindergarten to higher education."
+  },
+  "visiMisi": {
+    "hero_tag": "Vision & Mission",
+    "hero_description": "The foundational values and direction of Yayasan Pendidikan Metland in advancing the nation's generation.",
+    "visi_tag": "Our Vision",
+    "visi_text": "To become a leading educational foundation that produces an outstanding, characterful, and globally competitive generation for the progress of the Indonesian nation.",
+    "visi_quote": "\"An outstanding generation is not only academically intelligent, but also has strong character, high ethics, and the ability to adapt to the changing times.\"",
+    "misi_tag": "Our Mission",
+    "misi_items": [
+      "Providing high-quality education from kindergarten to higher education levels, oriented towards academic excellence and character building.",
+      "Developing innovative curricula that are responsive to industry needs and global technological developments.",
+      "Building an inclusive, safe, comfortable, and inspiring learning environment for all learners.",
+      "Empowering dedicated professional educators who continuously develop their scientific and pedagogical competencies.",
+      "Establishing strategic partnerships with businesses, industries, and national and international educational institutions.",
+      "Instilling national values, tolerance, and social awareness in every educational process."
+    ]
+  },
+  "schoolDetail": {
+    "not_found_title": "School Not Found",
+    "not_found_back": "← Back to Our School",
+    "about_prefix": "About",
+    "featured_programs": "Featured Programs",
+    "facts_title": "Facts & Figures",
+    "facts_desc_prefix": "Achievements and growth of",
+    "other_schools": "Other Schools",
+    "schools": {
+      "tk-tunas-metropolitan": {
+        "description": "TK Tunas Metropolitan is an early childhood education level focused on character development, creativity, and emotional intelligence. With a play-based learning approach, we ensure every child grows happily and is ready for the next level.",
+        "features": ["Independent Learning Curriculum", "Integrated Motor Stimulation", "Character Education", "Safe Play Environment"],
+        "stats": [{"value": "120+", "label": "Active Students"}, {"value": "15", "label": "Teachers"}, {"value": "2005", "label": "Year Established"}]
+      },
+      "sd-tunas-metropolitan": {
+        "description": "SD Tunas Metropolitan provides comprehensive basic education combining academics, arts, sports, and technology. We believe every child has unique potential that needs to be optimally developed.",
+        "features": ["National + International Curriculum", "Bilingual Program", "Diverse Extracurriculars", "Digital Literacy"],
+        "stats": [{"value": "480+", "label": "Active Students"}, {"value": "42", "label": "Teachers"}, {"value": "2008", "label": "Year Established"}]
+      },
+      "smk-pariwisata-metland-school": {
+        "description": "SMK Pariwisata Metland School prepares students to become professionals in tourism, hospitality, and culinary fields. With industry-standard practice facilities and partnerships with star-rated hotels, our graduates are ready to compete nationally and internationally.",
+        "features": ["Hospitality Department", "Culinary Department", "Accounting Department", "Visual Communication Design", "Software Engineering"],
+        "stats": [{"value": "650+", "label": "Active Students"}, {"value": "55", "label": "Teachers"}, {"value": "2012", "label": "Year Established"}]
+      },
+      "smk-metland": {
+        "description": "SMK Metland focuses on technical and business majors relevant to modern industry needs. Internship programs at partner companies ensure students gain real work experience before graduating.",
+        "features": ["Hospitality Department", "Culinary Department", "Accounting Department", "Visual Communication Design", "Software Engineering"],
+        "stats": [{"value": "720+", "label": "Active Students"}, {"value": "60", "label": "Teachers"}, {"value": "2015", "label": "Year Established"}]
+      },
+      "metland-college": {
+        "description": "Metland College is a vocational higher education institution offering D3 and D4 programs in business, technology, and tourism. With curricula developed alongside industry, Metland College graduates have high competence and are ready to enter the workforce.",
+        "features": ["D3 & D4 Programs", "Industry Partnerships", "Achievement Scholarships", "Career Development Center"],
+        "stats": [{"value": "890+", "label": "Active Students"}, {"value": "75", "label": "Lecturers & Staff"}, {"value": "2018", "label": "Year Established"}]
+      }
+    }
+  },
+  "not_found": {
+    "title": "Page Not Found",
+    "subtitle": "Sorry, the page you are looking for does not exist or has been moved.",
+    "back_home": "Back to Home"
+  }
+}

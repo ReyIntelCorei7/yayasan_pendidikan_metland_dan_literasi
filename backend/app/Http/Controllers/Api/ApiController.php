@@ -20,6 +20,22 @@ class ApiController extends Controller
     private const TTL = 3600;
 
     /**
+     * Get translated value based on Accept-Language header.
+     */
+    private function trans(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            $lang = request()->header('Accept-Language', 'id');
+            // If English is requested but empty, fallback to ID.
+            if ($lang === 'en' && empty($value['en'])) {
+                return $value['id'] ?? '';
+            }
+            return $value[$lang] ?? $value['id'] ?? '';
+        }
+        return $value;
+    }
+
+    /**
      * Return a JSON response with ETag + Cache-Control headers.
      * Browser will get 304 Not Modified (0 bytes) if data hasn't changed.
      */

@@ -1,3 +1,5 @@
+import { TranslatableString } from '../i18n';
+
 export interface Program {
   id: string;
   title: string;
@@ -69,9 +71,9 @@ export interface Banner {
 export interface TeamMember {
   id: string;
   name: string;
-  title: string;
-  department: string;
-  bio: string;
+  title: TranslatableString;
+  department: TranslatableString;
+  bio: TranslatableString;
   photo: string;
   order: number;
   social: {

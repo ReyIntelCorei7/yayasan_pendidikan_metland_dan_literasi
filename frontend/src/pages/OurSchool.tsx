@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import { useTranslation } from 'react-i18next';
 
 import heroImg from '../assets/sekolahsmkmetland.webp';
 import tkSdImg from '../assets/tk_sdmetropolitan.jpeg';
@@ -12,46 +13,47 @@ const schools = [
   {
     slug: 'tk-tunas-metropolitan',
     name: 'TK Tunas Metropolitan',
-    level: 'Taman Kanak-Kanak',
-    tagline: 'Menanamkan cinta belajar sejak dini',
+    levelKey: 'tk_tunas',
+    taglineKey: 'tk_tunas',
     image: tkSdImg,
     color: '#10B981',
   },
   {
     slug: 'sd-tunas-metropolitan',
     name: 'SD Tunas Metropolitan',
-    level: 'Sekolah Dasar',
-    tagline: 'Fondasi kokoh untuk masa depan cerah',
+    levelKey: 'sd_tunas',
+    taglineKey: 'sd_tunas',
     image: tkSdImg,
     color: '#E5A320',
   },
   {
     slug: 'smk-pariwisata-metland-school',
     name: 'SMK Pariwisata Metland School',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Profesional di industri pariwisata dan perhotelan',
+    levelKey: 'smk_pariwisata',
+    taglineKey: 'smk_pariwisata',
     image: smkPariwisataImg,
     color: '#3D8ABF',
   },
   {
     slug: 'smk-metland',
     name: 'SMK Metland',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Mencetak tenaga terampil siap industri',
+    levelKey: 'smk_metland',
+    taglineKey: 'smk_metland',
     image: smkMetlandImg,
     color: '#2E6F9E',
   },
   {
     slug: 'metland-college',
     name: 'Metland College',
-    level: 'Perguruan Tinggi',
-    tagline: 'Pendidikan tinggi vokasional berstandar global',
+    levelKey: 'metland_college',
+    taglineKey: 'metland_college',
     image: smkPariwisataImg,
     color: '#8B5CF6',
   },
 ];
 
 export default function OurSchool() {
+  const { t } = useTranslation();
   return (
     <>
       {/* Hero */}
@@ -64,12 +66,12 @@ export default function OurSchool() {
         />
         <div className="relative z-20 text-center px-6 mt-16">
           <WordReveal
-            text="Unit Pendidikan"
+            text={t('ourSchool.hero_tag')}
             tag="h1"
             className="text-4xl lg:text-5xl font-light text-white mb-4"
           />
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
-            Yayasan Pendidikan Metland mengelola 5 unit pendidikan berkualitas dari jenjang TK hingga perguruan tinggi.
+            {t('ourSchool.hero_description')}
           </motion.p>
         </div>
       </section>
@@ -96,7 +98,7 @@ export default function OurSchool() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       <div className="absolute bottom-4 left-4">
                         <span className="text-xs px-3 py-1.5 rounded-full font-medium text-white shadow-sm" style={{ background: school.color }}>
-                          {school.level}
+                          {t(`schools.${school.levelKey}.level`)}
                         </span>
                       </div>
                     </div>
@@ -108,9 +110,9 @@ export default function OurSchool() {
                       >
                         {school.name}
                       </h3>
-                      <p className="text-sm text-gray-500 mt-2">{school.tagline}</p>
+                      <p className="text-sm text-gray-500 mt-2">{t(`schools.${school.taglineKey}.tagline`)}</p>
                       <span className="inline-flex items-center gap-1 text-xs font-semibold mt-4 group-hover:gap-2 transition-all uppercase tracking-wide" style={{ color: school.color }}>
-                        Selengkapnya <span>→</span>
+                        {t('common.read_more')} <span>→</span>
                       </span>
                     </div>
                   </motion.div>

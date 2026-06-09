@@ -1,27 +1,30 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import CountUpTrigger from '../animations/CountUpTrigger';
 import ScrollReveal from '../animations/ScrollReveal';
 import WordReveal from '../animations/WordReveal';
 
-const impactRows = [
-  {
-    stat: { value: 25, suffix: '+', label: 'Tahun Pengalaman' },
-    heading: 'Mengabdi untuk Pendidikan Indonesia',
-    description: 'Sejak didirikan, Yayasan Pendidikan Metland terus berkomitmen memberikan layanan pendidikan terbaik dengan mengedepankan pembentukan karakter dan kompetensi akademik siswa.',
-  },
-  {
-    stat: { value: 3000, suffix: '+', label: 'Siswa Terdidik' },
-    heading: 'Membangun Generasi Unggul',
-    description: 'Kami telah mendidik ribuan siswa dari jenjang Taman Kanak-Kanak hingga Perguruan Tinggi, membekali mereka dengan keterampilan yang relevan dengan kebutuhan industri masa depan.',
-  },
-  {
-    stat: { value: 150, suffix: '+', label: 'Penghargaan' },
-    heading: 'Prestasi dan Pengakuan',
-    description: 'Dedikasi kami dalam dunia pendidikan telah diakui melalui berbagai penghargaan tingkat regional maupun nasional, membuktikan kualitas pendidikan yang konsisten.',
-  },
-];
-
 export default function ImpactNumbers() {
+  const { t } = useTranslation();
+
+  const impactRows = [
+    {
+      stat: { value: 25, suffix: '+', label: t('impact_numbers.rows.0.label') },
+      heading: t('impact_numbers.rows.0.heading'),
+      description: t('impact_numbers.rows.0.description'),
+    },
+    {
+      stat: { value: 3000, suffix: '+', label: t('impact_numbers.rows.1.label') },
+      heading: t('impact_numbers.rows.1.heading'),
+      description: t('impact_numbers.rows.1.description'),
+    },
+    {
+      stat: { value: 150, suffix: '+', label: t('impact_numbers.rows.2.label') },
+      heading: t('impact_numbers.rows.2.heading'),
+      description: t('impact_numbers.rows.2.description'),
+    },
+  ];
+
   return (
     <section className="bg-[#FCFCFC] py-4">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -32,12 +35,12 @@ export default function ImpactNumbers() {
                     className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
-                    Dalam Rangka
+                    {t('impact_numbers.subtitle')}
                   </p>
                 </div>
         </ScrollReveal>
         <WordReveal
-          text="Dampak Kami"
+          text={t('impact_numbers.title')}
           tag="h2"
           className="mb-8"
         />

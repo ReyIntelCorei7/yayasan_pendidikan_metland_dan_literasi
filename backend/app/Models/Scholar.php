@@ -23,5 +23,7 @@ class Scholar extends Model
     protected $casts = [
         'graduation_year' => 'integer',
         'is_featured' => 'boolean',
+        'quote' => 'array',
+        'program' => 'array',
     ];
 }

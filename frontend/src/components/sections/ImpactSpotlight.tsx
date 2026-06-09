@@ -1,11 +1,13 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import ketuaYayasanImg from '../../assets/MS_ketuayayasan.webp';
 
 export default function ImpactSpotlight() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -27,12 +29,12 @@ export default function ImpactSpotlight() {
                     className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
-                    Sambutan Ketua Yayasan Pendidikan
+                    {t('impact_spotlight.subtitle')}
                   </p>
                 </div>
               </ScrollReveal>
               <WordReveal
-                text="Sambutan Ketua Yayasan"
+                text={t('impact_spotlight.title')}
                 tag="h2"
                 className=""
               />
@@ -89,7 +91,7 @@ export default function ImpactSpotlight() {
               className="text-2xl lg:text-3xl font-bold text-white mb-1 tracking-tight"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
-              Bapak Ir. Pandu Gunandito
+              {t('impact_spotlight.name')}
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.3}>
@@ -97,23 +99,19 @@ export default function ImpactSpotlight() {
               className="text-xs text-[#3D8ABF] tracking-[0.2em] uppercase"
               style={{ fontFamily: "'Geist', Inter, sans-serif" }}
             >
-              Ketua Yayasan Pendidikan Metland
+              {t('impact_spotlight.role')}
             </p>
           </ScrollReveal>
 
           <WordReveal
-            text="Membangun Masa Depan Melalui Pendidikan Berkualitas"
+            text={t('impact_spotlight.heading')}
             tag="h2"
             className=""
           />
 
           <ScrollReveal delay={0.6}>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Assalamualaikum Warahmatullahi Wabarakatuh. Puji syukur kami panjatkan ke hadirat Allah SWT
-              atas segala rahmat dan karunia-Nya. Yayasan Pendidikan Metland hadir dengan komitmen kuat
-              untuk mencerdaskan kehidupan bangsa melalui pendidikan yang bermutu, berkarakter, dan
-              berlandaskan nilai-nilai keislaman. Kami percaya bahwa setiap anak berhak mendapatkan
-              pendidikan terbaik untuk meraih masa depan yang gemilang.
+              {t('impact_spotlight.speech')}
             </p>
           </ScrollReveal>
 
@@ -124,7 +122,7 @@ export default function ImpactSpotlight() {
                 whileHover={{ backgroundColor: '#3D8ABF', color: '#fff', borderColor: 'rgba(61,138,191,1)' }}
                 transition={{ duration: 0.25 }}
               >
-                Selengkapnya
+                {t('impact_spotlight.read_more')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                 </svg>

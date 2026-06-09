@@ -6,6 +6,9 @@ import ScrollReveal from '../components/animations/ScrollReveal';
 import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
 import { usePosts } from '../hooks/usePosts';
 
+import { getTrans } from '../i18n';
+import { useTranslation } from 'react-i18next';
+
 /* ─── Helpers ────────────────────────────────────────────────── */
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString('id-ID', {
@@ -47,12 +50,13 @@ function CatBadge({ cat, light = false }: { cat: string; light?: boolean }) {
 
 /* ─── HERO Card (full-width, overlay text) ───────────────────── */
 function HeroCard({ post }: { post: any }) {
+  const { i18n } = useTranslation();
   return (
     <Link to={`/artikel/${post.slug}`} className="group relative block w-full overflow-hidden rounded-xl">
       <div className="aspect-[21/9] min-h-[320px] overflow-hidden bg-gray-200">
         <img
           src={post.featuredImage}
-          alt={post.title}
+          alt={getTrans(post.title, i18n.language)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
@@ -63,7 +67,7 @@ function HeroCard({ post }: { post: any }) {
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
         <AuthorBadge post={post} light />
         <h2 className="mt-2 text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
-          {post.title}
+          {getTrans(post.title, i18n.language)}
         </h2>
       </div>
     </Link>
@@ -72,12 +76,13 @@ function HeroCard({ post }: { post: any }) {
 
 /* ─── SUB-HERO Card (medium, overlay text) ───────────────────── */
 function SubHeroCard({ post }: { post: any }) {
+  const { i18n } = useTranslation();
   return (
     <Link to={`/artikel/${post.slug}`} className="group relative block overflow-hidden rounded-xl flex-1">
       <div className="aspect-[4/3] overflow-hidden bg-gray-200">
         <img
           src={post.featuredImage}
-          alt={post.title}
+          alt={getTrans(post.title, i18n.language)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
@@ -86,7 +91,7 @@ function SubHeroCard({ post }: { post: any }) {
       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
         <AuthorBadge post={post} light />
         <h3 className="mt-1.5 text-base md:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
-          {post.title}
+          {getTrans(post.title, i18n.language)}
         </h3>
       </div>
     </Link>
@@ -95,22 +100,23 @@ function SubHeroCard({ post }: { post: any }) {
 
 /* ─── EDITOR'S PICK — large left card ───────────────────────── */
 function RecommendedCard({ post }: { post: any }) {
+  const { i18n } = useTranslation();
   return (
     <Link to={`/artikel/${post.slug}`} className="group block">
       <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gray-200 mb-4">
         <img
           src={post.featuredImage}
-          alt={post.title}
+          alt={getTrans(post.title, i18n.language)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
       </div>
       <CatBadge cat={post.category} />
       <h3 className="text-xl font-bold text-charcoal leading-snug mb-2 group-hover:text-primary transition-colors duration-300 line-clamp-2">
-        {post.title}
+        {getTrans(post.title, i18n.language)}
       </h3>
       <AuthorBadge post={post} />
-      <p className="text-sm text-gray-400 leading-relaxed mt-3 line-clamp-3">{post.excerpt}</p>
+      <p className="text-sm text-gray-400 leading-relaxed mt-3 line-clamp-3">{getTrans(post.excerpt, i18n.language)}</p>
       <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[1.5px] text-primary mt-4 group-hover:gap-2.5 transition-all duration-300">
         Read More <ArrowRight className="w-3.5 h-3.5" />
       </span>
@@ -120,6 +126,7 @@ function RecommendedCard({ post }: { post: any }) {
 
 /* ─── MIDDLE LIST — horizontal mini card ────────────────────── */
 function ListCard({ post, index }: { post: any; index: number }) {
+  const { i18n } = useTranslation();
   return (
     <motion.div variants={staggerItemVariants}>
       <Link to={`/artikel/${post.slug}`} className="group flex gap-4 items-start">
@@ -131,7 +138,7 @@ function ListCard({ post, index }: { post: any; index: number }) {
         <div className="w-20 h-16 shrink-0 overflow-hidden rounded-lg bg-gray-200">
           <img
             src={post.featuredImage}
-            alt={post.title}
+            alt={getTrans(post.title, i18n.language)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
@@ -140,14 +147,14 @@ function ListCard({ post, index }: { post: any; index: number }) {
         <div className="flex-1 min-w-0">
           <CatBadge cat={post.category} />
           <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300 mb-1">
-            {post.title}
+            {getTrans(post.title, i18n.language)}
           </h4>
           <div className="flex items-center gap-1.5 text-xs text-gray-400">
             <Calendar className="w-3 h-3" />
             <span>{fmtDate(post.publishedAt)}</span>
             {post.readingTime && <><span>·</span><Clock className="w-3 h-3" /><span>{post.readingTime} mnt</span></>}
           </div>
-          <p className="text-xs text-gray-400 mt-1 line-clamp-2 leading-relaxed">{post.excerpt}</p>
+          <p className="text-xs text-gray-400 mt-1 line-clamp-2 leading-relaxed">{getTrans(post.excerpt, i18n.language)}</p>
         </div>
       </Link>
     </motion.div>
@@ -156,12 +163,13 @@ function ListCard({ post, index }: { post: any; index: number }) {
 
 /* ─── SPOTLIGHT sidebar card ─────────────────────────────────── */
 function SpotlightCard({ post }: { post: any }) {
+  const { i18n } = useTranslation();
   return (
     <Link to={`/artikel/${post.slug}`} className="group block">
       <div className="aspect-[16/10] overflow-hidden rounded-lg bg-gray-200 mb-2">
         <img
           src={post.featuredImage}
-          alt={post.title}
+          alt={getTrans(post.title, i18n.language)}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
@@ -174,7 +182,7 @@ function SpotlightCard({ post }: { post: any }) {
         <span>{fmtDate(post.publishedAt)}</span>
       </div>
       <h4 className="text-sm font-semibold text-charcoal leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
-        {post.title}
+        {getTrans(post.title, i18n.language)}
       </h4>
     </Link>
   );
@@ -193,6 +201,7 @@ function SkeletonHero() {
 
 /* ─── Main Page ──────────────────────────────────────────────── */
 export default function Artikel() {
+  const { i18n } = useTranslation();
   const { 
     posts, loading, loadingMore, error,
     activeCategory, setActiveCategory,
@@ -424,16 +433,16 @@ export default function Artikel() {
                             <div className="aspect-[16/10] overflow-hidden rounded-xl bg-gray-200 mb-3">
                               <img
                                 src={post.featuredImage}
-                                alt={post.title}
+                                alt={getTrans(post.title, i18n.language)}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                                 loading="lazy"
                               />
                             </div>
                             <CatBadge cat={post.category} />
                             <h3 className="text-base font-semibold text-charcoal leading-snug group-hover:text-primary transition-colors duration-300 mb-2 line-clamp-2">
-                              {post.title}
+                              {getTrans(post.title, i18n.language)}
                             </h3>
-                            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3">{post.excerpt}</p>
+                            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed mb-3">{getTrans(post.excerpt, i18n.language)}</p>
                             <AuthorBadge post={post} />
                           </Link>
                         </motion.div>

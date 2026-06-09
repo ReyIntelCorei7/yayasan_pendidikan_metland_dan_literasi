@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Terima kasih atas pesan Anda! Kami akan segera menghubungi Anda kembali.');
+    alert(t('contact.alert_success'));
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
@@ -19,10 +21,9 @@ export default function Contact() {
       <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img src="/src/assets/sekolahsmkmetland.webp" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
         <div className="relative z-10 text-center px-6">
-          <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">Kontak</p>
+          <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">{t('contact.hero_tag')}</p>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">
-            Untuk informasi lebih lanjut mengenai
-            Yayasan Pendidikan Metland
+            {t('contact.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -32,44 +33,44 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16">
           {/* Form */}
           <ScrollReveal direction="left">
-            <h2 className="text-3xl font-light mb-8">Kirim Pesan</h2>
+            <h2 className="text-3xl font-light mb-8">{t('contact.form_title')}</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm text-gray-500 mb-2">Nama Anda</label>
+                  <label className="block text-sm text-gray-500 mb-2">{t('contact.form_name')}</label>
                   <input
                     type="text" required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors bg-white shadow-sm"
-                    placeholder="Nama Lengkap"
+                    placeholder={t('contact.form_name_ph')}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-500 mb-2">Alamat Email</label>
+                  <label className="block text-sm text-gray-500 mb-2">{t('contact.form_email')}</label>
                   <input
                     type="email" required value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors bg-white shadow-sm"
-                    placeholder="email@contoh.com"
+                    placeholder={t('contact.form_email_ph')}
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-2">Subjek</label>
+                <label className="block text-sm text-gray-500 mb-2">{t('contact.form_subject')}</label>
                 <input
                   type="text" required value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors bg-white shadow-sm"
-                  placeholder="Apa yang bisa kami bantu?"
+                  placeholder={t('contact.form_subject_ph')}
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-500 mb-2">Pesan</label>
+                <label className="block text-sm text-gray-500 mb-2">{t('contact.form_message')}</label>
                 <textarea
                   required rows={5} value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors resize-none bg-white shadow-sm"
-                  placeholder="Tulis pesan Anda di sini..."
+                  placeholder={t('contact.form_message_ph')}
                 />
               </div>
               <motion.button
@@ -78,14 +79,14 @@ export default function Contact() {
                 whileTap={{ scale: 0.98 }}
                 className="bg-primary text-white px-8 py-4 rounded-lg text-sm font-medium w-full sm:w-auto shadow-md"
               >
-                Kirim Pesan →
+                {t('contact.form_submit')}
               </motion.button>
             </form>
           </ScrollReveal>
 
           {/* Office Info */}
           <ScrollReveal direction="right">
-            <h2 className="text-3xl font-light mb-8">Kantor Pusat</h2>
+            <h2 className="text-3xl font-light mb-8">{t('contact.office_title')}</h2>
             <div className="space-y-8">
               {[
                 { city: 'Bekasi, Indonesia', address: 'M Gold Tower, Lantai 15 JI. Letkol M. Moeffreni Moemin Pekayon Jaya, Bekasi 17148 - Indonesia', phone: '+62 21 8989 8989', email: 'yayasanpendidikanmetland@gmail.com' },
@@ -109,7 +110,7 @@ export default function Contact() {
             <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
               <div className="bg-white px-6 py-4 border-b border-gray-100 flex items-center gap-3">
                 <MapPin className="w-5 h-5 text-[#3aabf0]" />
-                <h3 className="text-lg font-medium text-gray-800">Lokasi Kami</h3>
+                <h3 className="text-lg font-medium text-gray-800">{t('contact.location_title')}</h3>
               </div>
               <iframe
                 title="Lokasi Yayasan Pendidikan Metland - M Gold Tower Bekasi"

@@ -1,52 +1,49 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 
-const schools = [
+const schoolsData = [
   {
     slug: 'tk-tunas-metropolitan',
     name: 'TK Tunas Metropolitan',
-    level: 'Taman Kanak-Kanak',
-    tagline: 'Menanamkan cinta belajar sejak dini',
+    transKey: 'tk_tunas',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
     color: '#10B981', // Accent green
   },
   {
     slug: 'sd-tunas-metropolitan',
     name: 'SD Tunas Metropolitan',
-    level: 'Sekolah Dasar',
-    tagline: 'Fondasi kokoh untuk masa depan cerah',
+    transKey: 'sd_tunas',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
     color: '#E5A320', // Secondary gold
   },
   {
     slug: 'smk-pariwisata-metland-school',
     name: 'SMK Pariwisata Metland School',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Profesional di industri pariwisata dan perhotelan',
+    transKey: 'smk_pariwisata',
     image: '/src/assets/sekolahsmkmetland.webp',
     color: '#3D8ABF', // Primary blue
   },
   {
     slug: 'smk-metland',
     name: 'SMK Metland',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Mencetak tenaga terampil siap industri',
+    transKey: 'smk_metland',
     image: '/src/assets/sekolahsmkmetlandcibitung.webp',
     color: '#2E6F9E', // Darker blue
   },
   {
     slug: 'metland-college',
     name: 'Metland College',
-    level: 'Perguruan Tinggi',
-    tagline: 'Pendidikan tinggi vokasional berstandar global',
+    transKey: 'metland_college',
     image: '/src/assets/sekolahsmkmetland.webp',
     color: '#8B5CF6', // Purple
   },
 ];
 
 export default function ProgramsGrid() {
+  const { t } = useTranslation();
   return (
     <section className="bg-offwhite py-16 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -57,13 +54,13 @@ export default function ProgramsGrid() {
                     className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
-                    Unit Pendidikan
+                    {t('programs_grid.subtitle')}
                   </p>
                 </div>
         </ScrollReveal>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <WordReveal
-            text="Sekolah Kami"
+            text={t('programs_grid.title')}
             tag="h2"
             className="text-4xl lg:text-6xl font-light text-charcoal"
           />
@@ -71,14 +68,14 @@ export default function ProgramsGrid() {
             to="/our-school"
             className="text-sm font-medium text-charcoal hover:text-[#3D8ABF] transition-colors mt-4 md:mt-0 group"
           >
-            Lihat Semua
+            {t('programs_grid.view_all')}
             <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
 
         {/* Schools Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {schools.map((school, i) => (
+          {schoolsData.map((school, i) => (
             <ScrollReveal key={school.slug} delay={i * 0.08}>
               <Link to={`/our-school/${school.slug}`} className="group block h-full">
                 <motion.div 
@@ -102,7 +99,7 @@ export default function ProgramsGrid() {
                         className="text-xs px-3 py-1.5 rounded-full text-white font-medium shadow-md"
                         style={{ background: school.color }}
                       >
-                        {school.level}
+                        {t(`schools.${school.transKey}.level`)}
                       </span>
                     </div>
                   </div>
@@ -117,12 +114,12 @@ export default function ProgramsGrid() {
                     >
                       {school.name}
                     </h3>
-                    <p className="text-sm text-gray-400 mt-2">{school.tagline}</p>
+                    <p className="text-sm text-gray-400 mt-2">{t(`schools.${school.transKey}.tagline`)}</p>
                     <span 
                       className="inline-flex items-center gap-1 text-xs font-semibold mt-5 group-hover:gap-2 transition-all uppercase tracking-wide"
                       style={{ color: school.color }}
                     >
-                      Selengkapnya <span>→</span>
+                      {t('programs_grid.read_more')} <span>→</span>
                     </span>
                   </div>
                 </motion.div>

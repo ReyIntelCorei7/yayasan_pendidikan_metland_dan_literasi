@@ -10,6 +10,12 @@ class Banner extends Model
 {
     protected $fillable = ['title', 'image', 'order', 'is_active'];
 
+    protected $casts = [
+        'title' => 'array',
+        'is_active' => 'boolean',
+        'order' => 'integer',
+    ];
+
     protected static function booted()
     {
         static::saved(fn () => Cache::forget('api.banners'));

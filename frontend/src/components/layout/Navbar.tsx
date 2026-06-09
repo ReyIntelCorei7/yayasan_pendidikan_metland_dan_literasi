@@ -5,38 +5,45 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { useNavScroll } from '../../hooks/useNavScroll';
 import logoYayasan from '../../assets/logoyayasan.png';
 import type { NavItem } from '../../types';
-
-const navItems: NavItem[] = [
-  { label: 'Home', href: '/' },
-  {
-    label: 'Profil',
-    href: '/profil',
-    children: [
-      { label: 'Visi & Misi', href: '/profil/visi-misi', description: 'Visi, misi, dan nilai-nilai yayasan' },
-      { label: 'Struktur Organisasi', href: '/profil/struktur-organisasi', description: 'Susunan pengurus dan pengelola' },
-    ],
-  },
-  {
-    label: 'Our School',
-    href: '/our-school',
-    children: [
-      { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan', description: 'Taman Kanak-Kanak Tunas Metropolitan' },
-      { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan', description: 'Sekolah Dasar Tunas Metropolitan' },
-      { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school', description: 'SMK Pariwisata Metland School' },
-      { label: 'SMK Metland', href: '/our-school/smk-metland', description: 'SMK Metland' },
-      { label: 'Metland College', href: '/our-school/metland-college', description: 'Perguruan Tinggi Metland College' },
-    ],
-  },
-  { label: 'Artikel', href: '/artikel' },
-  { label: 'Literasi', href: '/literasi' },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
+  const { t, i18n } = useTranslation();
   const { isScrolled } = useNavScroll();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const location = useLocation();
+  const currentLanguage = i18n.resolvedLanguage || i18n.language;
+
+  const changeLanguage = (language: 'id' | 'en') => {
+    i18n.changeLanguage(language);
+  };
+
+  const navItems: NavItem[] = [
+    { label: t('navbar.home'), href: '/' },
+    {
+      label: t('navbar.profile'),
+      href: '/profil',
+      children: [
+        { label: t('navbar.vision_mission'), href: '/profil/visi-misi', description: t('navbar.vision_mission_desc') },
+        { label: t('navbar.organization_structure'), href: '/profil/struktur-organisasi', description: t('navbar.organization_structure_desc') },
+      ],
+    },
+    {
+      label: t('navbar.our_school'),
+      href: '/our-school',
+      children: [
+        { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan', description: t('navbar.tk_tunas_desc') },
+        { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan', description: t('navbar.sd_tunas_desc') },
+        { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school', description: 'SMK Pariwisata Metland School' },
+        { label: 'SMK Metland', href: '/our-school/smk-metland', description: 'SMK Metland' },
+        { label: 'Metland College', href: '/our-school/metland-college', description: t('navbar.metland_college_desc') },
+      ],
+    },
+    { label: t('navbar.articles'), href: '/artikel' },
+    { label: t('navbar.literacy'), href: '/literasi' },
+  ];
 
   // Pages where the hero has a light/white background — navbar text must be dark from start
   const lightHeroExact = ['/literasi'];
@@ -137,16 +144,46 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Desktop CTA */}
-            <Link to="/contact" className="hidden lg:block">
-              <motion.span
-                className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#3D8ABF]"
-                whileTap={{ scale: 0.97 }}
+            {/* Desktop CTA & Language Toggle */}
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Language Toggle */}
+              <div
+                className="flex items-center rounded-full border overflow-hidden text-xs font-bold"
+                style={{
+                  borderColor: useDarkText ? '#e5e7eb' : 'rgba(255,255,255,0.3)',
+                }}
               >
-                <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
-                <span className="text-white">Contact</span>
-              </motion.span>
-            </Link>
+                <button
+                  onClick={() => changeLanguage('id')}
+                  className="px-3 py-1.5 transition-all duration-300"
+                  style={{
+                    background: currentLanguage === 'id' ? '#3D8ABF' : 'transparent',
+                    color: currentLanguage === 'id' ? '#fff' : (useDarkText ? '#555' : 'rgba(255,255,255,0.6)'),
+                  }}
+                >
+                  ID
+                </button>
+                <button
+                  onClick={() => changeLanguage('en')}
+                  className="px-3 py-1.5 transition-all duration-300"
+                  style={{
+                    background: currentLanguage === 'en' ? '#3D8ABF' : 'transparent',
+                    color: currentLanguage === 'en' ? '#fff' : (useDarkText ? '#555' : 'rgba(255,255,255,0.6)'),
+                  }}
+                >
+                  EN
+                </button>
+              </div>
+              <Link to="/contact">
+                <motion.span
+                  className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#3D8ABF]"
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
+                  <span className="text-white">{t('navbar.contact')}</span>
+                </motion.span>
+              </Link>
+            </div>
 
             {/* Mobile Hamburger */}
             <button
@@ -266,12 +303,38 @@ export default function Navbar() {
                   </motion.div>
                 ))}
               </motion.div>
+              {/* Mobile Language Toggle */}
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <span className="text-sm text-gray-400">{t('navbar.language')}:</span>
+                <div className="flex items-center rounded-full border border-gray-200 overflow-hidden text-xs font-bold">
+                  <button
+                    onClick={() => changeLanguage('id')}
+                    className="px-4 py-2 transition-all duration-300"
+                    style={{
+                      background: currentLanguage === 'id' ? '#3D8ABF' : 'transparent',
+                      color: currentLanguage === 'id' ? '#fff' : '#555',
+                    }}
+                  >
+                    ID
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className="px-4 py-2 transition-all duration-300"
+                    style={{
+                      background: currentLanguage === 'en' ? '#3D8ABF' : 'transparent',
+                      color: currentLanguage === 'en' ? '#fff' : '#555',
+                    }}
+                  >
+                    EN
+                  </button>
+                </div>
+              </div>
               <Link
                 to="/contact"
                 onClick={() => setIsMobileOpen(false)}
-                className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-medium text-sm mt-6"
+                className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-medium text-sm mt-3"
               >
-                → Contact
+                → {t('navbar.contact')}
               </Link>
             </div>
           </motion.div>

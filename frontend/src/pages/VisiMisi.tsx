@@ -1,20 +1,13 @@
 import { motion } from 'framer-motion';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import { useTranslation } from 'react-i18next';
 import heroImg from '../assets/sekolahsmkmetlandcibitung.webp';
 
-const misiItems = [
-  'Menyelenggarakan pendidikan berkualitas tinggi dari jenjang TK hingga perguruan tinggi yang berorientasi pada keunggulan akademik dan pembentukan karakter.',
-  'Mengembangkan kurikulum inovatif yang responsif terhadap kebutuhan industri dan perkembangan teknologi global.',
-  'Membangun lingkungan belajar yang inklusif, aman, nyaman, dan menginspirasi bagi seluruh peserta didik.',
-  'Memberdayakan tenaga pendidik profesional yang berdedikasi dan terus berkembang dalam kompetensi keilmuan dan pedagogik.',
-  'Menjalin kemitraan strategis dengan dunia usaha, industri, dan institusi pendidikan nasional maupun internasional.',
-  'Menanamkan nilai-nilai kebangsaan, toleransi, dan kepedulian sosial dalam setiap proses pendidikan.',
-];
-
-
-
 export default function VisiMisi() {
+  const { t } = useTranslation();
+  const misiItems = t('visiMisi.misi_items', { returnObjects: true }) as string[];
+
   return (
     <>
       {/* Hero */}
@@ -27,12 +20,12 @@ export default function VisiMisi() {
         />
         <div className="relative z-20 text-center px-6 mt-16">
           <WordReveal
-            text="Visi & Misi"
+            text={t('visiMisi.hero_tag')}
             tag="h1"
             className="text-4xl lg:text-5xl font-light text-white mb-4"
           />
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
-            Landasan nilai dan arah perjuangan Yayasan Pendidikan Metland dalam memajukan generasi bangsa.
+            {t('visiMisi.hero_description')}
           </motion.p>
         </div>
       </section>
@@ -42,15 +35,15 @@ export default function VisiMisi() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
           <ScrollReveal direction="left">
             <div className="w-12 h-[3px] bg-[#3D8ABF] mb-6" />
-            <h2 className="text-4xl font-light text-charcoal mb-6">Visi Kami</h2>
+            <h2 className="text-4xl font-light text-charcoal mb-6">{t('visiMisi.visi_tag')}</h2>
             <p className="text-gray-500 leading-relaxed text-lg">
-              Menjadi yayasan pendidikan terkemuka yang melahirkan generasi unggul, berkarakter, dan berdaya saing global demi kemajuan bangsa Indonesia.
+              {t('visiMisi.visi_text')}
             </p>
           </ScrollReveal>
           <ScrollReveal direction="right">
             <div className="bg-offwhite rounded-2xl p-8 border border-gray-100">
               <p className="text-sm text-gray-400 leading-relaxed">
-                "Generasi unggul bukan hanya cerdas secara akademik, tetapi juga memiliki karakter kuat, etika tinggi, dan kemampuan beradaptasi dengan perubahan zaman."
+                {t('visiMisi.visi_quote')}
               </p>
             </div>
           </ScrollReveal>
@@ -62,7 +55,7 @@ export default function VisiMisi() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <div className="w-12 h-[3px] bg-[#3D8ABF] mb-6" />
-            <h2 className="text-4xl font-light text-charcoal mb-12">Misi Kami</h2>
+            <h2 className="text-4xl font-light text-charcoal mb-12">{t('visiMisi.misi_tag')}</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-6">
             {misiItems.map((text, i) => (
@@ -78,8 +71,6 @@ export default function VisiMisi() {
           </div>
         </div>
       </section>
-
-
     </>
   );
 }

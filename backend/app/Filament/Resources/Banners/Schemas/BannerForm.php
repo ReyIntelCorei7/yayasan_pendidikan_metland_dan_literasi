@@ -17,7 +17,15 @@ class BannerForm
     {
         return $schema
             ->components([
-                TextInput::make('title')->label('Judul / Keterangan'),
+                \Filament\Forms\Components\Tabs::make('Translations')
+                    ->tabs([
+                        \Filament\Forms\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
+                            TextInput::make('title.id')->label('Judul / Keterangan (ID)'),
+                        ]),
+                        \Filament\Forms\Components\Tabs\Tab::make('English (EN)')->schema([
+                            TextInput::make('title.en')->label('Judul / Keterangan (EN)'),
+                        ]),
+                    ])->columnSpanFull(),
                 FileUpload::make('image')
                     ->image()
                     ->directory('banners')

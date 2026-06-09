@@ -2,9 +2,11 @@ import { useMemo, useState, useCallback, useEffect, useRef, useLayoutEffect } fr
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 import { usePosts } from '../../hooks/usePosts';
+import { getTrans } from '../../i18n';
 
 /* ─── Seamless slide variants ───────────────────────────────── */
 const slideVariants = {
@@ -76,6 +78,7 @@ function ProgressBar({ active, onClick, isPlaying, duration }: {
 
 /* ─── Main Component ────────────────────────────────────────── */
 export default function NewsInsights() {
+  const { t, i18n } = useTranslation();
   const { posts } = usePosts();
   const displayPosts = useMemo(() => posts.slice(0, 6), [posts]);
 
@@ -185,9 +188,9 @@ export default function NewsInsights() {
             <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-blue-300/20 flex items-center justify-center mb-6">
               <BookOpen className="w-12 h-12 text-[#3D8ABF]" />
             </div>
-            <h3 className="text-2xl font-semibold text-charcoal mb-3 text-center">Belum Ada Artikel</h3>
-            <p className="text-gray-500 text-center max-w-lg mb-6">Artikel terbaru sedang kami persiapkan. Kembali lagi nanti untuk membaca berita dan insight dari Yayasan.</p>
-            <Link to="/artikel" className="inline-flex items-center gap-2 px-5 py-2 bg-[#3D8ABF] text-white rounded-md font-medium hover:bg-[#1a6fa3] transition-colors">Lihat Halaman Artikel →</Link>
+            <h3 className="text-2xl font-semibold text-charcoal mb-3 text-center">{t('news_insights.empty_title')}</h3>
+            <p className="text-gray-500 text-center max-w-lg mb-6">{t('news_insights.empty_desc')}</p>
+            <Link to="/artikel" className="inline-flex items-center gap-2 px-5 py-2 bg-[#3D8ABF] text-white rounded-md font-medium hover:bg-[#1a6fa3] transition-colors">{t('news_insights.empty_btn')}</Link>
           </div>
         </div>
       </section>
@@ -208,12 +211,12 @@ export default function NewsInsights() {
                   className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
                   style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
-                  Artikel
+                  {t('news_insights.subtitle')}
                 </p>
               </div>
             </ScrollReveal>
             <WordReveal
-              text="Berita & Artikel"
+              text={t('news_insights.title')}
               tag="h2"
               className="text-4xl lg:text-6xl font-light text-charcoal"
             />
@@ -223,7 +226,7 @@ export default function NewsInsights() {
               to="/artikel"
               className="text-sm font-medium text-charcoal hover:text-[#3D8ABF] transition-colors group"
             >
-              Lihat Semua
+              {t('news_insights.view_all')}
               <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
@@ -321,7 +324,7 @@ export default function NewsInsights() {
                         className="text-base font-medium leading-snug text-charcoal group-hover:text-[#3D8ABF] transition-colors duration-200 line-clamp-2"
                         style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                       >
-                        {post.title}
+                        {getTrans(post.title, i18n.language)}
                       </h3>
 
                       <div className="flex items-center gap-2 mt-3 text-xs text-gray-400">
@@ -339,7 +342,7 @@ export default function NewsInsights() {
                         {post.readingTime && (
                           <>
                             <span>·</span>
-                            <span>{post.readingTime} mnt baca</span>
+                            <span>{post.readingTime} {t('artikel.read_time')}</span>
                           </>
                         )}
                       </div>

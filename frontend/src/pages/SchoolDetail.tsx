@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, Users, Award, Calendar, BookOpen, Globe, Palette, Code, GraduationCap, UtensilsCrossed, Building2, Briefcase, Heart, Shield, TreePine, Monitor } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CTABanner from '../components/sections/CTABanner';
@@ -38,79 +39,45 @@ function FloatingShapes() {
 }
 
 const schools = [
-  {
-    slug: 'tk-tunas-metropolitan',
-    name: 'TK Tunas Metropolitan',
-    level: 'Taman Kanak-Kanak',
-    tagline: 'Menanamkan cinta belajar sejak dini',
-    description: 'TK Tunas Metropolitan adalah jenjang pendidikan anak usia dini yang berfokus pada pengembangan karakter, kreativitas, dan kecerdasan emosional. Dengan pendekatan bermain sambil belajar, kami memastikan setiap anak tumbuh dengan bahagia dan siap memasuki jenjang berikutnya.',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#FDE68A',
-    features: ['Kurikulum Merdeka Belajar', 'Stimulasi Motorik Terpadu', 'Pendidikan Karakter', 'Lingkungan Bermain Aman'],
-    stats: [{ value: '120+', label: 'Siswa Aktif' }, { value: '15', label: 'Tenaga Pengajar' }, { value: '2005', label: 'Tahun Berdiri' }],
-  },
-  {
-    slug: 'sd-tunas-metropolitan',
-    name: 'SD Tunas Metropolitan',
-    level: 'Sekolah Dasar',
-    tagline: 'Fondasi kokoh untuk masa depan cerah',
-    description: 'SD Tunas Metropolitan memberikan pendidikan dasar yang komprehensif dengan memadukan akademik, seni, olahraga, dan teknologi. Kami percaya setiap anak memiliki potensi unik yang perlu dikembangkan secara optimal.',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#BBF7D0',
-    features: ['Kurikulum Nasional + Internasional', 'Program Bilingual', 'Ekstra Kurikuler Beragam', 'Literasi Digital'],
-    stats: [{ value: '480+', label: 'Siswa Aktif' }, { value: '42', label: 'Tenaga Pengajar' }, { value: '2008', label: 'Tahun Berdiri' }],
-  },
-  {
-    slug: 'smk-pariwisata-metland-school',
-    name: 'SMK Pariwisata Metland School',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Profesional di industri pariwisata dan perhotelan',
-    description: 'SMK Pariwisata Metland School mempersiapkan siswa menjadi tenaga profesional di bidang pariwisata, perhotelan, dan kuliner. Dengan fasilitas praktik bertaraf industri dan kemitraan dengan hotel berbintang, lulusan kami siap bersaing di tingkat nasional dan internasional.',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#BFDBFE',
-    features: ['Jurusan Perhotelan', 'Jurusan Kuliner', 'Jurusan Akuntansi', 'Jurusan DKV', 'Jurusan PPLG'],
-    stats: [{ value: '650+', label: 'Siswa Aktif' }, { value: '55', label: 'Tenaga Pengajar' }, { value: '2012', label: 'Tahun Berdiri' }],
-  },
-  {
-    slug: 'smk-metland',
-    name: 'SMK Metland',
-    level: 'Sekolah Menengah Kejuruan',
-    tagline: 'Mencetak tenaga terampil siap industri',
-    description: 'SMK Metland berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.',
-    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
-    color: '#FED7AA',
-    features: ['Jurusan Perhotelan', 'Jurusan Kuliner', 'Jurusan Akuntansi', 'Jurusan DKV', 'Jurusan PPLG'],
-    stats: [{ value: '720+', label: 'Siswa Aktif' }, { value: '60', label: 'Tenaga Pengajar' }, { value: '2015', label: 'Tahun Berdiri' }],
-  },
-  {
-    slug: 'metland-college',
-    name: 'Metland College',
-    level: 'Perguruan Tinggi',
-    tagline: 'Pendidikan tinggi vokasional berstandar global',
-    description: 'Metland College adalah perguruan tinggi vokasional yang menawarkan program D3 dan D4 di bidang bisnis, teknologi, dan pariwisata. Dengan kurikulum yang dikembangkan bersama industri, lulusan Metland College memiliki kompetensi tinggi dan siap memasuki dunia kerja.',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#E9D5FF',
-    features: ['Program D3 & D4', 'Kerjasama Industri', 'Beasiswa Berprestasi', 'Career Development Center'],
-    stats: [{ value: '890+', label: 'Mahasiswa Aktif' }, { value: '75', label: 'Dosen & Staf' }, { value: '2018', label: 'Tahun Berdiri' }],
-  },
+  { slug: 'tk-tunas-metropolitan', name: 'TK Tunas Metropolitan', image: '/src/assets/tk_sdmetropolitan.jpeg', color: '#FDE68A' },
+  { slug: 'sd-tunas-metropolitan', name: 'SD Tunas Metropolitan', image: '/src/assets/tk_sdmetropolitan.jpeg', color: '#BBF7D0' },
+  { slug: 'smk-pariwisata-metland-school', name: 'SMK Pariwisata Metland School', image: '/src/assets/sekolahsmkmetland.webp', color: '#BFDBFE' },
+  { slug: 'smk-metland', name: 'SMK Metland', image: '/src/assets/sekolahsmkmetlandcibitung.webp', color: '#FED7AA' },
+  { slug: 'metland-college', name: 'Metland College', image: '/src/assets/sekolahsmkmetland.webp', color: '#E9D5FF' },
 ];
+
+const slugToKey: Record<string, string> = {
+  'tk-tunas-metropolitan': 'tk_tunas',
+  'sd-tunas-metropolitan': 'sd_tunas',
+  'smk-pariwisata-metland-school': 'smk_pariwisata',
+  'smk-metland': 'smk_metland',
+  'metland-college': 'metland_college',
+};
 
 export default function SchoolDetail() {
   const { slug } = useParams();
+  const { t } = useTranslation();
   const school = schools.find((s) => s.slug === slug);
 
   if (!school) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-light mb-4">Sekolah Tidak Ditemukan</h1>
-          <Link to="/our-school" className="text-primary hover:underline">← Kembali ke Our School</Link>
+          <h1 className="text-4xl font-light mb-4">{t('schoolDetail.not_found_title')}</h1>
+          <Link to="/our-school" className="text-primary hover:underline">{t('schoolDetail.not_found_back')}</Link>
         </div>
       </div>
     );
   }
 
   const others = schools.filter((s) => s.slug !== school.slug);
+
+  const schoolKey = slugToKey[school.slug];
+  const description = t(`schoolDetail.schools.${school.slug}.description`);
+  const features = t(`schoolDetail.schools.${school.slug}.features`, { returnObjects: true }) as string[];
+  const stats = t(`schoolDetail.schools.${school.slug}.stats`, { returnObjects: true }) as { value: string; label: string }[];
+  const level = t(`schools.${schoolKey}.level`);
+  const tagline = t(`schools.${schoolKey}.tagline`);
 
   return (
     <>
@@ -134,7 +101,7 @@ export default function SchoolDetail() {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-primary text-sm md:text-base font-semibold"
           >
-            {school.tagline}
+            {tagline}
           </motion.p>
         </div>
       </section>
@@ -150,13 +117,13 @@ export default function SchoolDetail() {
               transition={{ duration: 0.8 }}
               className="w-12 h-[2px] bg-primary mb-6 origin-left"
             />
-            <h2 className="text-3xl font-light text-charcoal mb-6">Tentang {school.name}</h2>
-            <p className="text-gray-500 leading-relaxed text-base">{school.description}</p>
+            <h2 className="text-3xl font-light text-charcoal mb-6">{t('schoolDetail.about_prefix')} {school.name}</h2>
+            <p className="text-gray-500 leading-relaxed text-base">{description}</p>
           </ScrollReveal>
           <ScrollReveal direction="right">
-            <h3 className="text-lg font-semibold text-charcoal mb-8 tracking-tight">Program Unggulan</h3>
+            <h3 className="text-lg font-semibold text-charcoal mb-8 tracking-tight">{t('schoolDetail.featured_programs')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {school.features.map((f, i) => {
+              {features.map((f, i) => {
                 // Pick a contextual icon based on keywords
                 const iconMap: Record<string, typeof BookOpen> = {
                   'Kurikulum': BookOpen, 'Bilingual': Globe, 'DKV': Palette,
@@ -206,12 +173,12 @@ export default function SchoolDetail() {
         <FloatingShapes />
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <ScrollReveal>
-            <h2 className="text-3xl font-light text-white mb-3 text-center">Fakta &amp; Angka</h2>
-            <p className="text-center text-gray-400 mb-14 max-w-2xl mx-auto text-sm md:text-base">Pencapaian dan pertumbuhan {school.name}</p>
+            <h2 className="text-3xl font-light text-white mb-3 text-center">{t('schoolDetail.facts_title')}</h2>
+            <p className="text-center text-gray-400 mb-14 max-w-2xl mx-auto text-sm md:text-base">{t('schoolDetail.facts_desc_prefix')} {school.name}</p>
           </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {school.stats.map((stat, i) => {
+            {stats.map((stat, i) => {
               const Icon = i === 0 ? Users : i === 1 ? Award : Calendar;
               
               return (
@@ -256,7 +223,7 @@ export default function SchoolDetail() {
           <ScrollReveal>
             <h2 className="text-3xl font-light text-charcoal mb-12 flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-primary" />
-              Sekolah Lainnya
+              {t('schoolDetail.other_schools')}
             </h2>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -281,7 +248,7 @@ export default function SchoolDetail() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <motion.div>
-                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{s.level}</p>
+                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{t(`schools.${slugToKey[s.slug]}.level`)}</p>
                     </motion.div>
                   </motion.div>
                   <motion.h3

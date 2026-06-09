@@ -3,6 +3,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ExternalLink, BookOpen } from 'lucide-react';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import { useTranslation } from 'react-i18next';
 import useBooks from '../hooks/useBooks';
 import type { Book } from '../hooks/useBooks';
 import FlipbookReader from '../components/sections/FlipbookReader';
@@ -35,50 +36,10 @@ interface KoleksiItem {
   desc: string;
 }
 
-const koleksi: KoleksiItem[] = [
-  {
-    count: '1.200+',
-    countNum: 1200,
-    suffix: '+',
-    title: 'Buku Teks & Referensi',
-    desc: 'Koleksi buku teks pelajaran dan referensi akademik untuk semua jenjang pendidikan.',
-  },
-  {
-    count: '450+',
-    countNum: 450,
-    suffix: '+',
-    title: 'Jurnal & Majalah',
-    desc: 'Jurnal ilmiah, majalah pendidikan, dan publikasi berkala nasional maupun internasional.',
-  },
-  {
-    count: '5.000+',
-    countNum: 5000,
-    suffix: '+',
-    title: 'E-Library',
-    desc: 'Akses perpustakaan digital 24 jam dengan ribuan buku elektronik dan sumber daring.',
-  },
-  {
-    count: '12',
-    countNum: 12,
-    suffix: '',
-    title: 'Ruang Belajar Bersama',
-    desc: 'Fasilitas ruang diskusi dan belajar kelompok yang nyaman dan kondusif.',
-  },
-];
-
 interface ProgramItem {
   title: string;
   desc: string;
 }
-
-const programs: ProgramItem[] = [
-  { title: 'Pojok Baca', desc: 'Program membaca buku gratis setiap hari Jumat untuk semua jenjang. Menyediakan akses bacaan berkualitas bagi seluruh siswa.' },
-  { title: 'Klub Literasi', desc: 'Diskusi buku rutin bulanan dipandu mentor berpengalaman. Membangun komunitas pembaca yang aktif dan kritis.' },
-  { title: 'Lomba Menulis', desc: 'Kompetisi karya tulis ilmiah dan fiksi tahunan antar sekolah. Mengasah kreativitas dan kemampuan berpikir.' },
-  { title: 'Bedah Buku', desc: 'Acara interaktif mengupas isi dan makna buku pilihan. Memperdalam pemahaman literasi secara kolaboratif.' },
-  { title: 'Story Telling', desc: 'Pengembangan kemampuan bercerita dan presentasi publik. Melatih percaya diri dan keterampilan komunikasi.' },
-  { title: 'Kunjungan Perpustakaan', desc: 'Kunjungan edukatif ke perpustakaan nasional dan daerah. Menginspirasi semangat membaca sejak dini.' },
-];
 
 interface StatItem {
   num: number;
@@ -86,11 +47,11 @@ interface StatItem {
   label: string;
 }
 
-const stats: StatItem[] = [
-  { num: 5000, suffix: '+', label: 'E-Book Tersedia' },
-  { num: 1200, suffix: '+', label: 'Buku Fisik' },
-  { num: 12, suffix: '', label: 'Ruang Baca' },
-  { num: 5, suffix: '', label: 'Unit Sekolah' },
+const STATS_NUMS: { num: number; suffix: string }[] = [
+  { num: 5000, suffix: '+' },
+  { num: 1200, suffix: '+' },
+  { num: 12, suffix: '' },
+  { num: 5, suffix: '' },
 ];
 
 const heroBooks = [
@@ -115,6 +76,12 @@ const CATEGORIES = ['Semua', 'Pendidikan', 'Literasi', 'Sains', 'Fiksi', 'Agama'
 
 export default function Literasi() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+  const literasiData = t('literasi', { returnObjects: true }) as any;
+  const koleksi: KoleksiItem[] = literasiData.koleksi ?? [];
+  const programs: ProgramItem[] = literasiData.programs ?? [];
+  const statsLabels: { label: string }[] = literasiData.stats ?? [];
+  const stats: StatItem[] = STATS_NUMS.map((s, i) => ({ ...s, label: statsLabels[i]?.label ?? '' }));
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -149,7 +116,7 @@ export default function Literasi() {
           <p
             className="text-xs font-semibold tracking-[3px] uppercase text-[#1C1C1C]/50"
           >
-            Program Literasi — Yayasan Pendidikan Metland
+            {t('literasi.hero_tag')}
           </p>
         </motion.div>
 
@@ -164,9 +131,9 @@ export default function Literasi() {
               lineHeight: '1.1',
             }}
           >
-            <StaggerWords text="Membangun Budaya" delay={0.3} />
+            <StaggerWords text={t('literasi.hero_title1')} delay={0.3} />
             <br className="hidden sm:block" />
-            <StaggerWords text=" Membaca." delay={0.6} />
+            <StaggerWords text={t('literasi.hero_title2')} delay={0.6} />
           </h1>
 
           {/* Right — floating books */}
@@ -215,7 +182,7 @@ export default function Literasi() {
             href="#program-literasi"
             className="inline-flex items-center gap-3 bg-[#1C1C1C] text-white px-8 py-4 text-sm font-medium tracking-wide hover:bg-primary hover:text-[#1C1C1C] transition-colors duration-300"
           >
-            ↓ Jelajahi Program
+            {t('literasi.hero_btn')}
           </a>
         </motion.div>
       </section>
@@ -261,7 +228,7 @@ export default function Literasi() {
             <ScrollReveal direction="left">
               <div>
                 <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-6">
-                  Mengapa Literasi Penting
+                  {t('literasi.why_tag')}
                 </p>
                 <h2
                   className="font-bold text-[#1C1C1C] mb-8"
@@ -271,15 +238,13 @@ export default function Literasi() {
                     lineHeight: '1.05',
                   }}
                 >
-                  Lebih dari sekadar membaca.
+                  {t('literasi.why_title')}
                 </h2>
                 <p className="text-gray-500 text-lg leading-[1.7] mb-4">
-                  Literasi bukan sekadar kemampuan membaca dan menulis. Di era digital ini, literasi mencakup kemampuan
-                  berpikir kritis, memahami informasi secara mendalam, dan mengkomunikasikan ide secara efektif.
+                  {t('literasi.why_desc1')}
                 </p>
                 <p className="text-gray-500 text-lg leading-[1.7] mb-8">
-                  Yayasan Pendidikan Metland berkomitmen menjadikan literasi sebagai fondasi seluruh proses pembelajaran,
-                  memastikan setiap siswa dan mahasiswa tumbuh menjadi individu yang cerdas, kritis, dan berpengetahuan luas.
+                  {t('literasi.why_desc2')}
                 </p>
                 <a
                   href="/profil"
@@ -303,8 +268,8 @@ export default function Literasi() {
                 {/* Glassmorphism overlay card */}
                 <div className="absolute bottom-6 left-6">
                   <div className="backdrop-blur-md bg-white/10 border border-white/20 px-6 py-4">
-                    <p className="text-white text-sm font-medium">Program aktif di</p>
-                    <p className="text-white text-2xl font-black">5 Unit Sekolah</p>
+                    <p className="text-white text-sm font-medium">{t('literasi.active_in')}</p>
+                    <p className="text-white text-2xl font-black">{t('literasi.schools_count')}</p>
                   </div>
                 </div>
               </div>
@@ -318,7 +283,7 @@ export default function Literasi() {
           <ScrollReveal>
             <div className="mb-16">
               <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-4">
-                Koleksi Kami
+                {t('literasi.collection_tag')}
               </p>
               <h2
                 className="font-bold text-[#1C1C1C]"
@@ -328,7 +293,7 @@ export default function Literasi() {
                   lineHeight: '1.05',
                 }}
               >
-                Fasilitas Perpustakaan
+                {t('literasi.collection_title')}
               </h2>
             </div>
           </ScrollReveal>
@@ -378,7 +343,7 @@ export default function Literasi() {
                 lineHeight: '1.05',
               }}
             >
-              Program Literasi
+              {t('literasi.programs_title')}
             </h2>
           </ScrollReveal>
 
@@ -418,7 +383,7 @@ export default function Literasi() {
             <ScrollReveal direction="left">
               <div>
                 <p className="text-[#1C1C1C]/50 text-xs font-semibold tracking-[3px] uppercase mb-6">
-                  Perpustakaan Digital
+                  {t('literasi.digital_tag')}
                 </p>
                 <h2
                   className="font-black text-[#1C1C1C] mb-6"
@@ -428,18 +393,16 @@ export default function Literasi() {
                     lineHeight: '0.95',
                   }}
                 >
-                  5.000+ E-Book Tersedia
+                  {t('literasi.digital_title')}
                 </h2>
                 <p className="text-[#1C1C1C]/70 text-lg leading-[1.7] mb-8 max-w-lg">
-                  Akses perpustakaan digital kami kapan saja, di mana saja. Tersedia 24 jam penuh
-                  dengan koleksi e-book yang terus bertambah untuk mendukung kebutuhan belajar siswa
-                  dan guru.
+                  {t('literasi.digital_desc')}
                 </p>
                 <a
                   href="#koleksi-buku"
                   className="group inline-flex items-center gap-3 bg-[#1C1C1C] text-white px-10 py-5 text-sm font-medium tracking-wide hover:bg-[#333] transition-colors duration-300"
                 >
-                  Akses E-Library
+                  {t('literasi.digital_btn')}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
@@ -515,7 +478,7 @@ export default function Literasi() {
           <ScrollReveal>
             <div className="mb-10">
               <p className="text-primary text-xs font-semibold tracking-[3px] uppercase mb-4">
-                Perpustakaan Digital
+                {t('literasi.digital_tag')}
               </p>
               <h2
                 className="font-bold text-[#1C1C1C]"
@@ -525,7 +488,7 @@ export default function Literasi() {
                   lineHeight: '1.05',
                 }}
               >
-                Koleksi Buku Digital
+                {t('literasi.digital_collection_title')}
               </h2>
             </div>
           </ScrollReveal>
@@ -607,8 +570,8 @@ export default function Literasi() {
           ) : (
             <div className="text-center py-20">
               <BookOpen className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">Belum ada buku tersedia</p>
-              <p className="text-gray-300 text-sm mt-1">Buku digital akan segera ditambahkan</p>
+              <p className="text-gray-400 text-lg">{t('literasi.empty_title')}</p>
+              <p className="text-gray-300 text-sm mt-1">{t('literasi.empty_desc')}</p>
             </div>
           )}
 
@@ -620,7 +583,7 @@ export default function Literasi() {
                 disabled={loadingMore}
                 className="px-8 py-3 bg-white text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white border border-[#1C1C1C] text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loadingMore ? 'Memuat...' : 'Muat Lebih Banyak'}
+                {t('literasi.load_more')}
               </button>
             </div>
           )}
@@ -641,8 +604,8 @@ export default function Literasi() {
                 lineHeight: '0.95',
               }}
             >
-              Bergabung dalam{' '}
-              <span className="font-serif italic">Gerakan Literasi</span>
+              {t('literasi.cta_title1')}{' '}
+              <span className="font-serif italic">{t('literasi.cta_title2')}</span>
             </h2>
           </ScrollReveal>
 
@@ -653,7 +616,7 @@ export default function Literasi() {
             transition={{ delay: 0.3, duration: 0.7 }}
             className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto"
           >
-            Daftarkan diri Anda atau anak Anda ke program literasi kami dan bangun kebiasaan membaca sejak dini.
+            {t('literasi.cta_desc')}
           </motion.p>
 
           <motion.div
@@ -668,7 +631,7 @@ export default function Literasi() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >
-                Daftar Sekarang
+                {t('literasi.cta_btn')}
                 <ExternalLink className="w-4 h-4" />
               </motion.span>
             </a>

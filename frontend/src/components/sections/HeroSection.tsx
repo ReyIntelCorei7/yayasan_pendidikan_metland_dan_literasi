@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 import hero1 from '../../assets/sekolahsmkmetland.webp';
 import hero2 from '../../assets/sekolahsmkmetlandcibitung.webp';
@@ -80,43 +81,45 @@ const AwardIcon = () => (
   </svg>
 );
 
-/* ──────────────── Stats Data ──────────────── */
-const statsData = [
-  {
-    value: 25,
-    suffix: '+',
-    label: 'Tahun Pengalaman',
-    description: 'Berkomitmen dalam dunia pendidikan sejak 1998.',
-    icon: <TrophyIcon />,
-  },
-  {
-    value: 3000,
-    suffix: '+',
-    label: 'Siswa',
-    description: 'Membina generasi berkarakter dan berprestasi.',
-    icon: <GraduationIcon />,
-  },
-  {
-    value: 5,
-    suffix: '',
-    label: 'Unit Pendidikan',
-    description: 'Tersebar di berbagai wilayah dengan fasilitas terbaik.',
-    icon: <SchoolIcon />,
-  },
-  {
-    value: 0,
-    suffix: '',
-    label: 'Prestasi',
-    description: 'Mencapai prestasi gemilang dalam berbagai bidang.',
-    icon: <AwardIcon />,
-    isLetter: true,
-    letter: '150+',
-  },
-];
+/* ──────────────── Stats Data factory (needs t() so defined inside component) ──────────────── */
 
 /* ──────────────── Main Component ──────────────── */
 export default function HeroSection() {
+  const { t } = useTranslation();
   const { banners, loading } = useBanners();
+
+  const statsData = [
+    {
+      value: 25,
+      suffix: '+',
+      label: t('hero.stats.years'),
+      description: t('hero.stats.years_desc'),
+      icon: <TrophyIcon />,
+    },
+    {
+      value: 3000,
+      suffix: '+',
+      label: t('hero.stats.students'),
+      description: t('hero.stats.students_desc'),
+      icon: <GraduationIcon />,
+    },
+    {
+      value: 5,
+      suffix: '',
+      label: t('hero.stats.units'),
+      description: t('hero.stats.units_desc'),
+      icon: <SchoolIcon />,
+    },
+    {
+      value: 0,
+      suffix: '',
+      label: t('hero.stats.achievements'),
+      description: t('hero.stats.achievements_desc'),
+      icon: <AwardIcon />,
+      isLetter: true,
+      letter: '150+',
+    },
+  ];
   
   // While loading: don't show anything yet (avoid flash of default images)
   // After loading: use API banners, or fall back to defaults if API returned empty/failed
@@ -199,7 +202,7 @@ export default function HeroSection() {
             className="text-xs text-white/40 tracking-[0.3em] uppercase font-medium"
             style={{ fontFamily: "'Geist', Inter, sans-serif" }}
           >
-            Selamat Datang
+            {t('hero.welcome')}
           </span>
           <div className="w-px h-16 bg-white/10" />
         </motion.div>
@@ -235,7 +238,7 @@ export default function HeroSection() {
                   className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
                   style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
-                  Yayasan Pendidikan
+                  {t('hero.title_line1')}
                 </motion.span>
                 <motion.span
                   initial={{ opacity: 0, y: 40 }}
@@ -244,7 +247,7 @@ export default function HeroSection() {
                   className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mt-1"
                   style={{ fontFamily: "'Eras ITC', 'Eras ITC Bold', sans-serif", fontWeight: 700 }}
                 >
-                  Metland
+                  {t('hero.title_line2')}
                 </motion.span>
               </h1>
 
@@ -263,8 +266,7 @@ export default function HeroSection() {
                 transition={{ delay: 1.0, duration: 0.8 }}
                 className="text-sm sm:text-base md:text-lg text-white/65 max-w-md lg:max-w-xl leading-relaxed"
               >
-                berkomitmen menciptakan lingkungan belajar yang inovatif dan
-                berkarakter untuk masa depan Indonesia.
+                {t('hero.subtitle')}
               </motion.p>
 
               {/* CTA Buttons */}
@@ -278,7 +280,7 @@ export default function HeroSection() {
                   href="/profil"
                   className="group inline-flex items-center gap-2 px-7 py-3.5 bg-[#3D8ABF] text-white text-sm font-semibold rounded-full hover:bg-[#2E6F9E] transition-all duration-300 shadow-lg shadow-[#3D8ABF]/25 hover:shadow-[#3D8ABF]/40 hover:scale-[1.03]"
                 >
-                  Tentang Kami
+                  {t('hero.about_us')}
                   <svg
                     className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                     fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"
@@ -290,7 +292,7 @@ export default function HeroSection() {
                   href="/our-school"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300"
                 >
-                  Unit Pendidikan
+                  {t('hero.education_unit')}
                 </a>
               </motion.div>
             </div>

@@ -1,0 +1,359 @@
+{
+  "navbar": {
+    "home": "Home",
+    "profile": "Profil",
+    "our_school": "Our School",
+    "articles": "Artikel",
+    "literacy": "Literasi",
+    "contact": "Contact",
+    "language": "Bahasa",
+    "vision_mission": "Visi & Misi",
+    "vision_mission_desc": "Visi, misi, dan nilai-nilai yayasan",
+    "organization_structure": "Struktur Organisasi",
+    "organization_structure_desc": "Susunan pengurus dan pengelola",
+    "tk_tunas_desc": "Taman Kanak-Kanak Tunas Metropolitan",
+    "sd_tunas_desc": "Sekolah Dasar Tunas Metropolitan",
+    "metland_college_desc": "Perguruan Tinggi Metland College"
+  },
+  "hero": {
+    "welcome": "Selamat Datang",
+    "title_line1": "Yayasan Pendidikan",
+    "title_line2": "Metland",
+    "subtitle": "berkomitmen menciptakan lingkungan belajar yang inovatif dan berkarakter untuk masa depan Indonesia.",
+    "about_us": "Tentang Kami",
+    "education_unit": "Unit Pendidikan",
+    "stats": {
+      "years": "Tahun Pengalaman",
+      "years_desc": "Berkomitmen dalam dunia pendidikan sejak 1998.",
+      "students": "Siswa",
+      "students_desc": "Membina generasi berkarakter dan berprestasi.",
+      "units": "Unit Pendidikan",
+      "units_desc": "Tersebar di berbagai wilayah dengan fasilitas terbaik.",
+      "achievements": "Prestasi",
+      "achievements_desc": "Mencapai prestasi gemilang dalam berbagai bidang."
+    }
+  },
+  "marquee": {
+    "words": "PENDIDIKAN • KARAKTER • INOVASI • MASA DEPAN • INTEGRITAS • KEUNGGULAN • "
+  },
+  "what_we_do": {
+    "subtitle": "Fokus Utama Kami",
+    "title": "Apa yang Kami Lakukan",
+    "read_more": "Selengkapnya"
+  },
+  "impact_spotlight": {
+    "title": "Sambutan Ketua Yayasan",
+    "subtitle": "Sambutan Ketua Yayasan Pendidikan",
+    "name": "Bapak Ir. Pandu Gunandito",
+    "role": "Ketua Yayasan Pendidikan Metland",
+    "heading": "Membangun Masa Depan Melalui Pendidikan Berkualitas",
+    "speech": "Assalamualaikum Warahmatullahi Wabarakatuh. Puji syukur kami panjatkan ke hadirat Allah SWT atas segala rahmat dan karunia-Nya. Yayasan Pendidikan Metland hadir dengan komitmen kuat untuk mencerdaskan kehidupan bangsa melalui pendidikan yang bermutu, berkarakter, dan berlandaskan nilai-nilai keislaman. Kami percaya bahwa setiap anak berhak mendapatkan pendidikan terbaik untuk meraih masa depan yang gemilang.",
+    "read_more": "Selengkapnya"
+  },
+  "programs_grid": {
+    "subtitle": "Unit Pendidikan",
+    "title": "Sekolah Kami",
+    "view_all": "Lihat Semua",
+    "read_more": "Selengkapnya"
+  },
+  "schools": {
+    "tk_tunas": {
+      "level": "Taman Kanak-Kanak",
+      "tagline": "Menanamkan cinta belajar sejak dini"
+    },
+    "sd_tunas": {
+      "level": "Sekolah Dasar",
+      "tagline": "Fondasi kokoh untuk masa depan cerah"
+    },
+    "smk_pariwisata": {
+      "level": "Sekolah Menengah Kejuruan",
+      "tagline": "Profesional di industri pariwisata dan perhotelan"
+    },
+    "smk_metland": {
+      "level": "Sekolah Menengah Kejuruan",
+      "tagline": "Mencetak tenaga terampil siap industri"
+    },
+    "metland_college": {
+      "level": "Perguruan Tinggi",
+      "tagline": "Pendidikan tinggi vokasional berstandar global"
+    }
+  },
+  "impact_numbers": {
+    "subtitle": "Dalam Rangka",
+    "title": "Dampak Kami",
+    "desc1": "Sejak 1998, Yayasan Pendidikan Metland telah berdedikasi untuk menciptakan akses pendidikan yang berkualitas bagi generasi muda Indonesia.",
+    "desc2": "Melalui berbagai unit pendidikan kami, kami terus berkomitmen untuk mencetak lulusan yang inovatif, berkarakter, dan siap menghadapi tantangan masa depan.",
+    "rows": [
+      {
+        "label": "Tahun Pengalaman",
+        "heading": "Mengabdi untuk Pendidikan Indonesia",
+        "description": "Sejak didirikan, Yayasan Pendidikan Metland terus berkomitmen memberikan layanan pendidikan terbaik dengan mengedepankan pembentukan karakter dan kompetensi akademik siswa."
+      },
+      {
+        "label": "Siswa Terdidik",
+        "heading": "Membangun Generasi Unggul",
+        "description": "Kami telah mendidik ribuan siswa dari jenjang Taman Kanak-Kanak hingga Perguruan Tinggi, membekali mereka dengan keterampilan yang relevan dengan kebutuhan industri masa depan."
+      },
+      {
+        "label": "Penghargaan",
+        "heading": "Prestasi dan Pengakuan",
+        "description": "Dedikasi kami dalam dunia pendidikan telah diakui melalui berbagai penghargaan tingkat regional maupun nasional, membuktikan kualitas pendidikan yang konsisten."
+      }
+    ]
+  },
+  "news_insights": {
+    "subtitle": "Artikel",
+    "title": "Berita & Artikel",
+    "read_more": "Baca Selengkapnya",
+    "view_all": "Lihat Semua",
+    "empty_title": "Belum Ada Artikel",
+    "empty_desc": "Artikel terbaru sedang kami persiapkan. Kembali lagi nanti untuk membaca berita dan insight dari Yayasan.",
+    "empty_btn": "Lihat Halaman Artikel →"
+  },
+  "partner_logos": {
+    "subtitle": "Mitra Industri & Akademik",
+    "title": "Dipercaya oleh Institusi Terkemuka"
+  },
+  "cta_banner": {
+    "title": "Hubungi Kami",
+    "subtitle": "Jadilah bagian dari perjalanan membangun pendidikan berkualitas untuk masa depan Indonesia.",
+    "btn": "Hubungi Kami"
+  },
+  "footer": {
+    "brand_desc": "Membangun generasi unggul melalui pendidikan berkualitas, berkarakter, dan berlandaskan nilai-nilai keislaman.",
+    "nav_heading": "Navigasi",
+    "contact_heading": "Hubungi Kami",
+    "email": "Email",
+    "phone": "Telepon",
+    "location": "Lokasi",
+    "address": "M Gold Tower, Lantai 15, JL. Letkol M. Moeffreni Moe'min Pekayon Jaya, Bekasi 17148, Indonesia",
+    "copyright": "Yayasan Pendidikan Metland. Designed By Reynara Rehan Rhaditya.",
+    "privacy_policy": "Kebijakan Privasi",
+    "terms_conditions": "Syarat & Ketentuan",
+    "cookie_policy": "Cookie Policy"
+  },
+  "contact": {
+    "alert_success": "Terima kasih atas pesan Anda! Kami akan segera menghubungi Anda kembali.",
+    "hero_tag": "Kontak",
+    "hero_subtitle": "Untuk informasi lebih lanjut mengenai Yayasan Pendidikan Metland",
+    "form_title": "Kirim Pesan",
+    "form_name": "Nama Anda",
+    "form_name_ph": "Nama Lengkap",
+    "form_email": "Alamat Email",
+    "form_email_ph": "email@contoh.com",
+    "form_subject": "Subjek",
+    "form_subject_ph": "Apa yang bisa kami bantu?",
+    "form_message": "Pesan",
+    "form_message_ph": "Tulis pesan Anda di sini...",
+    "form_submit": "Kirim Pesan →",
+    "office_title": "Kantor Pusat",
+    "location_title": "Lokasi Kami"
+  },
+  "about": {
+    "hero_title": "Tentang Yayasan Pendidikan Metland",
+    "hero_subtitle": "Dua dekade mengubah kehidupan melalui pendidikan, karakter, dan pemberdayaan yang berkelanjutan.",
+    "mission_title": "Misi Kami",
+    "mission_desc": "Membangun sistem pendidikan yang mengintegrasikan pengetahuan akademik, keterampilan praktis, dan karakter unggul untuk mempersiapkan siswa menjadi pemimpin masa depan.",
+    "vision_title": "Visi Kami",
+    "vision_desc": "Menjadi institusi pendidikan terkemuka yang diakui secara nasional dalam menghasilkan lulusan yang berprestasi, inovatif, dan berakhlak mulia.",
+    "journey_title": "Perjalanan Kami",
+    "team_title": "Tim Kepemimpinan Kami",
+    "journey": [
+      { "year": "1998", "text": "Yayasan didirikan dengan visi mengubah Indonesia melalui pendidikan." },
+      { "year": "2005", "text": "Program beasiswa pertama diluncurkan untuk mendukung siswa berprestasi." },
+      { "year": "2010", "text": "Membuka unit-unit pendidikan baru di berbagai wilayah." },
+      { "year": "2015", "text": "Mencapai ribuan alumni yang sukses di berbagai bidang industri." },
+      { "year": "2020", "text": "Meluncurkan inisiatif literasi digital, membekali generasi muda dengan keterampilan teknologi." },
+      { "year": "2024", "text": "Terus bertumbuh dan mencetak lulusan unggul berstandar global." }
+    ]
+  },
+  "artikel": {
+    "back_to_article": "Kembali ke Artikel",
+    "read_time": "mnt baca",
+    "share": "Bagikan",
+    "copy_link": "Salin tautan",
+    "link_copied": "Tautan disalin!",
+    "other_articles": "Artikel Lainnya",
+    "related_articles": "Artikel Terkait",
+    "newsletter_tag": "Newsletter",
+    "newsletter_title": "Tetap terhubung dengan kami",
+    "newsletter_desc": "Dapatkan berita dan informasi terbaru dari Yayasan Pendidikan Metland langsung ke email Anda.",
+    "newsletter_placeholder": "Alamat email Anda",
+    "newsletter_btn": "Berlangganan",
+    "not_found_title": "Artikel Tidak Ditemukan",
+    "not_found_desc": "Artikel yang kamu cari mungkin telah dihapus atau tidak tersedia."
+  },
+  "literasi": {
+    "hero_tag": "Program Literasi — Yayasan Pendidikan Metland",
+    "hero_title1": "Membangun Budaya",
+    "hero_title2": " Membaca.",
+    "hero_btn": "↓ Jelajahi Program",
+    "why_tag": "Mengapa Literasi Penting",
+    "why_title": "Lebih dari sekadar membaca.",
+    "why_desc1": "Literasi bukan sekadar kemampuan membaca dan menulis. Di era digital ini, literasi mencakup kemampuan berpikir kritis, memahami informasi secara mendalam, dan mengkomunikasikan ide secara efektif.",
+    "why_desc2": "Yayasan Pendidikan Metland berkomitmen menjadikan literasi sebagai fondasi seluruh proses pembelajaran, memastikan setiap siswa dan mahasiswa tumbuh menjadi individu yang cerdas, kritis, dan berpengetahuan luas.",
+    "why_btn": "Tentang Kami",
+    "active_in": "Program aktif di",
+    "schools_count": "5 Unit Sekolah",
+    "collection_tag": "Koleksi Kami",
+    "collection_title": "Fasilitas Perpustakaan",
+    "programs_title": "Program Literasi",
+    "digital_tag": "Perpustakaan Digital",
+    "digital_title": "5.000+ E-Book Tersedia",
+    "digital_desc": "Akses perpustakaan digital kami kapan saja, di mana saja. Tersedia 24 jam penuh dengan koleksi e-book yang terus bertambah untuk mendukung kebutuhan belajar siswa dan guru.",
+    "digital_btn": "Akses E-Library",
+    "digital_collection_title": "Koleksi Buku Digital",
+    "search_placeholder": "Cari e-book...",
+    "categories": {
+      "Semua": "Semua",
+      "Pendidikan": "Pendidikan",
+      "Literasi": "Literasi",
+      "Sains": "Sains",
+      "Fiksi": "Fiksi",
+      "Agama": "Agama",
+      "Umum": "Umum"
+    },
+    "empty_title": "Belum ada buku tersedia",
+    "empty_desc": "Buku digital akan segera ditambahkan",
+    "loading": "Memuat...",
+    "load_more": "Muat Lebih Banyak",
+    "cta_title1": "Bergabung dalam",
+    "cta_title2": "Gerakan Literasi",
+    "cta_desc": "Daftarkan diri Anda atau anak Anda ke program literasi kami dan bangun kebiasaan membaca sejak dini.",
+    "cta_btn": "Daftar Sekarang",
+    "koleksi": [
+      { "count": "1.200+", "countNum": 1200, "suffix": "+", "title": "Buku Teks & Referensi", "desc": "Koleksi buku teks pelajaran dan referensi akademik untuk semua jenjang pendidikan." },
+      { "count": "450+", "countNum": 450, "suffix": "+", "title": "Jurnal & Majalah", "desc": "Jurnal ilmiah, majalah pendidikan, dan publikasi berkala nasional maupun internasional." },
+      { "count": "5.000+", "countNum": 5000, "suffix": "+", "title": "E-Library", "desc": "Akses perpustakaan digital 24 jam dengan ribuan buku elektronik dan sumber daring." },
+      { "count": "12", "countNum": 12, "suffix": "", "title": "Ruang Belajar Bersama", "desc": "Fasilitas ruang diskusi dan belajar kelompok yang nyaman dan kondusif." }
+    ],
+    "programs": [
+      { "title": "Pojok Baca", "desc": "Program membaca buku gratis setiap hari Jumat untuk semua jenjang. Menyediakan akses bacaan berkualitas bagi seluruh siswa." },
+      { "title": "Klub Literasi", "desc": "Diskusi buku rutin bulanan dipandu mentor berpengalaman. Membangun komunitas pembaca yang aktif dan kritis." },
+      { "title": "Lomba Menulis", "desc": "Kompetisi karya tulis ilmiah dan fiksi tahunan antar sekolah. Mengasah kreativitas dan kemampuan berpikir." },
+      { "title": "Bedah Buku", "desc": "Acara interaktif mengupas isi dan makna buku pilihan. Memperdalam pemahaman literasi secara kolaboratif." },
+      { "title": "Story Telling", "desc": "Pengembangan kemampuan bercerita dan presentasi publik. Melatih percaya diri dan keterampilan komunikasi." },
+      { "title": "Kunjungan Perpustakaan", "desc": "Kunjungan edukatif ke perpustakaan nasional dan daerah. Menginspirasi semangat membaca sejak dini." }
+    ],
+    "stats": [
+      { "label": "E-Book Tersedia" },
+      { "label": "Buku Fisik" },
+      { "label": "Ruang Baca" },
+      { "label": "Unit Sekolah" }
+    ],
+    "read_now": "Baca Sekarang",
+    "download": "Unduh PDF"
+  },
+  "strukturOrganisasi": {
+    "hero_tag": "Struktur Organisasi",
+    "hero_description": "Susunan kepemimpinan Yayasan Pendidikan Metland yang mendukung tata kelola pendidikan secara profesional.",
+    "org_chart_title": "Bagan Organisasi",
+    "org_chart_desc": "Alur koordinasi yayasan dari pembina hingga unit pendidikan.",
+    "team_title": "Pengurus Yayasan",
+    "team_desc": "Tim yang mengarahkan strategi, pengawasan, dan pelaksanaan program yayasan.",
+    "members_title": "Daftar Anggota",
+    "members_desc": "Informasi anggota pengurus dan jajaran pendukung Yayasan Pendidikan Metland.",
+    "org_chart": {
+      "foundation_label": "Yayasan",
+      "top": "Rapat Pembina",
+      "second_level": [
+        "Dewan Pengawas",
+        "Dewan Pembina"
+      ],
+      "pengurus_title": "Pengurus Yayasan",
+      "pengurus_subtitle": "Ketua Umum - Sekretaris - Bendahara",
+      "bidang": [
+        "Bidang Pendidikan",
+        "Bidang Keuangan",
+        "Bidang Humas & Kemitraan"
+      ]
+    },
+    "team_groups": [
+      {
+        "category": "Dewan Pembina",
+        "description": "Memberikan arahan utama dan memastikan visi yayasan berjalan konsisten."
+      },
+      {
+        "category": "Dewan Pengawas",
+        "description": "Mengawasi tata kelola, akuntabilitas, dan keberlanjutan program yayasan."
+      },
+      {
+        "category": "Pengurus Harian",
+        "description": "Mengelola pelaksanaan operasional dan koordinasi program pendidikan."
+      }
+    ],
+    "team_member_titles": {
+      "ketua_pembina": "Ketua Pembina",
+      "ketua_pengawas": "Ketua Pengawas",
+      "anggota_pengawas": "Anggota Pengawas",
+      "ketua_umum": "Ketua Umum",
+      "sekretaris_umum": "Sekretaris Umum",
+      "bendahara_umum": "Bendahara Umum",
+      "bidang_pendidikan": "Bidang Pendidikan"
+    }
+  },
+  "common": {
+    "read_more": "Selengkapnya"
+  },
+  "ourSchool": {
+    "hero_tag": "Unit Pendidikan",
+    "hero_description": "Yayasan Pendidikan Metland mengelola 5 unit pendidikan berkualitas dari jenjang TK hingga perguruan tinggi."
+  },
+  "visiMisi": {
+    "hero_tag": "Visi & Misi",
+    "hero_description": "Landasan nilai dan arah perjuangan Yayasan Pendidikan Metland dalam memajukan generasi bangsa.",
+    "visi_tag": "Visi Kami",
+    "visi_text": "Menjadi yayasan pendidikan terkemuka yang melahirkan generasi unggul, berkarakter, dan berdaya saing global demi kemajuan bangsa Indonesia.",
+    "visi_quote": "\"Generasi unggul bukan hanya cerdas secara akademik, tetapi juga memiliki karakter kuat, etika tinggi, dan kemampuan beradaptasi dengan perubahan zaman.\"",
+    "misi_tag": "Misi Kami",
+    "misi_items": [
+      "Menyelenggarakan pendidikan berkualitas tinggi dari jenjang TK hingga perguruan tinggi yang berorientasi pada keunggulan akademik dan pembentukan karakter.",
+      "Mengembangkan kurikulum inovatif yang responsif terhadap kebutuhan industri dan perkembangan teknologi global.",
+      "Membangun lingkungan belajar yang inklusif, aman, nyaman, dan menginspirasi bagi seluruh peserta didik.",
+      "Memberdayakan tenaga pendidik profesional yang berdedikasi dan terus berkembang dalam kompetensi keilmuan dan pedagogik.",
+      "Menjalin kemitraan strategis dengan dunia usaha, industri, dan institusi pendidikan nasional maupun internasional.",
+      "Menanamkan nilai-nilai kebangsaan, toleransi, dan kepedulian sosial dalam setiap proses pendidikan."
+    ]
+  },
+  "schoolDetail": {
+    "not_found_title": "Sekolah Tidak Ditemukan",
+    "not_found_back": "← Kembali ke Our School",
+    "about_prefix": "Tentang",
+    "featured_programs": "Program Unggulan",
+    "facts_title": "Fakta & Angka",
+    "facts_desc_prefix": "Pencapaian dan pertumbuhan",
+    "other_schools": "Sekolah Lainnya",
+    "schools": {
+      "tk-tunas-metropolitan": {
+        "description": "TK Tunas Metropolitan adalah jenjang pendidikan anak usia dini yang berfokus pada pengembangan karakter, kreativitas, dan kecerdasan emosional. Dengan pendekatan bermain sambil belajar, kami memastikan setiap anak tumbuh dengan bahagia dan siap memasuki jenjang berikutnya.",
+        "features": ["Kurikulum Merdeka Belajar", "Stimulasi Motorik Terpadu", "Pendidikan Karakter", "Lingkungan Bermain Aman"],
+        "stats": [{"value": "120+", "label": "Siswa Aktif"}, {"value": "15", "label": "Tenaga Pengajar"}, {"value": "2005", "label": "Tahun Berdiri"}]
+      },
+      "sd-tunas-metropolitan": {
+        "description": "SD Tunas Metropolitan memberikan pendidikan dasar yang komprehensif dengan memadukan akademik, seni, olahraga, dan teknologi. Kami percaya setiap anak memiliki potensi unik yang perlu dikembangkan secara optimal.",
+        "features": ["Kurikulum Nasional + Internasional", "Program Bilingual", "Ekstra Kurikuler Beragam", "Literasi Digital"],
+        "stats": [{"value": "480+", "label": "Siswa Aktif"}, {"value": "42", "label": "Tenaga Pengajar"}, {"value": "2008", "label": "Tahun Berdiri"}]
+      },
+      "smk-pariwisata-metland-school": {
+        "description": "SMK Pariwisata Metland School mempersiapkan siswa menjadi tenaga profesional di bidang pariwisata, perhotelan, dan kuliner. Dengan fasilitas praktik bertaraf industri dan kemitraan dengan hotel berbintang, lulusan kami siap bersaing di tingkat nasional dan internasional.",
+        "features": ["Jurusan Perhotelan", "Jurusan Kuliner", "Jurusan Akuntansi", "Jurusan DKV", "Jurusan PPLG"],
+        "stats": [{"value": "650+", "label": "Siswa Aktif"}, {"value": "55", "label": "Tenaga Pengajar"}, {"value": "2012", "label": "Tahun Berdiri"}]
+      },
+      "smk-metland": {
+        "description": "SMK Metland berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.",
+        "features": ["Jurusan Perhotelan", "Jurusan Kuliner", "Jurusan Akuntansi", "Jurusan DKV", "Jurusan PPLG"],
+        "stats": [{"value": "720+", "label": "Siswa Aktif"}, {"value": "60", "label": "Tenaga Pengajar"}, {"value": "2015", "label": "Tahun Berdiri"}]
+      },
+      "metland-college": {
+        "description": "Metland College adalah perguruan tinggi vokasional yang menawarkan program D3 dan D4 di bidang bisnis, teknologi, dan pariwisata. Dengan kurikulum yang dikembangkan bersama industri, lulusan Metland College memiliki kompetensi tinggi dan siap memasuki dunia kerja.",
+        "features": ["Program D3 & D4", "Kerjasama Industri", "Beasiswa Berprestasi", "Career Development Center"],
+        "stats": [{"value": "890+", "label": "Mahasiswa Aktif"}, {"value": "75", "label": "Dosen & Staf"}, {"value": "2018", "label": "Tahun Berdiri"}]
+      }
+    }
+  },
+  "not_found": {
+    "title": "Halaman Tidak Ditemukan",
+    "subtitle": "Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.",
+    "back_home": "Kembali ke Beranda"
+  }
+}
