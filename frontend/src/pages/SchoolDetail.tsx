@@ -38,25 +38,49 @@ function FloatingShapes() {
   );
 }
 
+// Keep base non-translatable fields here
 const schools = [
-  { slug: 'tk-tunas-metropolitan', name: 'TK Tunas Metropolitan', image: '/src/assets/tk_sdmetropolitan.jpeg', color: '#FDE68A' },
-  { slug: 'sd-tunas-metropolitan', name: 'SD Tunas Metropolitan', image: '/src/assets/tk_sdmetropolitan.jpeg', color: '#BBF7D0' },
-  { slug: 'smk-pariwisata-metland-school', name: 'SMK Pariwisata Metland School', image: '/src/assets/sekolahsmkmetland.webp', color: '#BFDBFE' },
-  { slug: 'smk-metland', name: 'SMK Metland', image: '/src/assets/sekolahsmkmetlandcibitung.webp', color: '#FED7AA' },
-  { slug: 'metland-college', name: 'Metland College', image: '/src/assets/sekolahsmkmetland.webp', color: '#E9D5FF' },
+  {
+    slug: 'tk-tunas-metropolitan',
+    keyName: 'tk_tunas',
+    name: 'TK Tunas Metropolitan',
+    image: '/src/assets/tk_sdmetropolitan.jpeg',
+    color: '#FDE68A',
+  },
+  {
+    slug: 'sd-tunas-metropolitan',
+    keyName: 'sd_tunas',
+    name: 'SD Tunas Metropolitan',
+    image: '/src/assets/tk_sdmetropolitan.jpeg',
+    color: '#BBF7D0',
+  },
+  {
+    slug: 'smk-pariwisata-metland-school',
+    keyName: 'smk_pariwisata',
+    name: 'SMK Pariwisata Metland School',
+    image: '/src/assets/sekolahsmkmetland.webp',
+    color: '#BFDBFE',
+  },
+  {
+    slug: 'smk-metland',
+    keyName: 'smk_metland',
+    name: 'SMK Metland',
+    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
+    color: '#FED7AA',
+  },
+  {
+    slug: 'metland-college',
+    keyName: 'metland_college',
+    name: 'Metland College',
+    image: '/src/assets/sekolahsmkmetland.webp',
+    color: '#E9D5FF',
+  },
 ];
-
-const slugToKey: Record<string, string> = {
-  'tk-tunas-metropolitan': 'tk_tunas',
-  'sd-tunas-metropolitan': 'sd_tunas',
-  'smk-pariwisata-metland-school': 'smk_pariwisata',
-  'smk-metland': 'smk_metland',
-  'metland-college': 'metland_college',
-};
 
 export default function SchoolDetail() {
   const { slug } = useParams();
   const { t } = useTranslation();
+  
   const school = schools.find((s) => s.slug === slug);
 
   if (!school) {
@@ -72,12 +96,14 @@ export default function SchoolDetail() {
 
   const others = schools.filter((s) => s.slug !== school.slug);
 
-  const schoolKey = slugToKey[school.slug];
-  const description = t(`schoolDetail.schools.${school.slug}.description`);
-  const features = t(`schoolDetail.schools.${school.slug}.features`, { returnObjects: true }) as string[];
-  const stats = t(`schoolDetail.schools.${school.slug}.stats`, { returnObjects: true }) as { value: string; label: string }[];
-  const level = t(`schools.${schoolKey}.level`);
-  const tagline = t(`schools.${schoolKey}.tagline`);
+  // Retrieve translatable fields dynamically
+  const levelText = t(`schools.${school.keyName}.level`);
+  const taglineText = t(`schools.${school.keyName}.tagline`);
+  const schoolData = t(`schoolDetail.schools.${school.slug}`, { returnObjects: true }) as any;
+  
+  const description = schoolData?.description || '';
+  const features = (schoolData?.features || []) as string[];
+  const stats = (schoolData?.stats || []) as { value: string, label: string }[];
 
   return (
     <>
@@ -101,7 +127,7 @@ export default function SchoolDetail() {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="text-primary text-sm md:text-base font-semibold"
           >
-            {tagline}
+            {taglineText}
           </motion.p>
         </div>
       </section>
@@ -133,6 +159,9 @@ export default function SchoolDetail() {
                   'Motorik': TreePine, 'Digital': Monitor, 'Career': Briefcase,
                   'Beasiswa': Award, 'Kerjasama': Globe, 'Ekstra': Sparkles,
                   'Stimulasi': Heart, 'Lingkungan': TreePine,
+                  'Curriculum': BookOpen, 'Hospitality': Building2, 'Culinary': UtensilsCrossed,
+                  'Accounting': Briefcase, 'Visual': Palette, 'Software': Code,
+                  'Safe': Shield, 'Play': Heart, 'Environment': TreePine,
                 };
                 const matchedKey = Object.keys(iconMap).find(k => f.includes(k));
                 const Icon = matchedKey ? iconMap[matchedKey] : BookOpen;
@@ -248,7 +277,7 @@ export default function SchoolDetail() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <motion.div>
-                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{t(`schools.${slugToKey[s.slug]}.level`)}</p>
+                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{t(`schools.${s.keyName}.level`)}</p>
                     </motion.div>
                   </motion.div>
                   <motion.h3

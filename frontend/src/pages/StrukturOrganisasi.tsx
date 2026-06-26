@@ -4,48 +4,6 @@ import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import heroImg from '../assets/sekolahsmkmetlandcibitung.webp';
 
-/* ─── Team Data ─── */
-const pengurusData = [
-  {
-    categoryKey: 'strukturOrganisasi.team_groups.0.category',
-    descriptionKey: 'strukturOrganisasi.team_groups.0.description',
-    members: [
-      { name: 'Bapak Ir. Pandu Gunandito', titleKey: 'strukturOrganisasi.team_member_titles.ketua_pembina', photo: '/src/assets/MS_ketuayayasan.jpg' },
-    ],
-  },
-  {
-    categoryKey: 'strukturOrganisasi.team_groups.1.category',
-    descriptionKey: 'strukturOrganisasi.team_groups.1.description',
-    members: [
-      { name: 'Prof. Dr. Ahmad Fauzi', titleKey: 'strukturOrganisasi.team_member_titles.ketua_pengawas', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
-      { name: 'Dra. Rina Pertiwi, M.Pd.', titleKey: 'strukturOrganisasi.team_member_titles.anggota_pengawas', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80' },
-    ],
-  },
-  {
-    categoryKey: 'strukturOrganisasi.team_groups.2.category',
-    descriptionKey: 'strukturOrganisasi.team_groups.2.description',
-    members: [
-      { name: 'H. Darmawan Susilo, S.E.', titleKey: 'strukturOrganisasi.team_member_titles.ketua_umum', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80' },
-      { name: 'Dewi Puspitasari, M.Pd.', titleKey: 'strukturOrganisasi.team_member_titles.sekretaris_umum', photo: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80' },
-      { name: 'Ir. Hendra Gunawan, M.M.', titleKey: 'strukturOrganisasi.team_member_titles.bendahara_umum', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-      { name: 'Dr. Lestari Wahyuni, M.Pd.', titleKey: 'strukturOrganisasi.team_member_titles.bidang_pendidikan', photo: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80' },
-    ],
-  },
-];
-
-/* ─── Org Chart Data ─── */
-const orgChartData = {
-  top: 'Rapat Pembina',
-  secondLevel: ['Dewan Pengawas', 'Dewan Pembina'],
-  pengurus: { title: 'Pengurus Yayasan', subtitle: 'Ketua Umum · Sekretaris · Bendahara' },
-  bidang: ['Bidang Pendidikan', 'Bidang Keuangan', 'Bidang Humas & Kemitraan'],
-  units: ['TK Tunas Metropolitan', 'SD Tunas Metropolitan', 'SMK Pariwisata Metland School', 'SMK Metland', 'Metland College'],
-};
-
-function getTranslatedArray<T>(value: unknown, fallback: T[]): T[] {
-  return Array.isArray(value) ? (value as T[]) : fallback;
-}
-
 /* ─── Connector Component ─── */
 function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; color?: string }) {
   return (
@@ -77,32 +35,54 @@ function ChartNode({
 
 export default function StrukturOrganisasi() {
   const { t } = useTranslation();
-  const secondLevel = getTranslatedArray(
-    t('strukturOrganisasi.org_chart.second_level', { returnObjects: true }),
-    orgChartData.secondLevel
-  );
-  const bidang = getTranslatedArray(
-    t('strukturOrganisasi.org_chart.bidang', { returnObjects: true }),
-    orgChartData.bidang
-  );
 
-  const orgChart = {
-    top: t('strukturOrganisasi.org_chart.top'),
-    secondLevel,
-    pengurus: { title: t('strukturOrganisasi.org_chart.pengurus_title'), subtitle: t('strukturOrganisasi.org_chart.pengurus_subtitle') },
-    bidang,
-    units: orgChartData.units,
+  // Retrieve translation objects/arrays
+  const orgChartText = t('strukturOrganisasi.org_chart', { returnObjects: true }) as any;
+  const teamGroupsText = t('strukturOrganisasi.team_groups', { returnObjects: true }) as any[];
+  const teamTitlesText = t('strukturOrganisasi.team_member_titles', { returnObjects: true }) as any;
+  const orgChartBidang = orgChartText?.bidang || [];
+  const orgChartSecond = orgChartText?.second_level || [];
+
+  /* ─── Team Data ─── */
+  const pengurus = [
+    {
+      category: teamGroupsText[0]?.category || 'Pembina',
+      description: teamGroupsText[0]?.description || '',
+      members: [
+        { name: 'Bapak Ir. Pandu Gunandito', title: teamTitlesText?.ketua_pembina || 'Ketua Pembina', photo: '/src/assets/MS_ketuayayasan.jpg' },
+      ],
+    },
+    {
+      category: teamGroupsText[1]?.category || 'Pengawas',
+      description: teamGroupsText[1]?.description || '',
+      members: [
+        { name: 'Prof. Dr. Ahmad Fauzi', title: teamTitlesText?.ketua_pengawas || 'Ketua Pengawas', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
+        { name: 'Dra. Rina Pertiwi, M.Pd.', title: teamTitlesText?.anggota_pengawas || 'Anggota Pengawas', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80' },
+      ],
+    },
+    {
+      category: teamGroupsText[2]?.category || 'Pengurus',
+      description: teamGroupsText[2]?.description || '',
+      members: [
+        { name: 'H. Darmawan Susilo, S.E.', title: teamTitlesText?.ketua_umum || 'Ketua Umum', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80' },
+        { name: 'Dewi Puspitasari, M.Pd.', title: teamTitlesText?.sekretaris_umum || 'Sekretaris Umum', photo: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80' },
+        { name: 'Ir. Hendra Gunawan, M.M.', title: teamTitlesText?.bendahara_umum || 'Bendahara Umum', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
+        { name: 'Dr. Lestari Wahyuni, M.Pd.', title: teamTitlesText?.bidang_pendidikan || 'Bidang Pendidikan', photo: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80' },
+      ],
+    },
+  ];
+
+  /* ─── Org Chart Data ─── */
+  const orgChartData = {
+    top: orgChartText?.top || 'Rapat Pembina',
+    secondLevel: orgChartSecond.length > 0 ? orgChartSecond : ['Dewan Pengawas', 'Dewan Pembina'],
+    pengurus: { 
+      title: orgChartText?.pengurus_title || 'Pengurus Yayasan', 
+      subtitle: orgChartText?.pengurus_subtitle || 'Ketua Umum · Sekretaris · Bendahara' 
+    },
+    bidang: orgChartBidang.length > 0 ? orgChartBidang : ['Bidang Pendidikan', 'Bidang Keuangan', 'Bidang Humas & Kemitraan'],
+    units: ['TK Tunas Metropolitan', 'SD Tunas Metropolitan', 'SMK Pariwisata Metland School', 'SMK Metland', 'Metland College'],
   };
-
-  const pengurus = pengurusData.map((group) => ({
-    category: t(group.categoryKey),
-    description: t(group.descriptionKey),
-    members: group.members.map((m) => ({
-      name: m.name,
-      title: t(m.titleKey),
-      photo: m.photo,
-    })),
-  }));
 
   return (
     <>
@@ -145,8 +125,10 @@ export default function StrukturOrganisasi() {
             <div className="flex flex-col items-center">
               {/* Level 1 — Rapat Pembina */}
               <ChartNode variant="default">
-                <p className="text-[10px] text-[#3D8ABF] uppercase tracking-[0.15em] mb-0.5 font-medium">{t('strukturOrganisasi.org_chart.foundation_label')}</p>
-                <p className="font-semibold text-sm">{orgChart.top}</p>
+                <p className="text-[10px] text-[#3D8ABF] uppercase tracking-[0.15em] mb-0.5 font-medium">
+                  {orgChartText?.foundation_label || 'Yayasan Pendidikan Metland'}
+                </p>
+                <p className="font-semibold text-sm">{orgChartData.top}</p>
               </ChartNode>
 
               <VerticalLine />
@@ -156,7 +138,7 @@ export default function StrukturOrganisasi() {
                 {/* Horizontal connector */}
                 <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-[#3D8ABF]/20" />
                 <div className="grid grid-cols-2 gap-6">
-                  {orgChart.secondLevel.map((d) => (
+                  {orgChartData.secondLevel.map((d: string) => (
                     <div key={d} className="relative">
                       <div className="flex justify-center">
                         <div style={{ width: 2, height: 16, background: 'rgba(61,138,191,0.2)' }} />
@@ -173,8 +155,8 @@ export default function StrukturOrganisasi() {
 
               {/* Level 3 — Pengurus Yayasan */}
               <ChartNode variant="default">
-                <p className="font-semibold text-sm">{orgChart.pengurus.title}</p>
-                <p className="text-[11px] mt-0.5 text-black">{orgChart.pengurus.subtitle}</p>
+                <p className="font-semibold text-sm">{orgChartData.pengurus.title}</p>
+                <p className="text-[11px] mt-0.5 text-black">{orgChartData.pengurus.subtitle}</p>
               </ChartNode>
 
               <VerticalLine color="rgba(61,138,191,0.25)" />
@@ -183,7 +165,7 @@ export default function StrukturOrganisasi() {
               <div className="relative w-full max-w-2xl">
                 <div className="absolute top-0 left-[16.67%] right-[16.67%] h-[2px] bg-gray-200" />
                 <div className="grid grid-cols-3 gap-4">
-                  {orgChart.bidang.map((u) => (
+                  {orgChartData.bidang.map((u: string) => (
                     <div key={u} className="relative">
                       <div className="flex justify-center">
                         <div style={{ width: 2, height: 16, background: '#e5e7eb' }} />
@@ -202,7 +184,7 @@ export default function StrukturOrganisasi() {
               <div className="relative w-full">
                 <div className="absolute top-0 left-[10%] right-[10%] h-[2px] bg-gray-100" />
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  {orgChartData.units.map((s) => (
+                  {orgChartData.units.map((s: string) => (
                     <div key={s} className="relative">
                       <div className="flex justify-center">
                         <div style={{ width: 2, height: 12, background: '#f3f4f6' }} />
@@ -301,9 +283,8 @@ export default function StrukturOrganisasi() {
                 {t('strukturOrganisasi.members_desc')}
               </p>
             </div>
-
           </ScrollReveal>
-          </div>
+        </div>
       </section>
     </>
   );
