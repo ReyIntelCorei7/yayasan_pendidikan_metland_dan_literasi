@@ -1,9 +1,9 @@
 import HeroSection from '../components/sections/HeroSection';
 import MarqueeStrip from '../components/sections/MarqueeStrip';
 import WhatWeDo from '../components/sections/WhatWeDo';
-import ImpactSpotlight from '../components/sections/ImpactSpotlight';
+import ExperienceSpotlight from '../components/sections/ImpactSpotlight';
 import ProgramsGrid from '../components/sections/ProgramsGrid';
-import ImpactNumbers from '../components/sections/ImpactNumbers';
+import ExperienceNumbers from '../components/sections/ImpactNumbers';
 import NewsInsights from '../components/sections/NewsInsights';
 import PartnerLogos from '../components/sections/PartnerLogos';
 import CTABanner from '../components/sections/CTABanner';
@@ -14,9 +14,9 @@ export default function Home() {
       <HeroSection />
       <MarqueeStrip />
       <NewsInsights />
-      <ImpactSpotlight />
+      <ExperienceSpotlight />
       <WhatWeDo />
-      <ImpactNumbers />
+      <ExperienceNumbers />
       <ProgramsGrid />
       <PartnerLogos />
       <CTABanner />

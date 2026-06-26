@@ -1,72 +1,73 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, HeartPulse, Sprout } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import WordReveal from '../animations/WordReveal';
+import { Link } from 'react-router-dom';
 import ScrollReveal from '../animations/ScrollReveal';
+import WordReveal from '../animations/WordReveal';
 import { programs } from '../../data/programs';
 import { getTrans } from '../../i18n';
 
 const icons = [BookOpen, HeartPulse, Sprout];
-const featured = programs.filter((p) => p.isFeatured).slice(0, 3);
+const featuredPrograms = programs.filter((program) => program.isFeatured).slice(0, 3);
 
 export default function WhatWeDo() {
-  const { t, i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+
   return (
     <section className="bg-[#FCFCFC] py-12">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
-                  <p
-                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
-                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
-                  >
-                    {t('what_we_do.subtitle')}
-                  </p>
-                </div>
+            <div className="mb-4 h-2 w-2 animate-pulse bg-[#3D8ABF]" />
+            <p
+              className="mb-4 text-base font-bold uppercase tracking-[0.2em] text-[#3D8ABF] md:text-lg"
+              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+            >
+              {t('what_we_do.subtitle')}
+            </p>
+          </div>
         </ScrollReveal>
-        <WordReveal
-          text={t('what_we_do.title')}
-          tag="h2"
-          className=""
-        />
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {featured.map((program, i) => {
-            const Icon = icons[i];
+        <WordReveal text={t('what_we_do.title')} tag="h2" className="" />
+
+        <div className="grid gap-8 md:grid-cols-3">
+          {featuredPrograms.map((program, index) => {
+            const Icon = icons[index];
+
             return (
               <motion.div
                 key={program.id}
                 whileHover={{ y: -6, boxShadow: '0 20px 60px -10px rgba(0,0,0,0.12)' }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="bg-[#FCFCFC] border border-gray-100 rounded-2xl p-8 relative overflow-hidden group"
+                className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-[#FCFCFC] p-8"
               >
-                {/* Top border accent */}
                 <motion.div
-                  className="absolute top-0 left-0 right-0 h-[3px] bg-primary origin-left"
+                  className="absolute left-0 right-0 top-0 h-[3px] origin-left bg-primary"
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.3 }}
                 />
 
-                {/* Decorative number */}
-                <span className="absolute top-4 right-6 text-8xl font-light text-gray-100 select-none">
-                  {String(i + 1).padStart(2, '0')}
+                <span className="absolute right-6 top-4 select-none text-8xl font-light text-gray-100">
+                  {String(index + 1).padStart(2, '0')}
                 </span>
 
-                {/* Icon */}
-                <Icon className="w-8 h-8 text-primary mb-4 relative z-10" />
+                <Icon className="relative z-10 mb-4 h-8 w-8 text-primary" />
 
-                {/* Content */}
-                <h3 className="text-xl font-medium mb-3 relative z-10">{getTrans(program.title, i18n.language)}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6 relative z-10">{getTrans(program.description, i18n.language)}</p>
+                <h3 className="relative z-10 mb-3 text-xl font-medium">
+                  {getTrans(program.title, i18n.language)}
+                </h3>
+                <p className="relative z-10 mb-6 text-sm leading-relaxed text-gray-500">
+                  {getTrans(program.description, i18n.language)}
+                </p>
 
-                {/* Learn More */}
-                <Link to={`/programs/${program.slug}`} className="relative inline-block text-sm font-medium text-charcoal z-10">
-                  <span>{t('what_we_do.read_more')} →</span>
+                <Link
+                  to={`/programs/${program.slug}`}
+                  className="relative z-10 inline-block text-sm font-medium text-charcoal"
+                >
+                  <span>{t('what_we_do.read_more')} &rarr;</span>
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px bg-charcoal origin-left"
+                    className="absolute bottom-0 left-0 right-0 h-px origin-left bg-charcoal"
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.3 }}

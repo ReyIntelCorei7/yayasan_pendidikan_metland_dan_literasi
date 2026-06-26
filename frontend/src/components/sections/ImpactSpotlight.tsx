@@ -1,9 +1,9 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import WordReveal from '../animations/WordReveal';
+import { Link } from 'react-router-dom';
 import ScrollReveal from '../animations/ScrollReveal';
+import WordReveal from '../animations/WordReveal';
 import ketuaYayasanImg from '../../assets/MS_ketuayayasan.webp';
 
 export default function ImpactSpotlight() {
@@ -17,37 +17,31 @@ export default function ImpactSpotlight() {
 
   return (
     <section ref={sectionRef}>
-      {/* Section Header */}
       <div className="bg-[#FCFCFC] py-2 pb-0">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-4">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-4 flex flex-col md:flex-row md:items-end md:justify-between">
             <div>
               <ScrollReveal>
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
+                  <div className="mb-4 h-2 w-2 animate-pulse bg-[#3D8ABF]" />
                   <p
-                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
+                    className="mb-4 text-base font-bold uppercase tracking-[0.2em] text-[#3D8ABF] md:text-lg"
                     style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                   >
                     {t('impact_spotlight.subtitle')}
                   </p>
                 </div>
               </ScrollReveal>
-              <WordReveal
-                text={t('impact_spotlight.title')}
-                tag="h2"
-                className=""
-              />
+
+              <WordReveal text={t('impact_spotlight.title')} tag="h2" className="" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content: Image + Text */}
-      <div className="w-full flex flex-col lg:flex-row min-h-[520px]">
-        {/* Image Side */}
+      <div className="flex min-h-[520px] w-full flex-col lg:flex-row">
         <motion.div
-          className="lg:w-[58%] relative overflow-hidden"
+          className="relative overflow-hidden lg:w-[58%]"
           initial={{ x: -60, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -56,7 +50,7 @@ export default function ImpactSpotlight() {
           <motion.img
             src={ketuaYayasanImg}
             alt="Foto kepala yayasan metland"
-            className="w-full h-full object-cover min-h-[400px] lg:min-h-[520px]"
+            className="h-full min-h-[400px] w-full object-cover lg:min-h-[520px]"
             style={{ y: imageY }}
             initial={{ scale: 1.15 }}
             whileInView={{ scale: 1 }}
@@ -66,69 +60,85 @@ export default function ImpactSpotlight() {
           />
         </motion.div>
 
-        {/* Text Side — dark section matching footer palette */}
         <div
-          className="lg:w-[42%] p-12 lg:p-16 flex flex-col justify-center relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%)' }}
+          className="relative flex flex-col justify-center overflow-hidden p-12 lg:w-[42%] lg:p-16"
+          style={{
+            background: 'linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 50%, #16213E 100%)',
+          }}
         >
-          {/* Geometric Background Pattern */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-          <div className="absolute -right-20 -bottom-20 w-64 h-64 border border-white/5 rounded-full pointer-events-none" />
-          <div className="absolute -right-10 -bottom-10 w-48 h-48 border border-white/5 rounded-full pointer-events-none" />
-          
+          <div
+            className="pointer-events-none absolute inset-0 opacity-10"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+              backgroundSize: '24px 24px',
+            }}
+          />
+          <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full border border-white/5" />
+          <div className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 rounded-full border border-white/5" />
+
           <div className="relative z-10">
-            {/* Decorative accent line */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-12 h-[2px] bg-[#3D8ABF] origin-left mb-8"
-          />
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-8 h-[2px] w-12 origin-left bg-[#3D8ABF]"
+            />
 
-          <ScrollReveal delay={0.2}>
-            <p
-              className="text-2xl lg:text-3xl font-bold text-white mb-1 tracking-tight"
-              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
-            >
-              {t('impact_spotlight.name')}
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.3}>
-            <p
-              className="text-xs text-[#3D8ABF] tracking-[0.2em] uppercase"
-              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
-            >
-              {t('impact_spotlight.role')}
-            </p>
-          </ScrollReveal>
-
-          <WordReveal
-            text={t('impact_spotlight.heading')}
-            tag="h2"
-            className=""
-          />
-
-          <ScrollReveal delay={0.6}>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              {t('impact_spotlight.speech')}
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.8}>
-            <Link to="/profil" className="inline-block mt-8">
-              <motion.span
-                className="inline-flex items-center gap-2 border border-white/20 text-white px-6 py-3 rounded-full text-sm font-medium cursor-pointer"
-                whileHover={{ backgroundColor: '#3D8ABF', color: '#fff', borderColor: 'rgba(61,138,191,1)' }}
-                transition={{ duration: 0.25 }}
+            <ScrollReveal delay={0.2}>
+              <p
+                className="mb-1 text-2xl font-bold tracking-tight text-white lg:text-3xl"
+                style={{ fontFamily: "'Geist', Inter, sans-serif" }}
               >
-                {t('impact_spotlight.read_more')}
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
-              </motion.span>
-            </Link>
-          </ScrollReveal>
+                {t('impact_spotlight.name')}
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.3}>
+              <p
+                className="text-xs uppercase tracking-[0.2em] text-[#3D8ABF]"
+                style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+              >
+                {t('impact_spotlight.role')}
+              </p>
+            </ScrollReveal>
+
+            <WordReveal text={t('impact_spotlight.heading')} tag="h2" className="" />
+
+            <ScrollReveal delay={0.6}>
+              <p className="text-sm leading-relaxed text-gray-400">
+                {t('impact_spotlight.speech')}
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.8}>
+              <Link to="/profil" className="mt-8 inline-block">
+                <motion.span
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white"
+                  whileHover={{
+                    backgroundColor: '#3D8ABF',
+                    borderColor: 'rgba(61,138,191,1)',
+                    color: '#fff',
+                  }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {t('impact_spotlight.read_more')}
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                    />
+                  </svg>
+                </motion.span>
+              </Link>
+            </ScrollReveal>
           </div>
         </div>
       </div>

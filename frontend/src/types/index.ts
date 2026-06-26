@@ -13,7 +13,7 @@ export interface Program {
   order: number;
 }
 
-export interface ImpactStat {
+export interface ExperienceStat {
   id: string;
   value: number;
   suffix: string;

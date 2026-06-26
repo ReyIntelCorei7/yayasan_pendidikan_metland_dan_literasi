@@ -195,9 +195,9 @@ class ApiController extends Controller
         return $this->cachedJson($data);
     }
 
-    public function impactStats(): JsonResponse
+    public function experienceStats(): JsonResponse
     {
-        $data = Cache::remember('api.impact_stats', self::TTL, function () {
+        $data = Cache::remember('api.experience_stats', self::TTL, function () {
             return ImpactStat::select(['id','value','suffix','label','description','icon'])
                 ->get()
                 ->map(fn ($s) => [

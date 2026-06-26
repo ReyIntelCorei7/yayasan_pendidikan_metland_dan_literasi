@@ -1,6 +1,6 @@
-import type { ImpactStat } from '../types';
+import type { ExperienceStat } from '../types';
 
-export const impactStats: ImpactStat[] = [
+export const experienceStats: ExperienceStat[] = [
   {
     id: '1',
     value: 5000,

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
-import ImpactNumbers from '../components/sections/ImpactNumbers';
-import { impactStats } from '../data/stats';
+import ExperienceNumbers from '../components/sections/ImpactNumbers';
+import { experienceStats } from '../data/stats';
 import CTABanner from '../components/sections/CTABanner';
 
 export default function Impact() {
@@ -24,7 +24,7 @@ export default function Impact() {
       <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {impactStats.map((stat: any, i: number) => (
+            {experienceStats.map((stat: any, i: number) => (
               <ScrollReveal key={stat.id} delay={i * 0.1}>
                 <div className="p-8 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-300 text-center">
                   <div className="w-12 h-[2px] bg-primary mx-auto mb-6" />
@@ -74,7 +74,7 @@ export default function Impact() {
         </div>
       </section>
 
-      <ImpactNumbers />
+      <ExperienceNumbers />
       <CTABanner />
     </>
   );

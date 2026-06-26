@@ -13,7 +13,7 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
 
     Route::get('/scholars', [ApiController::class, 'scholars']);
     Route::get('/partners', [ApiController::class, 'partners']);
-    Route::get('/impact-stats', [ApiController::class, 'impactStats']);
+    Route::get('/experience-stats', [ApiController::class, 'experienceStats']);
     Route::get('/team', [ApiController::class, 'team']);
 
     Route::get('/books', [ApiController::class, 'books']);

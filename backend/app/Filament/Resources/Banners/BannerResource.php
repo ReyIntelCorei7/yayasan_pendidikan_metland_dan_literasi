@@ -22,6 +22,10 @@ class BannerResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getNavigationGroup(): ?string { return 'Home Page'; }
+    public static function getNavigationSort(): ?int { return 1; }
+    public static function getNavigationLabel(): string { return 'Banner / Slider'; }
+
     public static function form(Schema $schema): Schema
     {
         return BannerForm::configure($schema);

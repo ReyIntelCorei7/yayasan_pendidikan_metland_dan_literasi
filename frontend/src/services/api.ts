@@ -52,8 +52,8 @@ export const api = {
   partners: {
     list: () => fetchApi<any[]>('/partners'),
   },
-  impactStats: {
-    list: () => fetchApi<any[]>('/impact-stats'),
+  experienceStats: {
+    list: () => fetchApi<any[]>('/experience-stats'),
   },
   team: {
     list: () => fetchApi<any[]>('/team'),
