@@ -21,14 +21,14 @@ const schoolsData = [
   },
   {
     slug: 'smk-pariwisata-metland-school',
-    name: 'SMK Pariwisata Metland School',
+    name: 'SMK Pariwisata Metland Cileungsi',
     transKey: 'smk_pariwisata',
     image: '/src/assets/sekolahsmkmetland.webp',
     color: '#3D8ABF', // Primary blue
   },
   {
     slug: 'smk-metland',
-    name: 'SMK Metland',
+    name: 'SMK Pariwisata Metland Cibitung',
     transKey: 'smk_metland',
     image: '/src/assets/sekolahsmkmetlandcibitung.webp',
     color: '#2E6F9E', // Darker blue

@@ -28,8 +28,8 @@ export default function Footer() {
     'Our School': [
       { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan' },
       { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan' },
-      { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school' },
-      { label: 'SMK Metland', href: '/our-school/smk-metland' },
+      { label: 'SMK Pariwisata Metland Cileungsi', href: '/our-school/smk-pariwisata-metland-school' },
+      { label: 'SMK Pariwisata Metland Cibitung', href: '/our-school/smk-metland' },
       { label: 'Metland College', href: '/our-school/metland-college' },
     ],
     [t('footer.nav_heading')]: [

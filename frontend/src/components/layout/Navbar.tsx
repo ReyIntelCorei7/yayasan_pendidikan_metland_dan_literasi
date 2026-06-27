@@ -36,8 +36,8 @@ export default function Navbar() {
       children: [
         { label: 'TK Tunas Metropolitan', href: '/our-school/tk-tunas-metropolitan', description: t('navbar.tk_tunas_desc') },
         { label: 'SD Tunas Metropolitan', href: '/our-school/sd-tunas-metropolitan', description: t('navbar.sd_tunas_desc') },
-        { label: 'SMK Pariwisata Metland School', href: '/our-school/smk-pariwisata-metland-school', description: 'SMK Pariwisata Metland School' },
-        { label: 'SMK Metland', href: '/our-school/smk-metland', description: 'SMK Metland' },
+        { label: 'SMK Pariwisata Metland Cileungsi', href: '/our-school/smk-pariwisata-metland-school', description: t('navbar.smk_cileungsi_desc') },
+        { label: 'SMK Pariwisata Metland Cibitung', href: '/our-school/smk-metland', description: t('navbar.smk_cibitung_desc') },
         { label: 'Metland College', href: '/our-school/metland-college', description: t('navbar.metland_college_desc') },
       ],
     },

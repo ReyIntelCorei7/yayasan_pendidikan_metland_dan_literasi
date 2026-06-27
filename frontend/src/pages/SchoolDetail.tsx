@@ -46,6 +46,7 @@ const schools = [
     name: 'TK Tunas Metropolitan',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
     color: '#FDE68A',
+    website: 'https://www.sekolahtunasmetropolitan.net/',
   },
   {
     slug: 'sd-tunas-metropolitan',
@@ -53,20 +54,23 @@ const schools = [
     name: 'SD Tunas Metropolitan',
     image: '/src/assets/tk_sdmetropolitan.jpeg',
     color: '#BBF7D0',
+    website: 'https://www.sekolahtunasmetropolitan.net/',
   },
   {
     slug: 'smk-pariwisata-metland-school',
     keyName: 'smk_pariwisata',
-    name: 'SMK Pariwisata Metland School',
+    name: 'SMK Pariwisata Metland Cileungsi',
     image: '/src/assets/sekolahsmkmetland.webp',
     color: '#BFDBFE',
+    website: 'https://www.smkmetland.net/',
   },
   {
     slug: 'smk-metland',
     keyName: 'smk_metland',
-    name: 'SMK Metland',
+    name: 'SMK Pariwisata Metland Cibitung',
     image: '/src/assets/sekolahsmkmetlandcibitung.webp',
     color: '#FED7AA',
+    website: 'https://www.smkmetlandcibitung.net/',
   },
   {
     slug: 'metland-college',
@@ -74,6 +78,7 @@ const schools = [
     name: 'Metland College',
     image: '/src/assets/sekolahsmkmetland.webp',
     color: '#E9D5FF',
+    website: 'https://metlandcollege.com/',
   },
 ];
 
@@ -297,7 +302,12 @@ export default function SchoolDetail() {
       <section className="relative bg-gradient-to-r from-primary via-blue-400 to-primary py-12 overflow-hidden">
         <FloatingShapes />
         <div className="relative z-10">
-          <CTABanner />
+          <CTABanner 
+            link={school.website} 
+            buttonText={school.website ? `Kunjungi Website ${school.name}` : undefined}
+            title={school.website ? `Kunjungi Website Kami` : undefined}
+            subtitle={school.website ? `Jelajahi informasi lebih lanjut mengenai pendaftaran dan program di ${school.name}.` : undefined}
+          />
         </div>
       </section>
     </>

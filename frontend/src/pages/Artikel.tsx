@@ -40,10 +40,13 @@ function AuthorBadge({ post, light = false }: { post: any; light?: boolean }) {
 
 /* ─── Category Badge ──────────────────────────────────────────── */
 function CatBadge({ cat, light = false }: { cat: string; light?: boolean }) {
+  const { t } = useTranslation();
+  // Provide fallback to original category string if translation doesn't exist
+  const translatedCat = t(`articles.categories.${cat}`, { defaultValue: cat });
   return (
     <span className={`inline-block text-[10px] font-bold tracking-[2px] uppercase px-2 py-0.5 rounded mb-2
       ${light ? 'bg-primary text-white' : 'bg-primary/10 text-primary'}`}>
-      {cat}
+      {translatedCat}
     </span>
   );
 }
@@ -118,7 +121,7 @@ function RecommendedCard({ post }: { post: any }) {
       <AuthorBadge post={post} />
       <p className="text-sm text-gray-400 leading-relaxed mt-3 line-clamp-3">{getTrans(post.excerpt, i18n.language)}</p>
       <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[1.5px] text-primary mt-4 group-hover:gap-2.5 transition-all duration-300">
-        Read More <ArrowRight className="w-3.5 h-3.5" />
+        {i18n.t('articles.read_more')} <ArrowRight className="w-3.5 h-3.5" />
       </span>
     </Link>
   );
@@ -239,7 +242,7 @@ export default function Artikel() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-primary text-lg font-bold tracking-[3px] uppercase mb-4 block"
           >
-            Berita &amp; Informasi
+            {i18n.t('articles.hero_title')}
           </motion.span>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -247,7 +250,7 @@ export default function Artikel() {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="text-gray-300 text-base max-w-xl mx-auto leading-relaxed"
           >
-            Berita, cerita, dan informasi terkini dari Yayasan Pendidikan Metland.
+            {i18n.t('articles.hero_subtitle')}
           </motion.p>
         </div>
       </section>
@@ -295,7 +298,7 @@ export default function Artikel() {
                           : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      {cat}
+                      {i18n.t(`articles.categories.${cat}`, { defaultValue: cat })}
                     </motion.button>
                   ))}
             </div>
@@ -303,7 +306,7 @@ export default function Artikel() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Cari artikel..."
+                placeholder={i18n.t('articles.search_placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 w-full md:w-64 transition-all duration-200"
@@ -343,13 +346,13 @@ export default function Artikel() {
                     <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
                       <Search className="w-8 h-8 text-gray-300" />
                     </div>
-                    <h3 className="text-lg font-semibold text-charcoal mb-2">Tidak ada artikel ditemukan</h3>
-                    <p className="text-gray-400 text-sm">Coba ubah kata kunci atau pilih kategori lain.</p>
+                    <h3 className="text-lg font-semibold text-charcoal mb-2">{i18n.t('articles.empty_title')}</h3>
+                    <p className="text-gray-400 text-sm">{i18n.t('articles.empty_desc')}</p>
                     <button
                       onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
                       className="mt-6 inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
                     >
-                      Reset filter
+                      {i18n.t('articles.reset_filter')}
                     </button>
                   </motion.div>
                 )}
@@ -378,7 +381,7 @@ export default function Artikel() {
                     {/* Section label */}
                     <div className="flex items-center gap-3 mb-8">
                       <span className="text-[10px] font-bold tracking-[3px] uppercase text-gray-400">
-                        Jelajahi Beberapa Artikel Favorit Kami
+                        {i18n.t('articles.explore_favorites')}
                       </span>
                       <div className="flex-1 h-px bg-gray-200" />
                     </div>
@@ -423,7 +426,7 @@ export default function Artikel() {
                 {rest.length > 0 && (
                   <ScrollReveal>
                     <div className="flex items-center gap-4 mb-10">
-                      <h2 className="text-lg font-bold text-charcoal shrink-0">Artikel Lainnya</h2>
+                      <h2 className="text-lg font-bold text-charcoal shrink-0">{i18n.t('articles.other_articles')}</h2>
                       <div className="flex-1 h-px bg-gray-200" />
                     </div>
                     <StaggerGrid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -459,7 +462,7 @@ export default function Artikel() {
                       disabled={loadingMore}
                       className="px-8 py-3 bg-white text-charcoal hover:bg-primary hover:text-white border border-gray-200 hover:border-primary text-sm font-semibold rounded-xl transition-all duration-300 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {loadingMore ? 'Memuat...' : 'Muat Lebih Banyak'}
+                      {loadingMore ? i18n.t('articles.loading') : i18n.t('articles.load_more')}
                     </button>
                   </div>
                 )}

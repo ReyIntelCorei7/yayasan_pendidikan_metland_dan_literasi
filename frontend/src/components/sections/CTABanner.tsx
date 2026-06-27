@@ -2,8 +2,31 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-export default function CTABanner() {
+interface CTABannerProps {
+  link?: string;
+  buttonText?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+export default function CTABanner({ link = '/contact', buttonText, title, subtitle }: CTABannerProps) {
   const { t } = useTranslation();
+  
+  const isExternal = link.startsWith('http');
+  const btnLabel = buttonText || t('cta_banner.btn');
+  const displayTitle = title || t('cta_banner.title');
+  const displaySubtitle = subtitle || t('cta_banner.subtitle');
+
+  const ButtonContent = (
+    <motion.span
+      className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded text-sm font-semibold cursor-pointer shadow-lg shadow-black/10"
+      whileHover={{ scale: 1.04, backgroundColor: '#FAFAF8' }}
+      whileTap={{ scale: 0.97 }}
+    >
+      {btnLabel} <span className="ml-1 text-primary">→</span>
+    </motion.span>
+  );
+
   return (
     <section
       className="py-20 lg:py-28 relative overflow-hidden bg-primary"
@@ -27,7 +50,7 @@ export default function CTABanner() {
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl lg:text-5xl font-light text-white leading-tight">
-          {t('cta_banner.title')}
+          {displayTitle}
         </h2>
 
         <motion.p
@@ -37,7 +60,7 @@ export default function CTABanner() {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-gray-400 mt-4 mb-10"
         >
-          {t('cta_banner.subtitle')}
+          {displaySubtitle}
         </motion.p>
 
         <motion.div
@@ -47,15 +70,15 @@ export default function CTABanner() {
           transition={{ delay: 0.7, duration: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <Link to="/contact">
-            <motion.span
-              className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded text-sm font-semibold cursor-pointer shadow-lg shadow-black/10"
-              whileHover={{ scale: 1.04, backgroundColor: '#FAFAF8' }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {t('cta_banner.btn')} <span className="ml-1 text-primary">→</span>
-            </motion.span>
-          </Link>
+          {isExternal ? (
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              {ButtonContent}
+            </a>
+          ) : (
+            <Link to={link}>
+              {ButtonContent}
+            </Link>
+          )}
         </motion.div>
       </div>
     </section>

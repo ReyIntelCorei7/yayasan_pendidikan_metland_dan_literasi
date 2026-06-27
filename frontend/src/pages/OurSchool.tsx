@@ -28,7 +28,7 @@ const schools = [
   },
   {
     slug: 'smk-pariwisata-metland-school',
-    name: 'SMK Pariwisata Metland School',
+    name: 'SMK Pariwisata Metland Cileungsi',
     levelKey: 'smk_pariwisata',
     taglineKey: 'smk_pariwisata',
     image: smkPariwisataImg,
@@ -36,7 +36,7 @@ const schools = [
   },
   {
     slug: 'smk-metland',
-    name: 'SMK Metland',
+    name: 'SMK Pariwisata Metland Cibitung',
     levelKey: 'smk_metland',
     taglineKey: 'smk_metland',
     image: smkMetlandImg,

@@ -123,13 +123,13 @@ export default function ArtikelDetail() {
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
             <BookOpen className="w-8 h-8 text-gray-300" />
           </div>
-          <h1 className="text-3xl font-bold text-charcoal mb-3">Artikel Tidak Ditemukan</h1>
-          <p className="text-gray-400 mb-8 text-sm">Artikel yang kamu cari mungkin telah dihapus atau tidak tersedia.</p>
+          <h1 className="text-3xl font-bold text-charcoal mb-3">{i18n.t('articles.detail.not_found')}</h1>
+          <p className="text-gray-400 mb-8 text-sm">{i18n.t('articles.detail.not_found_desc')}</p>
           <Link
             to="/artikel"
             className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-primary-hover transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Kembali ke Artikel
+            <ArrowLeft className="w-4 h-4" /> {i18n.t('articles.detail.back_to_articles')}
           </Link>
         </motion.div>
       </div>
@@ -152,7 +152,7 @@ export default function ArtikelDetail() {
               to="/artikel"
               className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline uppercase tracking-wider"
             >
-              <ArrowLeft className="w-3.5 h-3.5" /> Kembali ke Artikel
+              <ArrowLeft className="w-3.5 h-3.5" /> {i18n.t('articles.detail.back_to_articles')}
             </Link>
           </div>
 
@@ -285,7 +285,7 @@ export default function ArtikelDetail() {
             <div className="flex flex-wrap items-center gap-4 mt-10 pt-8 border-t border-gray-100">
               <div className="flex items-center gap-2 text-sm text-gray-400">
                 <Share2 className="w-4 h-4" />
-                <span>Bagikan</span>
+                <span>{i18n.t('articles.detail.share')}</span>
               </div>
               <div className="flex gap-2">
                 {shareTargets.map((item) => (
@@ -308,7 +308,7 @@ export default function ArtikelDetail() {
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary transition-colors duration-200"
-                  title="Salin tautan"
+                  title={i18n.t('articles.detail.copy_link')}
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                 </motion.button>
@@ -320,7 +320,7 @@ export default function ArtikelDetail() {
                   exit={{ opacity: 0 }}
                   className="text-xs text-green-500 font-medium"
                 >
-                  Tautan disalin!
+                  {i18n.t('articles.detail.copied')}
                 </motion.span>
               )}
             </div>
@@ -334,7 +334,7 @@ export default function ArtikelDetail() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <ScrollReveal>
               <div className="flex items-center gap-4 mb-12">
-                <h2 className="text-2xl font-bold text-white shrink-0">Artikel Lainnya</h2>
+                <h2 className="text-2xl font-bold text-white shrink-0">{i18n.t('articles.other_articles')}</h2>
                 <div className="flex-1 h-px bg-gray-700" />
               </div>
             </ScrollReveal>
@@ -374,7 +374,7 @@ export default function ArtikelDetail() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <ScrollReveal>
               <div className="flex items-center gap-4 mb-12">
-                <h2 className="text-2xl font-bold text-charcoal shrink-0">Artikel Terkait</h2>
+                <h2 className="text-2xl font-bold text-charcoal shrink-0">{i18n.t('articles.detail.related_articles')}</h2>
                 <div className="flex-1 h-px bg-gray-200" />
               </div>
             </ScrollReveal>
@@ -412,13 +412,13 @@ export default function ArtikelDetail() {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <ScrollReveal>
             <span className="inline-block text-xs font-bold tracking-[3px] uppercase text-primary mb-4">
-              Newsletter
+              {i18n.t('articles.detail.newsletter_label')}
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4" style={{ letterSpacing: '-1px' }}>
-              Tetap terhubung dengan kami
+              {i18n.t('articles.detail.newsletter_title')}
             </h2>
             <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-lg mx-auto">
-              Dapatkan berita dan informasi terbaru dari Yayasan Pendidikan Metland langsung ke email Anda.
+              {i18n.t('articles.detail.newsletter_desc')}
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -426,7 +426,7 @@ export default function ArtikelDetail() {
             >
               <input
                 type="email"
-                placeholder="Alamat email Anda"
+                placeholder={i18n.t('articles.detail.newsletter_placeholder')}
                 className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-colors"
               />
               <motion.button
@@ -435,7 +435,7 @@ export default function ArtikelDetail() {
                 whileTap={{ scale: 0.97 }}
                 className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-hover transition-colors shrink-0"
               >
-                Berlangganan
+                {i18n.t('articles.detail.newsletter_button')}
               </motion.button>
             </form>
           </ScrollReveal>

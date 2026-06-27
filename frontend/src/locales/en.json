@@ -13,6 +13,8 @@
     "organization_structure_desc": "Foundation board and management structure",
     "tk_tunas_desc": "Tunas Metropolitan Kindergarten",
     "sd_tunas_desc": "Tunas Metropolitan Elementary School",
+    "smk_cileungsi_desc": "Metland Cileungsi Vocational High School of Tourism",
+    "smk_cibitung_desc": "Metland Cibitung Vocational High School of Tourism",
     "metland_college_desc": "Metland College Higher Education"
   },
   "hero": {
@@ -315,6 +317,41 @@
       "Instilling national values, tolerance, and social awareness in every educational process."
     ]
   },
+  "articles": {
+    "hero_title": "News & Information",
+    "hero_subtitle": "Latest news, stories, and information from Yayasan Pendidikan Metland.",
+    "search_placeholder": "Search articles...",
+    "empty_title": "No articles found",
+    "empty_desc": "Try changing your keywords or selecting another category.",
+    "reset_filter": "Reset filters",
+    "explore_favorites": "Explore Our Favorite Articles",
+    "other_articles": "Other Articles",
+    "loading": "Loading...",
+    "load_more": "Load More",
+    "read_more": "Read More",
+    "categories": {
+      "All": "All",
+      "Berita": "News",
+      "Artikel": "Articles",
+      "Event": "Events",
+      "Pengumuman": "Announcements",
+      "Prestasi": "Achievements"
+    },
+    "detail": {
+      "back_to_articles": "Back to Articles",
+      "share": "Share this article:",
+      "copy_link": "Copy Link",
+      "related_articles": "Related Articles",
+      "not_found": "Article Not Found",
+      "not_found_desc": "The article you are looking for might have been removed or is unavailable.",
+      "copied": "Link copied!",
+      "newsletter_label": "Newsletter",
+      "newsletter_title": "Stay connected with us",
+      "newsletter_desc": "Get the latest news and information from Yayasan Pendidikan Metland delivered straight to your inbox.",
+      "newsletter_placeholder": "Your email address",
+      "newsletter_button": "Subscribe"
+    }
+  },
   "schoolDetail": {
     "not_found_title": "School Not Found",
     "not_found_back": "← Back to Our School",
@@ -335,12 +372,12 @@
         "stats": [{"value": "480+", "label": "Active Students"}, {"value": "42", "label": "Teachers"}, {"value": "2008", "label": "Year Established"}]
       },
       "smk-pariwisata-metland-school": {
-        "description": "SMK Pariwisata Metland School prepares students to become professionals in tourism, hospitality, and culinary fields. With industry-standard practice facilities and partnerships with star-rated hotels, our graduates are ready to compete nationally and internationally.",
+        "description": "SMK Pariwisata Metland Cileungsi prepares students to become professionals in tourism, hospitality, and culinary fields. With industry-standard practice facilities and partnerships with star-rated hotels, our graduates are ready to compete nationally and internationally.",
         "features": ["Hospitality Department", "Culinary Department", "Accounting Department", "Visual Communication Design", "Software Engineering"],
         "stats": [{"value": "650+", "label": "Active Students"}, {"value": "55", "label": "Teachers"}, {"value": "2012", "label": "Year Established"}]
       },
       "smk-metland": {
-        "description": "SMK Metland focuses on technical and business majors relevant to modern industry needs. Internship programs at partner companies ensure students gain real work experience before graduating.",
+        "description": "SMK Pariwisata Metland Cibitung focuses on technical and business majors relevant to modern industry needs. Internship programs at partner companies ensure students gain real work experience before graduating.",
         "features": ["Hospitality Department", "Culinary Department", "Accounting Department", "Visual Communication Design", "Software Engineering"],
         "stats": [{"value": "720+", "label": "Active Students"}, {"value": "60", "label": "Teachers"}, {"value": "2015", "label": "Year Established"}]
       },

@@ -81,7 +81,7 @@ export default function StrukturOrganisasi() {
       subtitle: orgChartText?.pengurus_subtitle || 'Ketua Umum · Sekretaris · Bendahara' 
     },
     bidang: orgChartBidang.length > 0 ? orgChartBidang : ['Bidang Pendidikan', 'Bidang Keuangan', 'Bidang Humas & Kemitraan'],
-    units: ['TK Tunas Metropolitan', 'SD Tunas Metropolitan', 'SMK Pariwisata Metland School', 'SMK Metland', 'Metland College'],
+    units: ['TK Tunas Metropolitan', 'SD Tunas Metropolitan', 'SMK Pariwisata Metland Cileungsi', 'SMK Pariwisata Metland Cibitung', 'Metland College'],
   };
 
   return (

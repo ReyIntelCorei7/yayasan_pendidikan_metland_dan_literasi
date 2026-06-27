@@ -13,6 +13,8 @@
     "organization_structure_desc": "Susunan pengurus dan pengelola",
     "tk_tunas_desc": "Taman Kanak-Kanak Tunas Metropolitan",
     "sd_tunas_desc": "Sekolah Dasar Tunas Metropolitan",
+    "smk_cileungsi_desc": "Sekolah Menengah Kejuruan Pariwisata Metland Cileungsi",
+    "smk_cibitung_desc": "Sekolah Menengah Kejuruan Pariwisata Metland Cibitung",
     "metland_college_desc": "Perguruan Tinggi Metland College"
   },
   "hero": {
@@ -315,6 +317,41 @@
       "Menanamkan nilai-nilai kebangsaan, toleransi, dan kepedulian sosial dalam setiap proses pendidikan."
     ]
   },
+  "articles": {
+    "hero_title": "Berita & Informasi",
+    "hero_subtitle": "Berita, cerita, dan informasi terkini dari Yayasan Pendidikan Metland.",
+    "search_placeholder": "Cari artikel...",
+    "empty_title": "Tidak ada artikel ditemukan",
+    "empty_desc": "Coba ubah kata kunci atau pilih kategori lain.",
+    "reset_filter": "Reset filter",
+    "explore_favorites": "Jelajahi Beberapa Artikel Favorit Kami",
+    "other_articles": "Artikel Lainnya",
+    "loading": "Memuat...",
+    "load_more": "Muat Lebih Banyak",
+    "read_more": "Baca Selengkapnya",
+    "categories": {
+      "All": "Semua",
+      "Berita": "Berita",
+      "Artikel": "Artikel",
+      "Event": "Event",
+      "Pengumuman": "Pengumuman",
+      "Prestasi": "Prestasi"
+    },
+    "detail": {
+      "back_to_articles": "Kembali ke Artikel",
+      "share": "Bagikan artikel ini:",
+      "copy_link": "Salin Tautan",
+      "related_articles": "Artikel Terkait",
+      "not_found": "Artikel Tidak Ditemukan",
+      "not_found_desc": "Artikel yang kamu cari mungkin telah dihapus atau tidak tersedia.",
+      "copied": "Tautan disalin!",
+      "newsletter_label": "Newsletter",
+      "newsletter_title": "Tetap terhubung dengan kami",
+      "newsletter_desc": "Dapatkan berita dan informasi terbaru dari Yayasan Pendidikan Metland langsung ke email Anda.",
+      "newsletter_placeholder": "Alamat email Anda",
+      "newsletter_button": "Berlangganan"
+    }
+  },
   "schoolDetail": {
     "not_found_title": "Sekolah Tidak Ditemukan",
     "not_found_back": "← Kembali ke Our School",
@@ -335,12 +372,12 @@
         "stats": [{"value": "480+", "label": "Siswa Aktif"}, {"value": "42", "label": "Tenaga Pengajar"}, {"value": "2008", "label": "Tahun Berdiri"}]
       },
       "smk-pariwisata-metland-school": {
-        "description": "SMK Pariwisata Metland School mempersiapkan siswa menjadi tenaga profesional di bidang pariwisata, perhotelan, dan kuliner. Dengan fasilitas praktik bertaraf industri dan kemitraan dengan hotel berbintang, lulusan kami siap bersaing di tingkat nasional dan internasional.",
+        "description": "SMK Pariwisata Metland Cileungsi mempersiapkan siswa menjadi tenaga profesional di bidang pariwisata, perhotelan, dan kuliner. Dengan fasilitas praktik bertaraf industri dan kemitraan dengan hotel berbintang, lulusan kami siap bersaing di tingkat nasional dan internasional.",
         "features": ["Jurusan Perhotelan", "Jurusan Kuliner", "Jurusan Akuntansi", "Jurusan DKV", "Jurusan PPLG"],
         "stats": [{"value": "650+", "label": "Siswa Aktif"}, {"value": "55", "label": "Tenaga Pengajar"}, {"value": "2012", "label": "Tahun Berdiri"}]
       },
       "smk-metland": {
-        "description": "SMK Metland berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.",
+        "description": "SMK Pariwisata Metland Cibitung berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.",
         "features": ["Jurusan Perhotelan", "Jurusan Kuliner", "Jurusan Akuntansi", "Jurusan DKV", "Jurusan PPLG"],
         "stats": [{"value": "720+", "label": "Siswa Aktif"}, {"value": "60", "label": "Tenaga Pengajar"}, {"value": "2015", "label": "Tahun Berdiri"}]
       },
