@@ -6,6 +6,7 @@ use App\Filament\Resources\HomePrograms\Pages\CreateProgram;
 use App\Filament\Resources\HomePrograms\Pages\EditProgram;
 use App\Filament\Resources\HomePrograms\Pages\ListPrograms;
 use App\Models\Program;
+use App\Support\SafeImageUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -74,6 +75,7 @@ class ProgramResource extends Resource
                     ->directory('programs')
                     ->disk('public')
                     ->maxSize(3072)
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('programs', 82))
                     ->label('Gambar Program'),
             ]),
 

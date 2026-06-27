@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
+use App\Support\SafeImageUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -101,6 +102,7 @@ class PostResource extends Resource
                     ->maxSize(3072)
                     ->imageResizeTargetWidth('1200')
                     ->imageResizeTargetHeight('630')
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('posts', 82))
                     ->label('Gambar Utama'),
                 FileUpload::make('author_photo')
                     ->image()
@@ -108,6 +110,7 @@ class PostResource extends Resource
                     ->directory('authors')
                     ->disk('public')
                     ->maxSize(1024)
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('authors', 82))
                     ->label('Foto Penulis'),
             ])->columns(2),
 

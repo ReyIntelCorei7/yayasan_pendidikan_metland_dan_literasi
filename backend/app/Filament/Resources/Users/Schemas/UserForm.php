@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Password;
 
 class UserForm
 {
@@ -28,6 +29,8 @@ class UserForm
                     ->default('admin_konten'),
                 TextInput::make('password')
                     ->password()
+                    ->revealable()
+                    ->rule(Password::min(12)->letters()->mixedCase()->numbers()->symbols()->uncompromised())
                     ->dehydrateStateUsing(fn ($state) => \Illuminate\Support\Facades\Hash::make($state))
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $operation): bool => $operation === 'create'),

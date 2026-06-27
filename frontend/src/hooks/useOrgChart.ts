@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE } from '../services/api';
 
 export interface OrgChartMember {
   id: string;
@@ -23,7 +24,7 @@ export function useOrgChart() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/v1/org-chart')
+    fetch(`${API_BASE}/org-chart`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch org chart');
         return res.json();

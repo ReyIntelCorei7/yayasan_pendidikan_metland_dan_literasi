@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookResource\Pages;
 use App\Models\Book;
+use App\Support\SafeImageUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -67,11 +68,14 @@ class BookResource extends Resource
                     ->imageResizeTargetWidth('800')
                     ->imageResizeTargetHeight('1100')
                     ->imageResizeMode('cover')
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('covers', 82))
                     ->label('Cover Buku'),
                 FileUpload::make('pdf_file')
                     ->acceptedFileTypes(['application/pdf'])
+                    ->rules(['mimetypes:application/pdf'])
                     ->directory('books')
-                    ->disk('public')
+                    ->disk('local')
+                    ->visibility('private')
                     ->maxSize(20480) // Max 20MB for PDFs
                     ->required()
                     ->label('File PDF'),

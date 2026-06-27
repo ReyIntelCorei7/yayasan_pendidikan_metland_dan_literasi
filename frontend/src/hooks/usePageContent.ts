@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getTrans } from '../i18n';
+import { API_BASE } from '../services/api';
 
 export function usePageContent(page: string, language: string) {
   const [data, setData] = useState<Record<string, any>>({});
@@ -8,7 +9,7 @@ export function usePageContent(page: string, language: string) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8000/api/v1/page-contents/${page}`)
+    fetch(`${API_BASE}/page-contents/${encodeURIComponent(page)}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch page content');
         return res.json();

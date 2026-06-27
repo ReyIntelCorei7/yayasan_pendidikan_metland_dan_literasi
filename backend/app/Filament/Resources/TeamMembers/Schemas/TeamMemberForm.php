@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TeamMembers\Schemas;
 
+use App\Support\SafeImageUpload;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
@@ -49,6 +50,8 @@ class TeamMemberForm
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->directory('team')
                     ->disk('public')
+                    ->maxSize(2048)
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('team', 82))
                     ->label('Foto'),
                 TextInput::make('order')
                     ->numeric()

@@ -2,14 +2,11 @@
 
 namespace App\Filament\Resources\Banners\Schemas;
 
+use App\Support\SafeImageUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
-
-use Intervention\Image\Laravel\Facades\Image;
-use Intervention\Image\Encoders\WebpEncoder;
-use Illuminate\Support\Str;
 
 class BannerForm
 {
@@ -28,23 +25,11 @@ class BannerForm
                     ])->columnSpanFull(),
                 FileUpload::make('image')
                     ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->directory('banners')
                     ->disk('public')
-                    ->saveUploadedFileUsing(function ($file) {
-                        $image = Image::decode(file_get_contents($file->getRealPath()));
-                        $encoded = $image->encode(new WebpEncoder(80));
-                        
-                        $filename = 'banners/' . Str::random(20) . '.webp';
-                        $path = storage_path('app/public/' . $filename);
-                        
-                        if (!file_exists(dirname($path))) {
-                            mkdir(dirname($path), 0755, true);
-                        }
-                        
-                        file_put_contents($path, (string) $encoded);
-                        
-                        return $filename;
-                    })
+                    ->maxSize(4096)
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('banners', 80))
                     ->required()
                     ->label('Gambar Utama (Otomatis jadi WebP)'),
                 TextInput::make('order')

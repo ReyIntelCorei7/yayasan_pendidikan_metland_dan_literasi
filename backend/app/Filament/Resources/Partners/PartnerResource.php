@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Partners;
 
 use App\Filament\Resources\Partners\Pages;
 use App\Models\Partner;
+use App\Support\SafeImageUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
@@ -46,9 +47,11 @@ class PartnerResource extends Resource
                 Section::make('Logo & Pengaturan')->schema([
                     FileUpload::make('logo')
                         ->image()
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                         ->directory('partners')
                         ->disk('public')
                         ->maxSize(2048) // Max 2MB
+                        ->saveUploadedFileUsing(SafeImageUpload::toWebp('partners', 82))
                         ->label('Logo Mitra')
                         ->required(),
                     Toggle::make('is_active')

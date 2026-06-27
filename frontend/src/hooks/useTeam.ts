@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE } from '../services/api';
 
 export interface TeamMember {
   id: string;
@@ -22,7 +23,7 @@ export function useTeam() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8000/api/v1/team')
+    fetch(`${API_BASE}/team`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch team data');
         return res.json();

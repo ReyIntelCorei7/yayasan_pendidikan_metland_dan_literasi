@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -12,12 +11,12 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true; // Semua bisa melihat list user
+        return $user->isSuperAdmin();
     }
 
     public function view(User $user, User $model): bool
     {
-        return true; // Semua bisa melihat detail user
+        return $user->isSuperAdmin() || $user->id === $model->id;
     }
 
     public function create(User $user): bool

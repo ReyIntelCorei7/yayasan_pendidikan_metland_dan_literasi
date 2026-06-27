@@ -1,7 +1,7 @@
 // API Service - Connects React frontend to Laravel backend
 // Falls back to static data if API is unavailable
 
-const API_BASE = '/api/v1';
+export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api/v1';
 
 async function fetchApi<T>(endpoint: string, params?: Record<string, string | number>): Promise<T> {
   let url = `${API_BASE}${endpoint}`;

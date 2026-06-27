@@ -113,15 +113,27 @@ class ApiController extends Controller
 
     public function posts(Request $request): JsonResponse
     {
-        $page = (int) $request->input('page', 1);
-        $perPage = min(100, max(1, (int) $request->input('per_page', 15)));
-        $category = $request->input('category');
-        $search = $request->input('search');
+        $validated = $request->validate([
+            'page' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
+            'category' => ['nullable', 'string', 'max:50'],
+            'search' => ['nullable', 'string', 'max:80'],
+        ]);
+
+        $page = (int) ($validated['page'] ?? 1);
+        $perPage = (int) ($validated['per_page'] ?? 15);
+        $category = $validated['category'] ?? null;
+        $search = isset($validated['search']) ? trim($validated['search']) : null;
 
         $version = Cache::get('api.posts.version', 1);
-        $cacheKey = "api.posts.v{$version}.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+        $cacheKey = 'api.posts.v'.$version.'.'.hash('sha256', json_encode([
+            'page' => $page,
+            'per_page' => $perPage,
+            'category' => $category,
+            'search' => $search,
+        ]));
 
-        $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
+        $data = Cache::remember($cacheKey, self::TTL, function () use ($page, $perPage, $category, $search) {
             $query = Post::published()
                 ->select(['id','title','slug','excerpt','featured_image','category','published_at','reading_time','author_name','author_photo','author_title','is_published', 'is_important'])
                 ->with(['tags:id,post_id,tag'])
@@ -136,7 +148,7 @@ class ApiController extends Controller
                 $query->where('title', 'like', "%{$search}%");
             }
 
-            $paginator = $query->paginate($perPage);
+            $paginator = $query->paginate($perPage, ['*'], 'page', $page);
             $paginator->getCollection()->transform(fn ($p) => $this->formatPost($p));
             return $paginator->toArray();
         });
@@ -147,7 +159,8 @@ class ApiController extends Controller
     public function postBySlug(string $slug): JsonResponse
     {
         $data = Cache::remember("api.post.{$slug}", self::TTL, function () use ($slug) {
-            $post = Post::with(['tags:id,post_id,tag'])
+            $post = Post::published()
+                ->with(['tags:id,post_id,tag'])
                 ->where('slug', $slug)
                 ->firstOrFail();
             return $this->formatPost($post);
@@ -240,15 +253,27 @@ class ApiController extends Controller
 
     public function books(Request $request): JsonResponse
     {
-        $page = (int) $request->input('page', 1);
-        $perPage = min(100, max(1, (int) $request->input('per_page', 12)));
-        $category = $request->input('category');
-        $search = $request->input('search');
+        $validated = $request->validate([
+            'page' => ['nullable', 'integer', 'min:1', 'max:10000'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
+            'category' => ['nullable', 'string', 'max:50'],
+            'search' => ['nullable', 'string', 'max:80'],
+        ]);
+
+        $page = (int) ($validated['page'] ?? 1);
+        $perPage = (int) ($validated['per_page'] ?? 12);
+        $category = $validated['category'] ?? null;
+        $search = isset($validated['search']) ? trim($validated['search']) : null;
 
         $version = Cache::get('api.books.version', 1);
-        $cacheKey = "api.books.v{$version}.page_{$page}.per_{$perPage}.cat_{$category}.search_{$search}";
+        $cacheKey = 'api.books.v'.$version.'.'.hash('sha256', json_encode([
+            'page' => $page,
+            'per_page' => $perPage,
+            'category' => $category,
+            'search' => $search,
+        ]));
 
-        $data = Cache::remember($cacheKey, self::TTL, function () use ($perPage, $category, $search) {
+        $data = Cache::remember($cacheKey, self::TTL, function () use ($page, $perPage, $category, $search) {
             $query = Book::published()
                 ->select(['id','title','author','description','category','cover_image','pdf_file','order'])
                 ->orderBy('order');
@@ -264,7 +289,7 @@ class ApiController extends Controller
                 });
             }
 
-            $paginator = $query->paginate($perPage);
+            $paginator = $query->paginate($perPage, ['*'], 'page', $page);
             
             $paginator->getCollection()->transform(fn ($b) => [
                 'id'          => (string) $b->id,
@@ -273,7 +298,7 @@ class ApiController extends Controller
                 'description' => $b->description,
                 'category'    => $b->category,
                 'coverImage'  => $b->cover_image ? asset('storage/' . $b->cover_image) : null,
-                'pdfUrl'      => asset('storage/' . $b->pdf_file),
+                'pdfUrl'      => route('books.download', $b),
                 'order'       => $b->order,
             ]);
 
@@ -297,7 +322,7 @@ class ApiController extends Controller
                 'description' => $book->description,
                 'category'    => $book->category,
                 'coverImage'  => $book->cover_image ? asset('storage/' . $book->cover_image) : null,
-                'pdfUrl'      => asset('storage/' . $book->pdf_file),
+                'pdfUrl'      => route('books.download', $book),
                 'order'       => $book->order,
             ];
         });

@@ -3,14 +3,14 @@
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Support\Facades\Route;
 
-// Public API - No authentication required, but with rate limiting (60 requests per minute)
-Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
+// Public API - No authentication required, but with named rate limiting.
+Route::prefix('v1')->middleware('throttle:api-public')->group(function () {
     Route::get('/programs', [ApiController::class, 'programs']);
     Route::get('/programs/{slug}', [ApiController::class, 'programBySlug']);
-    
+
     // Impact / Experience Stats
     Route::get('/impact-stats', [ApiController::class, 'impactStats']);
-Route::get('/collection-stats', [ApiController::class, 'collectionStats']);
+    Route::get('/collection-stats', [ApiController::class, 'collectionStats']);
 
     Route::get('/posts', [ApiController::class, 'posts']);
     Route::get('/posts/{slug}', [ApiController::class, 'postBySlug']);
