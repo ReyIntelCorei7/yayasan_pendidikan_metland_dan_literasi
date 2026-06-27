@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, AlertCircle, Clock, Calendar, ArrowRight, User } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
+import WordReveal from '../components/animations/WordReveal';
 import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
 import { usePosts } from '../hooks/usePosts';
 
@@ -235,21 +236,21 @@ export default function Artikel() {
           className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
-        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto mt-4">
+        <div className="relative z-10 text-center px-6 mt-4">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-white text-lg font-bold tracking-[3px] uppercase block"
           >
-            {i18n.t('articles.hero_title')}
+            {i18n.t('articles.hero_label')}
           </motion.span>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="text-gray-300 text-base max-w-xl mx-auto leading-relaxed"
-          >
+          <WordReveal
+            text={i18n.t('articles.hero_title')}
+            tag="h1"
+            className="text-4xl lg:text-5xl font-light text-white"
+          />
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 max-w-2xl mx-auto">
             {i18n.t('articles.hero_subtitle')}
           </motion.p>
         </div>

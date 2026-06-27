@@ -318,6 +318,7 @@
     ]
   },
   "articles": {
+    "hero_label": "Articles",
     "hero_title": "News & Information",
     "hero_subtitle": "Latest news, stories, and information from Yayasan Pendidikan Metland.",
     "search_placeholder": "Search articles...",
