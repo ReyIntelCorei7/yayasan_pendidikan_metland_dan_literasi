@@ -17,7 +17,7 @@ class OrgChartNodeForm
                 Section::make('Node Details')->schema([
                     TextInput::make('label')
                         ->required()
-                        ->label('Nama Unit / Kotak'),
+                        ->label('Nama'),
                     TextInput::make('subtitle')
                         ->label('Subjudul (opsional)')
                         ->helperText('Hanya tampil di level Pengurus (misal: "Ketua Umum · Sekretaris · Bendahara")'),
