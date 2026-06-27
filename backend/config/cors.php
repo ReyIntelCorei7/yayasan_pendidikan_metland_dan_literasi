@@ -3,7 +3,7 @@
 return [
     'paths' => ['api/*', 'storage/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'], // Mengizinkan semua domain sementara waktu karena domain production belum ada
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:5173')], // Dibatasi ke frontend URL untuk keamanan
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

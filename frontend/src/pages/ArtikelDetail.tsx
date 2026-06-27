@@ -6,6 +6,7 @@ import { useMemo, useRef, useState } from 'react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import StaggerGrid, { staggerItemVariants } from '../components/animations/StaggerGrid';
 import { getTrans } from '../i18n';
+import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 
 /* ─── Share icons ───────────────────────────────────────────── */
@@ -255,7 +256,7 @@ export default function ArtikelDetail() {
             {bodyIsHtml ? (
               <div
                 className="prose prose-lg max-w-none prose-headings:text-charcoal prose-headings:font-bold prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-charcoal prose-img:rounded-xl"
-                dangerouslySetInnerHTML={{ __html: getTrans(post.body, i18n.language) }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getTrans(post.body, i18n.language)) }}
               />
             ) : (
               <div className="prose prose-lg max-w-none">

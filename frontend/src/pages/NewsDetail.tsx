@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, Share2, Loader2 } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import { usePost, usePosts } from '../hooks/usePosts';
 import { useMemo } from 'react';
 import { getTrans } from '../i18n';
@@ -94,7 +95,7 @@ export default function NewsDetail() {
         {bodyIsHtml ? (
           <div
             className="prose prose-lg max-w-none text-gray-600 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: post.body }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }}
           />
         ) : (
           <div className="prose prose-lg max-w-none text-gray-600 leading-relaxed">

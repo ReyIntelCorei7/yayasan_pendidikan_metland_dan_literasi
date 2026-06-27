@@ -113,8 +113,8 @@ class ApiController extends Controller
 
     public function posts(Request $request): JsonResponse
     {
-        $page = $request->input('page', 1);
-        $perPage = $request->input('per_page', 15);
+        $page = (int) $request->input('page', 1);
+        $perPage = min(100, max(1, (int) $request->input('per_page', 15)));
         $category = $request->input('category');
         $search = $request->input('search');
 
@@ -240,8 +240,8 @@ class ApiController extends Controller
 
     public function books(Request $request): JsonResponse
     {
-        $page = $request->input('page', 1);
-        $perPage = $request->input('per_page', 12);
+        $page = (int) $request->input('page', 1);
+        $perPage = min(100, max(1, (int) $request->input('per_page', 12)));
         $category = $request->input('category');
         $search = $request->input('search');
 
