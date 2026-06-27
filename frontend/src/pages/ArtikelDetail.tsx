@@ -223,7 +223,7 @@ export default function ArtikelDetail() {
               <img
                 src={post.featuredImage}
                 alt={post.title}
-                className="w-full h-auto"
+                className="w-full aspect-video md:aspect-[21/9] object-cover"
               />
             </motion.div>
           </div>
