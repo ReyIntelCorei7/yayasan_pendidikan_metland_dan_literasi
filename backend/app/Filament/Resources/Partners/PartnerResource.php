@@ -23,8 +23,8 @@ class PartnerResource extends Resource
     protected static ?string $model = Partner::class;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-hand-raised'; }
-    public static function getNavigationGroup(): ?string { return 'Content'; }
-    public static function getNavigationSort(): ?int { return 6; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Dampak'; }
+    public static function getNavigationSort(): ?int { return 2; }
     public static function getNavigationLabel(): string { return 'Mitra & Pendukung'; }
 
     public static function form(Schema $schema): Schema

@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('hero_stats', function (Blueprint $table) {
+            $table->id();
+            $table->integer('value')->default(0);
+            $table->string('suffix')->nullable();
+            $table->json('label');
+            $table->json('description');
+            $table->string('icon')->default('trophy');
+            $table->boolean('is_letter')->default(false);
+            $table->string('letter')->nullable();
+            $table->integer('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('hero_stats');
+    }
+};

@@ -27,7 +27,7 @@ class PostResource extends Resource
     protected static ?string $model = Post::class;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-newspaper'; }
-    public static function getNavigationGroup(): ?string { return 'Content'; }
+    public static function getNavigationGroup(): ?string { return 'Konten & Pustaka'; }
     public static function getNavigationSort(): ?int { return 2; }
     public static function getNavigationLabel(): string { return 'Artikel / Berita'; }
 
@@ -54,8 +54,8 @@ class PostResource extends Resource
             ])->columns(2),
 
             Section::make('Konten (Bilingual)')->schema([
-                \Filament\Forms\Components\Tabs::make('Translations')->tabs([
-                    \Filament\Forms\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
+                \Filament\Schemas\Components\Tabs::make('Translations')->tabs([
+                    \Filament\Schemas\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
                         TextInput::make('title.id')
                             ->required()
                             ->maxLength(255)
@@ -72,7 +72,7 @@ class PostResource extends Resource
                             ->required()
                             ->label('Isi Artikel (ID)'),
                     ]),
-                    \Filament\Forms\Components\Tabs\Tab::make('English (EN)')->schema([
+                    \Filament\Schemas\Components\Tabs\Tab::make('English (EN)')->schema([
                         TextInput::make('title.en')
                             ->maxLength(255)
                             ->label('Judul Artikel (EN)'),

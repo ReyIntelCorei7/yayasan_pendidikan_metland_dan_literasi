@@ -6,7 +6,18 @@ import ScrollReveal from '../components/animations/ScrollReveal';
 import { useTranslation } from 'react-i18next';
 import useBooks from '../hooks/useBooks';
 import type { Book } from '../hooks/useBooks';
+import { useImpactStats } from '../hooks/useImpactStats';
+import { useCollectionStats } from '../hooks/useCollectionStats';
 import FlipbookReader from '../components/sections/FlipbookReader';
+
+function getText(val: any, lang: string): string {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  if (typeof val === 'object') {
+    return val[lang] || val['id'] || Object.values(val)[0] || '';
+  }
+  return String(val);
+}
 
 /* ─── StaggerWords Component ─────────────────────────────────────── */
 
@@ -47,12 +58,7 @@ interface StatItem {
   label: string;
 }
 
-const STATS_NUMS: { num: number; suffix: string }[] = [
-  { num: 5000, suffix: '+' },
-  { num: 1200, suffix: '+' },
-  { num: 12, suffix: '' },
-  { num: 5, suffix: '' },
-];
+const STATS_NUMS: { num: number; suffix: string }[] = [];
 
 const heroBooks = [
   { src: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80', rotate: '-8deg', delay: 0 },
@@ -76,12 +82,25 @@ const CATEGORIES = ['Semua', 'Pendidikan', 'Literasi', 'Sains', 'Fiksi', 'Agama'
 
 export default function Literasi() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const literasiData = t('literasi', { returnObjects: true }) as any;
   const koleksi: KoleksiItem[] = literasiData.koleksi ?? [];
   const programs: ProgramItem[] = literasiData.programs ?? [];
-  const statsLabels: { label: string }[] = literasiData.stats ?? [];
-  const stats: StatItem[] = STATS_NUMS.map((s, i) => ({ ...s, label: statsLabels[i]?.label ?? '' }));
+  
+  const { stats } = useImpactStats();
+  const { stats: collectionStatsData } = useCollectionStats();
+  
+  // Use collection stats from backend if available, otherwise fallback to local JSON.
+  const displayCollectionStats = collectionStatsData.length > 0 
+    ? collectionStatsData 
+    : koleksi.map((item) => ({
+        id: item.title,
+        value: item.countNum,
+        suffix: item.suffix,
+        title: { id: item.title, en: item.title },
+        description: { id: item.desc, en: item.desc }
+      }));
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -194,11 +213,11 @@ export default function Literasi() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 lg:gap-0 items-center justify-between">
             {stats.map((stat, i) => (
-              <div key={stat.label} className="flex items-center justify-center relative w-full">
+              <div key={stat.id} className="flex items-center justify-center relative w-full">
                 <div className="text-center px-2 lg:px-8">
                   <div className="font-bold text-primary mb-1" style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}>
                     <CountUpTrigger
-                      end={stat.num}
+                      end={stat.value}
                       suffix={stat.suffix}
                       duration={2.5}
                       separator="."
@@ -206,7 +225,7 @@ export default function Literasi() {
                     />
                   </div>
                   <p className="text-gray-400 text-[10px] sm:text-xs lg:text-sm uppercase tracking-widest font-normal">
-                    {stat.label}
+                    {getText(stat.label, i18n.language)}
                   </p>
                 </div>
                 {i < stats.length - 1 && (
@@ -299,8 +318,8 @@ export default function Literasi() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {koleksi.map((item, i) => (
-              <ScrollReveal key={item.title} delay={i * 0.1}>
+            {displayCollectionStats.map((item, i) => (
+              <ScrollReveal key={item.id} delay={i * 0.1}>
                 <motion.div
                   className="bg-white p-8 group cursor-default"
                   whileHover={{ y: -4 }}
@@ -308,18 +327,18 @@ export default function Literasi() {
                 >
                   <div className="mb-6">
                     <CountUpTrigger
-                      end={item.countNum}
-                      suffix={item.suffix}
+                      end={item.value}
+                      suffix={item.suffix || ''}
                       duration={2}
                       separator="."
                       className="font-black text-primary"
                     />
                   </div>
                   <h3 className="font-semibold text-[#1C1C1C] text-base mb-2">
-                    {item.title}
+                    {getText(item.title, i18n.language)}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed">
-                    {item.desc}
+                    {getText(item.description, i18n.language)}
                   </p>
                   <div className="mt-6 h-0.5 w-0 bg-primary group-hover:w-full transition-all duration-500" />
                 </motion.div>

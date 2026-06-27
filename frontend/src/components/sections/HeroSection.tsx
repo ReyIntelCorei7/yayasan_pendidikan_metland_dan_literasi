@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useHeroStats } from "../../hooks/useHeroStats";
 
 import hero1 from "../../assets/sekolahsmkmetland.webp";
 import hero2 from "../../assets/sekolahsmkmetlandcibitung.webp";
@@ -127,10 +128,11 @@ const AwardIcon = () => (
 
 /* ──────────────── Main Component ──────────────── */
 export default function HeroSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { banners, loading } = useBanners();
+  const { stats: dynamicStats } = useHeroStats();
 
-  const statsData = [
+  const fallbackStats = [
     {
       value: 25,
       suffix: "+",
@@ -162,6 +164,29 @@ export default function HeroSection() {
       letter: "150+",
     },
   ];
+
+  const iconMap: Record<string, React.ReactNode> = {
+    trophy: <TrophyIcon />,
+    graduation: <GraduationIcon />,
+    school: <SchoolIcon />,
+    award: <AwardIcon />,
+  };
+
+  const currentLang = i18n.language || "id";
+
+  const displayStats =
+    dynamicStats && dynamicStats.length > 0
+      ? dynamicStats.slice(0, 4).map((stat) => ({
+          value: stat.value,
+          suffix: stat.suffix || "",
+          label: stat.label?.[currentLang] || stat.label?.id || "",
+          description:
+            stat.description?.[currentLang] || stat.description?.id || "",
+          icon: iconMap[stat.icon] || <TrophyIcon />,
+          isLetter: stat.is_letter,
+          letter: stat.letter || "",
+        }))
+      : fallbackStats;
 
   // While loading: don't show anything yet (avoid flash of default images)
   // After loading: use API banners, or fall back to defaults if API returned empty/failed
@@ -399,17 +424,17 @@ export default function HeroSection() {
         >
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/[0.08]">
-              {statsData.map((stat, index) => (
+              {displayStats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 + index * 0.1, duration: 0.6 }}
-                  className="group px-4 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-white/[0.03] transition-colors duration-500"
+                  className="group px-4 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-white/[0.03] transition-colors duration-500 overflow-hidden"
                 >
-                  <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-start justify-between gap-3 mb-2">
                     <div
-                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight drop-shadow-md"
+                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight drop-shadow-md min-w-0 flex-1 break-all whitespace-normal"
                       style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                     >
                       {stat.isLetter ? (
@@ -422,14 +447,14 @@ export default function HeroSection() {
                         />
                       )}
                     </div>
-                    <div className="text-[#3D8ABF]/60 group-hover:text-[#3D8ABF] transition-colors duration-300 scale-90">
+                    <div className="text-[#3D8ABF]/60 group-hover:text-[#3D8ABF] transition-colors duration-300 scale-90 shrink-0">
                       {stat.icon}
                     </div>
                   </div>
-                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1">
+                  <div className="text-xs sm:text-sm font-semibold text-white/90 mb-1 truncate">
                     {stat.label}
                   </div>
-                  <p className="text-[0.65rem] sm:text-xs text-white/50 leading-relaxed max-w-[90%]">
+                  <p className="text-[0.65rem] sm:text-xs text-white/50 leading-relaxed max-w-[90%] line-clamp-3">
                     {stat.description}
                   </p>
                 </motion.div>

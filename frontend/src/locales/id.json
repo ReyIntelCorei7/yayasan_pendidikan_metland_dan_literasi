@@ -377,8 +377,8 @@
         "stats": [{"value": "650+", "label": "Siswa Aktif"}, {"value": "55", "label": "Tenaga Pengajar"}, {"value": "2012", "label": "Tahun Berdiri"}]
       },
       "smk-metland": {
-        "description": "SMK Pariwisata Metland Cibitung berfokus pada jurusan-jurusan teknik dan bisnis yang relevan dengan kebutuhan industri modern. Program magang di perusahaan mitra memastikan siswa mendapatkan pengalaman kerja nyata sebelum lulus.",
-        "features": ["Jurusan Perhotelan", "Jurusan Kuliner", "Jurusan Akuntansi", "Jurusan DKV", "Jurusan PPLG"],
+        "description": "Berlokasi strategis di kawasan Metland Cibitung, sekolah ini berfokus pada 3 program keahlian unggulan:",
+        "features": ["Kuliner", "Pengembangan Perangkat Lunak dan Gim (PPLG)", "Desain Komunikasi Visual (DKV)"],
         "stats": [{"value": "720+", "label": "Siswa Aktif"}, {"value": "60", "label": "Tenaga Pengajar"}, {"value": "2015", "label": "Tahun Berdiri"}]
       },
       "metland-college": {

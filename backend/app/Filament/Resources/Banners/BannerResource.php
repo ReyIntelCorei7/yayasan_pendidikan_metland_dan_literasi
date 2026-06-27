@@ -22,7 +22,7 @@ class BannerResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function getNavigationGroup(): ?string { return 'Home Page'; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Beranda'; }
     public static function getNavigationSort(): ?int { return 1; }
     public static function getNavigationLabel(): string { return 'Banner / Slider'; }
 

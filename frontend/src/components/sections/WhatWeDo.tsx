@@ -4,14 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../animations/ScrollReveal';
 import WordReveal from '../animations/WordReveal';
-import { programs } from '../../data/programs';
-import { getTrans } from '../../i18n';
+import { usePrograms } from '../../hooks/usePrograms';
 
 const icons = [BookOpen, HeartPulse, Sprout];
-const featuredPrograms = programs.filter((program) => program.isFeatured).slice(0, 3);
 
 export default function WhatWeDo() {
   const { i18n, t } = useTranslation();
+  const { programs, loading } = usePrograms();
+
+  const featuredPrograms = programs.filter((program) => program.isFeatured).slice(0, 3);
 
   return (
     <section className="bg-[#FCFCFC] py-12">
@@ -55,10 +56,10 @@ export default function WhatWeDo() {
                 <Icon className="relative z-10 mb-4 h-8 w-8 text-primary" />
 
                 <h3 className="relative z-10 mb-3 text-xl font-medium">
-                  {getTrans(program.title, i18n.language)}
+                  {program.title?.[i18n.language] || program.title?.id || program.title}
                 </h3>
-                <p className="relative z-10 mb-6 text-sm leading-relaxed text-gray-500">
-                  {getTrans(program.description, i18n.language)}
+                <p className="relative z-10 mb-6 text-sm leading-relaxed text-gray-500 line-clamp-4">
+                  {program.description?.[i18n.language] || program.description?.id || program.description}
                 </p>
 
                 <Link

@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 /* ─── Props ─── */
 interface BookOpenAnimationProps {
   coverTitle?: string;
-  coverSubtitle?: string;
+  coverSubtitle?: ReactNode;
   leftPageContent?: ReactNode;
   rightPageContent?: ReactNode;
   backgroundColor?: string;

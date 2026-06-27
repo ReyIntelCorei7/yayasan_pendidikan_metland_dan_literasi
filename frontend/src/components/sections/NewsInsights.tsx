@@ -357,41 +357,19 @@ export default function NewsInsights() {
         {/* ═══ Controls ═══════════════════════════════════════════ */}
         {pages.length > 1 && (
           <ScrollReveal>
-            <div className="flex items-center gap-3 mt-10">
-              <div className="flex gap-2 flex-1 max-w-xs">
-                {pages.map((_, i) => (
-                  <ProgressBar
-                    key={i}
-                    active={i === currentPage}
-                    onClick={() => goToPage(i)}
-                    isPlaying={isPlaying && !isHovered}
-                    duration={AUTOPLAY_MS / 1000}
-                  />
-                ))}
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsPlaying((v) => !v)}
-                className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#3D8ABF] hover:border-[#3D8ABF] transition-colors duration-200"
-                aria-label={isPlaying ? 'Pause' : 'Play'}
-              >
-                {isPlaying ? (
-                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                    <rect x="6" y="4" width="4" height="16" rx="1" />
-                    <rect x="14" y="4" width="4" height="16" rx="1" />
-                  </svg>
-                ) : (
-                  <svg className="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5.14v14.72a1 1 0 001.5.86l11-7.36a1 1 0 000-1.72l-11-7.36A1 1 0 008 5.14z" />
-                  </svg>
-                )}
-              </motion.button>
-
-              <span className="text-xs font-medium text-gray-400 tabular-nums">
-                {String(currentPage + 1).padStart(2, '0')} / {String(pages.length).padStart(2, '0')}
-              </span>
+            <div className="flex items-center justify-center gap-2 mt-10">
+              {pages.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToPage(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === currentPage
+                      ? 'w-8 bg-[#3D8ABF]'
+                      : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to page ${i + 1}`}
+                />
+              ))}
             </div>
           </ScrollReveal>
         )}

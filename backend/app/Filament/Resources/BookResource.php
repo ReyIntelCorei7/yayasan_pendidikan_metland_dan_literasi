@@ -24,7 +24,7 @@ class BookResource extends Resource
     protected static ?string $model = Book::class;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-book-open'; }
-    public static function getNavigationGroup(): ?string { return 'Content'; }
+    public static function getNavigationGroup(): ?string { return 'Konten & Pustaka'; }
     public static function getNavigationSort(): ?int { return 5; }
     public static function getNavigationLabel(): string { return 'Buku Digital'; }
 

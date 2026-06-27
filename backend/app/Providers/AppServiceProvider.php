@@ -75,9 +75,13 @@ class AppServiceProvider extends ServiceProvider
         Partner::saved(fn () => Cache::forget('api.partners'));
         Partner::deleted(fn () => Cache::forget('api.partners'));
 
-        // Experience Stats
-        ImpactStat::saved(fn () => Cache::forget('api.experience_stats'));
-        ImpactStat::deleted(fn () => Cache::forget('api.experience_stats'));
+        // Experience / Impact Stats
+        ImpactStat::saved(fn () => Cache::forget('api.impact_stats'));
+        ImpactStat::deleted(fn () => Cache::forget('api.impact_stats'));
+
+        // Collection Stats
+        \App\Models\CollectionStat::saved(fn () => Cache::forget('api.collection_stats'));
+        \App\Models\CollectionStat::deleted(fn () => Cache::forget('api.collection_stats'));
 
         // Team Members
         TeamMember::saved(fn () => Cache::forget('api.team'));

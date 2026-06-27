@@ -2,15 +2,16 @@
 
 namespace App\Filament\Resources\HomeStats;
 
-use App\Filament\Resources\HomeStats\Pages\CreateExperienceStat;
-use App\Filament\Resources\HomeStats\Pages\EditExperienceStat;
-use App\Filament\Resources\HomeStats\Pages\ListExperienceStats;
-use App\Models\ImpactStat;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
+use App\Filament\Resources\HomeStats\Pages\CreateCollectionStat;
+use App\Filament\Resources\HomeStats\Pages\EditCollectionStat;
+use App\Filament\Resources\HomeStats\Pages\ListCollectionStats;
+use App\Models\CollectionStat;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\EditAction;
@@ -18,44 +19,40 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
 
-class ExperienceStatResource extends Resource
+class CollectionStatResource extends Resource
 {
-    protected static ?string $model = ImpactStat::class;
+    protected static ?string $model = CollectionStat::class;
 
-    public static function getNavigationIcon(): string|null { return 'heroicon-o-chart-bar'; }
-    public static function getNavigationGroup(): ?string { return 'Halaman Dampak'; }
+    public static function getNavigationIcon(): string|null { return 'heroicon-o-book-open'; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Literasi'; }
     public static function getNavigationSort(): ?int { return 1; }
-    public static function getNavigationLabel(): string { return 'Statistik Dampak (Pengalaman)'; }
+    public static function getNavigationLabel(): string { return 'Koleksi Perpustakaan'; }
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Data Statistik')->schema([
+            Section::make('Data Koleksi')->schema([
                 TextInput::make('value')
                     ->required()
                     ->numeric()
-                    ->label('Nilai Angka (misal: 150)'),
+                    ->label('Nilai Angka (misal: 1200)'),
                 TextInput::make('suffix')
                     ->maxLength(10)
                     ->default('+')
-                    ->label('Suffix (misal: +, %, K)'),
-                TextInput::make('label.id')
+                    ->label('Suffix (misal: +)'),
+                TextInput::make('title.id')
                     ->required()
                     ->maxLength(255)
-                    ->label('Label (Indonesian)'),
-                TextInput::make('label.en')
+                    ->label('Judul (Indonesian)'),
+                TextInput::make('title.en')
                     ->required()
                     ->maxLength(255)
-                    ->label('Label (English)'),
-                TextInput::make('icon')
-                    ->maxLength(100)
-                    ->label('Icon (heroicon name, misal: heroicon-o-trophy)')
-                    ->placeholder('heroicon-o-trophy'),
+                    ->label('Judul (English)'),
                 TextInput::make('sort_order')
                     ->numeric()
                     ->default(0)
-                    ->label('Sort Order'),
-                \Filament\Forms\Components\Toggle::make('is_active')
+                    ->label('Urutan'),
+                Toggle::make('is_active')
                     ->default(true)
                     ->label('Is Active'),
             ])->columns(2),
@@ -64,12 +61,12 @@ class ExperienceStatResource extends Resource
                 Textarea::make('description.id')
                     ->required()
                     ->rows(3)
-                    ->label('Deskripsi Singkat (Indonesian)')
+                    ->label('Deskripsi (Indonesian)')
                     ->columnSpanFull(),
                 Textarea::make('description.en')
                     ->required()
                     ->rows(3)
-                    ->label('Deskripsi Singkat (English)')
+                    ->label('Deskripsi (English)')
                     ->columnSpanFull(),
             ]),
         ]);
@@ -85,17 +82,10 @@ class ExperienceStatResource extends Resource
                     ->label('Nilai'),
                 Tables\Columns\TextColumn::make('suffix')
                     ->label('Suffix'),
-                Tables\Columns\TextColumn::make('label')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->label('Label')
+                    ->label('Judul')
                     ->formatStateUsing(fn ($state) => is_array($state) ? ($state['id'] ?? '') : $state),
-                Tables\Columns\TextColumn::make('description')
-                    ->limit(60)
-                    ->label('Deskripsi')
-                    ->formatStateUsing(fn ($state) => is_array($state) ? ($state['id'] ?? '') : $state),
-                Tables\Columns\TextColumn::make('icon')
-                    ->label('Icon')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->sortable()
                     ->label('Order'),
@@ -108,7 +98,7 @@ class ExperienceStatResource extends Resource
                     ->label('Dibuat')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('id')
+            ->defaultSort('sort_order')
             ->filters([])
             ->actions([
                 EditAction::make(),
@@ -129,9 +119,9 @@ class ExperienceStatResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListExperienceStats::route('/'),
-            'create' => CreateExperienceStat::route('/create'),
-            'edit'   => EditExperienceStat::route('/{record}/edit'),
+            'index'  => ListCollectionStats::route('/'),
+            'create' => CreateCollectionStat::route('/create'),
+            'edit'   => EditCollectionStat::route('/{record}/edit'),
         ];
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class ImpactStat extends Model
+class HeroStat extends Model
 {
     use HasFactory, HasTranslations;
 
@@ -16,6 +16,8 @@ class ImpactStat extends Model
         'label',
         'description',
         'icon',
+        'is_letter',
+        'letter',
         'sort_order',
         'is_active',
     ];
@@ -23,8 +25,7 @@ class ImpactStat extends Model
     public $translatable = ['label', 'description'];
 
     protected $casts = [
-        'value' => 'integer',
-        'sort_order' => 'integer',
+        'is_letter' => 'boolean',
         'is_active' => 'boolean',
     ];
 }

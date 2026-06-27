@@ -6,25 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class ImpactStat extends Model
+class CollectionStat extends Model
 {
     use HasFactory, HasTranslations;
 
     protected $fillable = [
         'value',
         'suffix',
-        'label',
+        'title',
         'description',
-        'icon',
         'sort_order',
         'is_active',
     ];
 
-    public $translatable = ['label', 'description'];
+    public $translatable = ['title', 'description'];
 
     protected $casts = [
-        'value' => 'integer',
-        'sort_order' => 'integer',
         'is_active' => 'boolean',
     ];
 }

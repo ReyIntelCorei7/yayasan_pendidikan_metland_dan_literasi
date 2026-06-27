@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     Route::get('/programs', [ApiController::class, 'programs']);
     Route::get('/programs/{slug}', [ApiController::class, 'programBySlug']);
+    
+    // Impact / Experience Stats
+    Route::get('/impact-stats', [ApiController::class, 'impactStats']);
+Route::get('/collection-stats', [ApiController::class, 'collectionStats']);
 
     Route::get('/posts', [ApiController::class, 'posts']);
     Route::get('/posts/{slug}', [ApiController::class, 'postBySlug']);
@@ -20,4 +24,5 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     Route::get('/books/{id}', [ApiController::class, 'bookById']);
 
     Route::get('/banners', [ApiController::class, 'banners']);
+    Route::get('/hero-stats', [\App\Http\Controllers\Api\HeroStatController::class, 'index']);
 });

@@ -351,4 +351,41 @@ class ApiController extends Controller
             'isImportant'   => (bool) $p->is_important,
         ];
     }
+
+    public function impactStats(): JsonResponse
+    {
+        $data = Cache::remember('api.impact_stats', self::TTL, function () {
+            return ImpactStat::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($s) => [
+                    'id'          => (string) $s->id,
+                    'value'       => $s->value,
+                    'suffix'      => $s->suffix,
+                    'label'       => $s->getTranslations('label'),
+                    'description' => $s->getTranslations('description'),
+                    'icon'        => $s->icon,
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function collectionStats(): JsonResponse
+    {
+        $data = Cache::remember('api.collection_stats', self::TTL, function () {
+            return \App\Models\CollectionStat::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($s) => [
+                    'id'          => (string) $s->id,
+                    'value'       => $s->value,
+                    'suffix'      => $s->suffix,
+                    'title'       => $s->getTranslations('title'),
+                    'description' => $s->getTranslations('description'),
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
 }

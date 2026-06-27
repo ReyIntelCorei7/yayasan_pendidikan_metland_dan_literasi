@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'ITCErasBold';
+  src: url('../assets/fonts/ITCErasBold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     --primary: #3D8ABF;

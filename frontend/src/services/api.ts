@@ -52,8 +52,11 @@ export const api = {
   partners: {
     list: () => fetchApi<any[]>('/partners'),
   },
-  experienceStats: {
-    list: () => fetchApi<any[]>('/experience-stats'),
+  impactStats: {
+    list: () => fetchApi<any[]>('/impact-stats'),
+  },
+  collectionStats: {
+    list: () => fetchApi<any[]>('/collection-stats'),
   },
   team: {
     list: () => fetchApi<any[]>('/team'),
@@ -62,6 +65,9 @@ export const api = {
     list: (params?: { page?: number; per_page?: number; category?: string; search?: string }) => 
       fetchApi<PaginatedResponse<any>>('/books', params),
     byId: (id: string) => fetchApi<any>(`/books/${id}`),
+  },
+  heroStats: {
+    list: () => fetchApi<any[]>('/hero-stats'),
   },
 };
 

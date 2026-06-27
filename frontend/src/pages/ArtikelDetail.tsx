@@ -110,7 +110,8 @@ export default function ArtikelDetail() {
     setTimeout(() => setCopied(false), 2200);
   };
 
-  const bodyIsHtml = post ? /\<[a-z][\s\S]*>/i.test(post.body) : false;
+  const bodyStr = post ? getTrans(post.body, i18n.language) : '';
+  const bodyIsHtml = /\<[a-z][\s\S]*>/i.test(bodyStr);
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   /* States */

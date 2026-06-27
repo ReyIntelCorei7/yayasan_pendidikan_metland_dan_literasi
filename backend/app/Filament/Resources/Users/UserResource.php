@@ -22,6 +22,9 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationGroup(): ?string { return 'Pengaturan'; }
+    public static function getNavigationSort(): ?int { return 99; }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

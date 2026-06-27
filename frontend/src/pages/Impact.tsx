@@ -3,10 +3,23 @@ import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
 import ExperienceNumbers from '../components/sections/ImpactNumbers';
-import { experienceStats } from '../data/stats';
+import { useImpactStats } from '../hooks/useImpactStats';
+import { useTranslation } from 'react-i18next';
+
+function getText(val: any, lang: string): string {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  if (typeof val === 'object') {
+    return val[lang] || val['id'] || Object.values(val)[0] || '';
+  }
+  return String(val);
+}
 import CTABanner from '../components/sections/CTABanner';
 
 export default function Impact() {
+  const { stats } = useImpactStats();
+  const { i18n } = useTranslation();
+
   return (
     <>
       {/* Hero */}
@@ -24,15 +37,15 @@ export default function Impact() {
       <section className="bg-[#FCFCFC] py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {experienceStats.map((stat: any, i: number) => (
+            {stats.map((stat, i) => (
               <ScrollReveal key={stat.id} delay={i * 0.1}>
                 <div className="p-8 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-300 text-center">
                   <div className="w-12 h-[2px] bg-primary mx-auto mb-6" />
                   <div className="text-5xl font-extralight text-charcoal">
                     <CountUpTrigger end={stat.value} suffix={stat.suffix} />
                   </div>
-                  <p className="text-sm font-medium text-charcoal mt-3">{stat.label}</p>
-                  <p className="text-xs text-gray-400 mt-2 leading-relaxed">{stat.description}</p>
+                  <p className="text-sm font-medium text-charcoal mt-3">{getText(stat.label, i18n.language)}</p>
+                  <p className="text-xs text-gray-400 mt-2 leading-relaxed">{getText(stat.description, i18n.language)}</p>
                 </div>
               </ScrollReveal>
             ))}

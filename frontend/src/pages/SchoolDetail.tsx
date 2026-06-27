@@ -19,20 +19,9 @@ function FloatingShapes() {
         className="absolute top-32 right-10 w-16 h-16 rounded-full bg-blue-200/20 blur-2xl"
       />
       <motion.div
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 3, repeat: Infinity }}
-        className="absolute bottom-20 left-1/3 w-20 h-20 rounded-full border-2 border-primary/20"
-      />
-      
-      <motion.div
         animate={{ rotate: [0, 90, 180, 270, 360] }}
         transition={{ duration: 6, repeat: Infinity }}
-        className="absolute top-1/2 right-5 w-8 h-8 bg-yellow-300/10 rounded-lg"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], rotate: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-        className="absolute bottom-10 right-1/4 w-10 h-10 border-2 border-blue-300/30 rounded-lg"
+        className="absolute top-1/2 right-5 w-8 h-8 bg-yellow-300/10 rounded-lg blur-xl"
       />
     </>
   );
