@@ -98,3 +98,10 @@
 ::-webkit-scrollbar-corner {
   background: transparent !important;
 }
+
+.prose img {
+  max-height: 65vh;
+  object-fit: cover;
+  width: 100%;
+}
+
