@@ -3,8 +3,11 @@ import { useTranslation } from 'react-i18next';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import heroImg from '../assets/sekolahsmkmetlandcibitung.webp';
+import { useOrgChart, type OrgChartNode, type OrgChartMember } from '../hooks/useOrgChart';
+import { usePageContent } from '../hooks/usePageContent';
+import { useTeam } from '../hooks/useTeam';
 
-/* ─── Connector Component ─── */
+/* ─── Connector Components ─── */
 function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; color?: string }) {
   return (
     <div className="flex justify-center">
@@ -13,7 +16,26 @@ function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; col
   );
 }
 
-/* ─── Org Chart Node ─── */
+/* ─── Mini Member Avatar ─── */
+function MemberBadge({ member }: { member: OrgChartMember }) {
+  return (
+    <div className="flex items-center gap-1 mt-1 px-1 py-0.5 rounded-md bg-gray-50/80 border border-gray-100 text-left">
+      <div className="w-3.5 h-3.5 rounded-full overflow-hidden ring-1 ring-gray-200 flex-shrink-0">
+        <img
+          src={member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&size=56&background=3D8ABF&color=fff'}
+          alt={member.name}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-[8px] font-medium text-charcoal truncate leading-none">{member.name}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Org Chart Node Box ─── */
 function ChartNode({
   children,
   variant = 'default',
@@ -23,66 +45,127 @@ function ChartNode({
   variant?: 'primary' | 'accent' | 'default' | 'muted';
   className?: string;
 }) {
-  const base = 'rounded-xl px-6 py-3.5 text-center transition-all duration-300';
+  const base = 'rounded-md px-1.5 py-1 text-center transition-all duration-300';
   const variants = {
-    primary: 'bg-charcoal text-white shadow-lg shadow-charcoal/10',
-    accent: 'bg-[#3D8ABF] text-white shadow-lg shadow-[#3D8ABF]/20',
-    default: 'bg-white border border-gray-200 hover:border-[#3D8ABF]/40 hover:shadow-md',
+    primary: 'bg-charcoal text-white shadow-sm shadow-charcoal/10',
+    accent: 'bg-[#3D8ABF] text-white shadow-sm shadow-[#3D8ABF]/20',
+    default: 'bg-white border border-gray-200 hover:border-[#3D8ABF]/40 hover:shadow-sm',
     muted: 'bg-gray-50 border border-gray-100 hover:border-[#3D8ABF]/30 hover:bg-white',
   };
   return <div className={`${base} ${variants[variant]} ${className}`}>{children}</div>;
 }
 
+/* ─── Helper: build tree from flat array ─── */
+function buildTree(nodes: OrgChartNode[]): OrgChartNode & { children_nodes: (OrgChartNode & { children_nodes: any[] })[] } | null {
+  const map = new Map<string, OrgChartNode & { children_nodes: any[] }>();
+  nodes.forEach(n => map.set(n.id, { ...n, children_nodes: [] }));
+
+  let root: (OrgChartNode & { children_nodes: any[] }) | null = null;
+
+  nodes.forEach(n => {
+    const node = map.get(n.id)!;
+    if (n.parent_id && map.has(n.parent_id)) {
+      map.get(n.parent_id)!.children_nodes.push(node);
+    } else if (!n.parent_id) {
+      root = node;
+    }
+  });
+
+  // Sort children by order
+  map.forEach(node => {
+    node.children_nodes.sort((a: any, b: any) => a.order - b.order);
+  });
+
+  return root;
+}
+
+function TreeNode({ node, isFirst, isLast, hasSiblings }: { node: any, isFirst?: boolean, isLast?: boolean, hasSiblings?: boolean }) {
+  return (
+    <div className="flex flex-col items-center relative px-[2px] sm:px-1">
+      {/* Top vertical connector from horizontal line to this node */}
+      {hasSiblings && (
+        <div className="absolute top-0 left-1/2 w-[2px] h-3 bg-[#3D8ABF]/30 -translate-x-1/2" />
+      )}
+      
+      {/* Horizontal lines */}
+      {hasSiblings && (
+        <>
+          {!isFirst && <div className="absolute top-0 right-1/2 w-1/2 h-[2px] bg-[#3D8ABF]/30" />}
+          {!isLast && <div className="absolute top-0 left-1/2 w-1/2 h-[2px] bg-[#3D8ABF]/30" />}
+        </>
+      )}
+
+      {/* The node card itself */}
+      <div className={`z-10 ${hasSiblings ? 'mt-3' : 'mt-0'}`}>
+        <ChartNode variant={node.level === 1 ? 'primary' : node.level >= 5 ? 'muted' : 'default'} className={node.level >= 5 ? "w-20 sm:w-24" : "w-24 sm:w-28"}>
+           {node.level === 1 && (
+             <p className="text-[7px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-0.5 font-medium">
+                Yayasan Metland
+             </p>
+           )}
+           <p className={`${node.level === 1 ? 'text-[10px]' : 'text-[9px]'} font-semibold ${node.level === 1 ? 'text-white' : 'text-charcoal'} leading-[1.1]`}>{node.label}</p>
+           {node.subtitle && <p className={`text-[7px] mt-0.5 leading-[1.1] ${node.level === 1 ? 'text-gray-300' : 'text-gray-500'}`}>{node.subtitle}</p>}
+           {node.members?.length > 0 && (
+             <div className="mt-1 space-y-0.5">
+               {node.members.map((m: any) => <MemberBadge key={m.id} member={m} />)}
+             </div>
+           )}
+        </ChartNode>
+      </div>
+
+      {/* Children */}
+      {node.children_nodes?.length > 0 && (
+        <>
+          {/* Vertical line going down from this node */}
+          <div className="w-[2px] h-3 bg-[#3D8ABF]/30" />
+          
+          <div className="flex flex-row justify-center items-start w-full">
+            {node.children_nodes.map((child: any, idx: number) => (
+              <TreeNode 
+                key={child.id} 
+                node={child} 
+                isFirst={idx === 0} 
+                isLast={idx === node.children_nodes.length - 1} 
+                hasSiblings={node.children_nodes.length > 1}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export default function StrukturOrganisasi() {
-  const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
 
-  // Retrieve translation objects/arrays
-  const orgChartText = t('strukturOrganisasi.org_chart', { returnObjects: true }) as any;
-  const teamGroupsText = t('strukturOrganisasi.team_groups', { returnObjects: true }) as any[];
-  const teamTitlesText = t('strukturOrganisasi.team_member_titles', { returnObjects: true }) as any;
-  const orgChartBidang = orgChartText?.bidang || [];
-  const orgChartSecond = orgChartText?.second_level || [];
+  const { data: orgNodes } = useOrgChart();
+  const { getContent } = usePageContent('struktur-organisasi', lang);
+  const { data: teamMembers } = useTeam();
 
-  /* ─── Team Data ─── */
-  const pengurus = [
-    {
-      category: teamGroupsText[0]?.category || 'Pembina',
-      description: teamGroupsText[0]?.description || '',
-      members: [
-        { name: 'Bapak Ir. Pandu Gunandito', title: teamTitlesText?.ketua_pembina || 'Ketua Pembina', photo: '/src/assets/MS_ketuayayasan.jpg' },
-      ],
-    },
-    {
-      category: teamGroupsText[1]?.category || 'Pengawas',
-      description: teamGroupsText[1]?.description || '',
-      members: [
-        { name: 'Prof. Dr. Ahmad Fauzi', title: teamTitlesText?.ketua_pengawas || 'Ketua Pengawas', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
-        { name: 'Dra. Rina Pertiwi, M.Pd.', title: teamTitlesText?.anggota_pengawas || 'Anggota Pengawas', photo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80' },
-      ],
-    },
-    {
-      category: teamGroupsText[2]?.category || 'Pengurus',
-      description: teamGroupsText[2]?.description || '',
-      members: [
-        { name: 'H. Darmawan Susilo, S.E.', title: teamTitlesText?.ketua_umum || 'Ketua Umum', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80' },
-        { name: 'Dewi Puspitasari, M.Pd.', title: teamTitlesText?.sekretaris_umum || 'Sekretaris Umum', photo: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80' },
-        { name: 'Ir. Hendra Gunawan, M.M.', title: teamTitlesText?.bendahara_umum || 'Bendahara Umum', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-        { name: 'Dr. Lestari Wahyuni, M.Pd.', title: teamTitlesText?.bidang_pendidikan || 'Bidang Pendidikan', photo: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80' },
-      ],
-    },
-  ];
+  // Build tree from flat data
+  const tree = buildTree(orgNodes);
+  const l2Nodes = tree ? tree.children_nodes.filter(n => n.level === 2) : [];
+  const l3Node = tree ? tree.children_nodes.find(n => n.level === 3) : null;
 
-  /* ─── Org Chart Data ─── */
-  const orgChartData = {
-    top: orgChartText?.top || 'Rapat Pembina',
-    secondLevel: orgChartSecond.length > 0 ? orgChartSecond : ['Dewan Pengawas', 'Dewan Pembina'],
-    pengurus: { 
-      title: orgChartText?.pengurus_title || 'Pengurus Yayasan', 
-      subtitle: orgChartText?.pengurus_subtitle || 'Ketua Umum · Sekretaris · Bendahara' 
-    },
-    bidang: orgChartBidang.length > 0 ? orgChartBidang : ['Bidang Pendidikan', 'Bidang Keuangan', 'Bidang Humas & Kemitraan'],
-    units: ['TK Tunas Metropolitan', 'SD Tunas Metropolitan', 'SMK Pariwisata Metland Cileungsi', 'SMK Pariwisata Metland Cibitung', 'Metland College'],
-  };
+  // Group Team Members for the team section (those NOT assigned to org chart)
+  const pengurusGroups = teamMembers.reduce((acc, member) => {
+    const group = member.group || 'Lainnya';
+    if (!acc[group]) acc[group] = [];
+    acc[group].push(member);
+    return acc;
+  }, {} as Record<string, typeof teamMembers>);
+
+  const groupOrder = ['Pembina', 'Pengawas', 'Pengurus', 'Lainnya'];
+  const teamGroups = groupOrder
+    .map(g => ({ category: g, members: pengurusGroups[g] || [] }))
+    .filter(g => g.members.length > 0);
+
+  const heroTitle = getContent('hero_title') || 'Struktur Organisasi Yayasan';
+  const heroSubtitle = getContent('hero_subtitle') || 'Bersama mewujudkan pendidikan berkualitas melalui tata kelola yang profesional, transparan, dan akuntabel.';
+  const chartTitle = getContent('chart_title') || 'Bagan Struktur Yayasan';
+  const teamTitle = getContent('team_title') || 'Tim Pengurus';
 
   return (
     <>
@@ -96,107 +179,84 @@ export default function StrukturOrganisasi() {
         />
         <div className="relative z-20 text-center px-6 mt-16">
           <WordReveal
-            text={t('strukturOrganisasi.hero_tag')}
+            text={heroTitle}
             tag="h1"
             className="text-4xl lg:text-5xl font-light text-white mb-4"
           />
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
-            {t('strukturOrganisasi.hero_description')}
+            {heroSubtitle}
           </motion.p>
         </div>
       </section>
 
       {/* ════════════ ORG CHART ════════════ */}
       <section className="bg-[#FCFCFC] py-24 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
           {/* Section Header */}
           <ScrollReveal>
             <div className="text-center mb-16">
               <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{t('strukturOrganisasi.org_chart_title')}</h2>
-              <p className="text-gray-400 text-sm max-w-lg mx-auto">
-                {t('strukturOrganisasi.org_chart_desc')}
-              </p>
+              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{chartTitle}</h2>
             </div>
           </ScrollReveal>
 
-          {/* Org Chart */}
+          {/* Org Chart - Custom Layout for Root -> L2/L3 -> Recursive */}
           <ScrollReveal delay={0.15}>
-            <div className="flex flex-col items-center">
-              {/* Level 1 — Rapat Pembina */}
-              <ChartNode variant="default">
-                <p className="text-[10px] text-[#3D8ABF] uppercase tracking-[0.15em] mb-0.5 font-medium">
-                  {orgChartText?.foundation_label || 'Yayasan Pendidikan Metland'}
-                </p>
-                <p className="font-semibold text-sm">{orgChartData.top}</p>
-              </ChartNode>
-
-              <VerticalLine />
-
-              {/* Level 2 — Dewan Pengawas & Pembina */}
-              <div className="relative w-full max-w-md">
-                {/* Horizontal connector */}
-                <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-[#3D8ABF]/20" />
-                <div className="grid grid-cols-2 gap-6">
-                  {orgChartData.secondLevel.map((d: string) => (
-                    <div key={d} className="relative">
-                      <div className="flex justify-center">
-                        <div style={{ width: 2, height: 16, background: 'rgba(61,138,191,0.2)' }} />
-                      </div>
-                      <ChartNode variant="default">
-                        <p className="text-xs font-semibold text-charcoal">{d}</p>
+            {tree ? (
+              <div className="w-full overflow-x-auto pb-12 pt-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+                <div className="min-w-max flex justify-center px-12">
+                  <div className="flex flex-col items-center">
+                    {/* LEVEL 1: ROOT */}
+                    <div className="z-10">
+                      <ChartNode variant="primary" className="w-24 sm:w-28">
+                         <p className="text-[7px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-0.5 font-medium">Yayasan Metland</p>
+                         <p className="text-[10px] font-semibold text-white leading-[1.1]">{tree.label}</p>
+                         {tree.subtitle && <p className="text-[7px] mt-0.5 leading-[1.1] text-gray-300">{tree.subtitle}</p>}
+                         {tree.members?.length > 0 && (
+                           <div className="mt-1 space-y-0.5">
+                             {tree.members.map((m: any) => <MemberBadge key={m.id} member={m} />)}
+                           </div>
+                         )}
                       </ChartNode>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <VerticalLine />
+                    {/* Main vertical line from Root (Top Half) */}
+                    <div className="w-[2px] h-5 bg-[#3D8ABF]/30" />
 
-              {/* Level 3 — Pengurus Yayasan */}
-              <ChartNode variant="default">
-                <p className="font-semibold text-sm">{orgChartData.pengurus.title}</p>
-                <p className="text-[11px] mt-0.5 text-black">{orgChartData.pengurus.subtitle}</p>
-              </ChartNode>
+                    {/* Level 2 Nodes Container */}
+                    <div className="relative w-full flex justify-center z-0">
+                      {/* L2 Nodes wrappers with integrated line */}
+                      {l2Nodes.length > 0 && (
+                        <div className="absolute top-0 w-[550px] flex justify-between -translate-x-1/2 left-1/2">
+                          
+                          {/* Absolute connecting line perfectly spanning the centers of the two nodes */}
+                          <div className="absolute top-0 left-[60px] right-[60px] h-[2px] bg-[#3D8ABF]/30 z-0" />
 
-              <VerticalLine color="rgba(61,138,191,0.25)" />
-
-              {/* Level 4 — Bidang */}
-              <div className="relative w-full max-w-2xl">
-                <div className="absolute top-0 left-[16.67%] right-[16.67%] h-[2px] bg-gray-200" />
-                <div className="grid grid-cols-3 gap-4">
-                  {orgChartData.bidang.map((u: string) => (
-                    <div key={u} className="relative">
-                      <div className="flex justify-center">
-                        <div style={{ width: 2, height: 16, background: '#e5e7eb' }} />
-                      </div>
-                      <ChartNode variant="default">
-                        <p className="text-xs font-medium text-charcoal">{u}</p>
-                      </ChartNode>
+                          {l2Nodes.map((d: any) => (
+                            <div key={d.id} className="flex flex-col items-center w-[120px] z-10">
+                              <div className="w-[2px] h-4 bg-[#3D8ABF]/30" />
+                              <TreeNode node={d} hasSiblings={false} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <VerticalLine height={28} color="#e5e7eb" />
+                    {/* Main vertical line from Root (Bottom Half) */}
+                    <div className="w-[2px] h-6 bg-[#3D8ABF]/30" />
 
-              {/* Level 5 — Unit Sekolah */}
-              <div className="relative w-full">
-                <div className="absolute top-0 left-[10%] right-[10%] h-[2px] bg-gray-100" />
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  {orgChartData.units.map((s: string) => (
-                    <div key={s} className="relative">
-                      <div className="flex justify-center">
-                        <div style={{ width: 2, height: 12, background: '#f3f4f6' }} />
+                    {/* Level 3 Node (Pengurus Yayasan) */}
+                    {l3Node && (
+                      <div className="z-10">
+                        <TreeNode node={l3Node} hasSiblings={false} />
                       </div>
-                      <ChartNode variant="muted">
-                        <p className="text-[11px] text-gray-500 leading-tight">{s}</p>
-                      </ChartNode>
-                    </div>
-                  ))}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="text-center text-gray-400 py-12">Memuat bagan organisasi...</div>
+            )}
           </ScrollReveal>
         </div>
       </section>
@@ -208,16 +268,13 @@ export default function StrukturOrganisasi() {
           <ScrollReveal>
             <div className="text-center mb-20">
               <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{t('strukturOrganisasi.team_title')}</h2>
-              <p className="text-gray-400 text-sm max-w-lg mx-auto">
-                {t('strukturOrganisasi.team_desc')}
-              </p>
+              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{teamTitle}</h2>
             </div>
           </ScrollReveal>
 
           {/* Team Groups */}
           <div className="space-y-20">
-            {pengurus.map((group, gi) => (
+            {teamGroups.map((group, gi) => (
               <ScrollReveal key={group.category} delay={gi * 0.1}>
                 <div>
                   {/* Group Label */}
@@ -227,7 +284,6 @@ export default function StrukturOrganisasi() {
                     </span>
                     <div>
                       <h3 className="text-xl font-medium text-charcoal">{group.category}</h3>
-                      <p className="text-xs text-gray-400 mt-0.5">{group.description}</p>
                     </div>
                   </div>
 
@@ -249,7 +305,7 @@ export default function StrukturOrganisasi() {
                           {/* Photo */}
                           <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-[#3D8ABF]/30 transition-all duration-500">
                             <img
-                              src={member.photo}
+                              src={member.photo || 'https://via.placeholder.com/150'}
                               alt={member.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                               loading="lazy"
@@ -268,22 +324,6 @@ export default function StrukturOrganisasi() {
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ════════════ MEMBERS LIST ════════════ */}
-      <section className="bg-white py-24">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          {/* Section Header */}
-          <ScrollReveal>
-            <div className="text-center mb-16">
-              <div className="w-12 h-[3px] bg-[#228bcb] mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{t('strukturOrganisasi.members_title')}</h2>
-              <p className="text-gray-400 text-sm max-w-lg mx-auto">
-                {t('strukturOrganisasi.members_desc')}
-              </p>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
     </>

@@ -10,17 +10,15 @@ class TeamMember extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'title',
-        'department',
-        'bio',
-        'photo',
-        'order',
-        'linkedin',
-        'twitter',
+        'name', 'title', 'group', 'org_chart_node_id', 'department', 'bio', 'photo', 'order', 'linkedin', 'twitter',
     ];
 
     protected $casts = [
         'order' => 'integer',
     ];
+
+    public function orgChartNode()
+    {
+        return $this->belongsTo(OrgChartNode::class);
+    }
 }

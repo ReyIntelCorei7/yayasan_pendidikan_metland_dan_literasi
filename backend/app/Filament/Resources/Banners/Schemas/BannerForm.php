@@ -17,12 +17,12 @@ class BannerForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\Tabs::make('Translations')
+                \Filament\Schemas\Components\Tabs::make('Translations')
                     ->tabs([
-                        \Filament\Forms\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
+                        \Filament\Schemas\Components\Tabs\Tab::make('Bahasa Indonesia (ID)')->schema([
                             TextInput::make('title.id')->label('Judul / Keterangan (ID)'),
                         ]),
-                        \Filament\Forms\Components\Tabs\Tab::make('English (EN)')->schema([
+                        \Filament\Schemas\Components\Tabs\Tab::make('English (EN)')->schema([
                             TextInput::make('title.en')->label('Judul / Keterangan (EN)'),
                         ]),
                     ])->columnSpanFull(),

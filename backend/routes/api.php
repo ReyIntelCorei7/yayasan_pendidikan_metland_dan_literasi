@@ -25,4 +25,7 @@ Route::get('/collection-stats', [ApiController::class, 'collectionStats']);
 
     Route::get('/banners', [ApiController::class, 'banners']);
     Route::get('/hero-stats', [\App\Http\Controllers\Api\HeroStatController::class, 'index']);
+
+    Route::get('/org-chart', [ApiController::class, 'orgChart']);
+    Route::get('/page-contents/{page}', [ApiController::class, 'pageContents']);
 });

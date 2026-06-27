@@ -20,14 +20,14 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'name' => 'Super Admin',
             'email' => 'superadminypm@metland.id',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'password' => \Illuminate\Support\Facades\Hash::make('yangtautauaja'),
             'role' => 'super_admin',
         ]);
 
         \App\Models\User::create([
             'name' => 'Admin Konten',
             'email' => 'adminypm@metland.id',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'password' => \Illuminate\Support\Facades\Hash::make('yangtautauaja'),
             'role' => 'admin_konten',
         ]);
 
@@ -71,15 +71,18 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Scholars
-        Scholar::insert([
-            ['name' => 'Amara Okafor', 'country' => 'Nigeria', 'flag' => '🇳🇬', 'quote' => 'The scholarship didn\'t just fund my education — it opened doors I never knew existed. Today I\'m a software engineer building solutions for my community.', 'photo' => 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80', 'program' => 'Higher Life Learning', 'graduation_year' => 2022, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Tendai Moyo', 'country' => 'Zimbabwe', 'flag' => '🇿🇼', 'quote' => 'From a small village in Masvingo to graduating with honors. This foundation believed in me when no one else did.', 'photo' => 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80', 'program' => 'Higher Life Learning', 'graduation_year' => 2021, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Fatima Diallo', 'country' => 'Senegal', 'flag' => '🇸🇳', 'quote' => 'Access to quality education transformed my family\'s trajectory. I\'m now a physician serving the same community I grew up in.', 'photo' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80', 'program' => 'Community Health Initiative', 'graduation_year' => 2020, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Naledi Khumalo', 'country' => 'South Africa', 'flag' => '🇿🇦', 'quote' => 'Growing up in Soweto, university felt like a dream. Higher Life made it my reality.', 'photo' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80', 'program' => 'Digital Literacy Program', 'graduation_year' => 2022, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Aisha Mohammed', 'country' => 'Ghana', 'flag' => '🇬🇭', 'quote' => 'The entrepreneurship hub gave me more than capital — it gave me a network and the confidence to build something meaningful.', 'photo' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80', 'program' => 'Youth Entrepreneurship Hub', 'graduation_year' => 2023, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Grace Uwimana', 'country' => 'Rwanda', 'flag' => '🇷🇼', 'quote' => 'The maternal health program saved my life and my baby\'s. Now I volunteer to help other mothers in my community.', 'photo' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80', 'program' => 'Maternal & Child Health', 'graduation_year' => 2021, 'is_featured' => true, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        $scholars = [
+            ['name' => 'Amara Okafor', 'country' => 'Nigeria', 'flag' => '🇳🇬', 'quote' => ['id' => 'The scholarship didn\'t just fund my education — it opened doors I never knew existed. Today I\'m a software engineer building solutions for my community.'], 'photo' => 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80', 'program' => ['id' => 'Higher Life Learning'], 'graduation_year' => 2022, 'is_featured' => true],
+            ['name' => 'Tendai Moyo', 'country' => 'Zimbabwe', 'flag' => '🇿🇼', 'quote' => ['id' => 'From a small village in Masvingo to graduating with honors. This foundation believed in me when no one else did.'], 'photo' => 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80', 'program' => ['id' => 'Higher Life Learning'], 'graduation_year' => 2021, 'is_featured' => true],
+            ['name' => 'Fatima Diallo', 'country' => 'Senegal', 'flag' => '🇸🇳', 'quote' => ['id' => 'Access to quality education transformed my family\'s trajectory. I\'m now a physician serving the same community I grew up in.'], 'photo' => 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80', 'program' => ['id' => 'Community Health Initiative'], 'graduation_year' => 2020, 'is_featured' => true],
+            ['name' => 'Naledi Khumalo', 'country' => 'South Africa', 'flag' => '🇿🇦', 'quote' => ['id' => 'Growing up in Soweto, university felt like a dream. Higher Life made it my reality.'], 'photo' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80', 'program' => ['id' => 'Digital Literacy Program'], 'graduation_year' => 2022, 'is_featured' => true],
+            ['name' => 'Aisha Mohammed', 'country' => 'Ghana', 'flag' => '🇬🇭', 'quote' => ['id' => 'The entrepreneurship hub gave me more than capital — it gave me a network and the confidence to build something meaningful.'], 'photo' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80', 'program' => ['id' => 'Youth Entrepreneurship Hub'], 'graduation_year' => 2023, 'is_featured' => true],
+            ['name' => 'Grace Uwimana', 'country' => 'Rwanda', 'flag' => '🇷🇼', 'quote' => ['id' => 'The maternal health program saved my life and my baby\'s. Now I volunteer to help other mothers in my community.'], 'photo' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80', 'program' => ['id' => 'Maternal & Child Health'], 'graduation_year' => 2021, 'is_featured' => true],
+        ];
+
+        foreach ($scholars as $scholar) {
+            Scholar::create($scholar);
+        }
 
         // Partners
         Partner::insert([
@@ -92,21 +95,32 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Impact Stats
-        ImpactStat::insert([
-            ['value' => 45000, 'suffix' => '+', 'label' => 'Lives Transformed', 'description' => 'Students, families, and community members whose lives have been directly impacted through our programs.', 'icon' => 'Heart', 'created_at' => now(), 'updated_at' => now()],
-            ['value' => 6, 'suffix' => '', 'label' => 'African Countries', 'description' => 'Operating across six African nations with dedicated teams and partnerships.', 'icon' => 'Globe', 'created_at' => now(), 'updated_at' => now()],
-            ['value' => 20, 'suffix' => '+', 'label' => 'Years of Impact', 'description' => 'Over two decades of continuous commitment to empowering communities.', 'icon' => 'Calendar', 'created_at' => now(), 'updated_at' => now()],
-            ['value' => 1000000, 'suffix' => '+', 'label' => 'Meals Provided', 'description' => 'Nutritious meals served to students and community members through our feeding programs.', 'icon' => 'Utensils', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        $impactStats = [
+            ['value' => 45000, 'suffix' => '+', 'label' => ['id' => 'Lives Transformed'], 'description' => ['id' => 'Students, families, and community members whose lives have been directly impacted through our programs.'], 'icon' => 'Heart'],
+            ['value' => 6, 'suffix' => '', 'label' => ['id' => 'African Countries'], 'description' => ['id' => 'Operating across six African nations with dedicated teams and partnerships.'], 'icon' => 'Globe'],
+            ['value' => 20, 'suffix' => '+', 'label' => ['id' => 'Years of Impact'], 'description' => ['id' => 'Over two decades of continuous commitment to empowering communities.'], 'icon' => 'Calendar'],
+            ['value' => 1000000, 'suffix' => '+', 'label' => ['id' => 'Meals Provided'], 'description' => ['id' => 'Nutritious meals served to students and community members through our feeding programs.'], 'icon' => 'Utensils'],
+        ];
+        foreach ($impactStats as $stat) {
+            ImpactStat::create($stat);
+        }
 
         // Team Members
-        TeamMember::insert([
-            ['name' => 'Dr. Strive Masiyiwa', 'title' => 'Founder & Chairman', 'department' => 'Leadership', 'bio' => 'Visionary entrepreneur and philanthropist dedicated to transforming Africa through education and technology.', 'photo' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80', 'order' => 1, 'linkedin' => '#', 'twitter' => '#', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Tsitsi Masiyiwa', 'title' => 'Co-Founder & Executive Chair', 'department' => 'Leadership', 'bio' => 'Passionate advocate for education and community development across Africa.', 'photo' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80', 'order' => 2, 'linkedin' => '#', 'twitter' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'James Okonkwo', 'title' => 'Chief Executive Officer', 'department' => 'Leadership', 'bio' => 'Experienced leader with 20+ years in international development and nonprofit management.', 'photo' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', 'order' => 3, 'linkedin' => '#', 'twitter' => '#', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Sarah Johnson', 'title' => 'Head of Communications', 'department' => 'Communications', 'bio' => 'Award-winning communicator specializing in nonprofit storytelling and brand strategy.', 'photo' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80', 'order' => 4, 'linkedin' => '#', 'twitter' => '#', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Michael Chen', 'title' => 'Director of Impact', 'department' => 'Programs', 'bio' => 'Data-driven leader focused on measuring and maximizing program impact across communities.', 'photo' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80', 'order' => 5, 'linkedin' => '#', 'twitter' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Grace Mwangi', 'title' => 'Field Operations Director', 'department' => 'Programs', 'bio' => 'On-the-ground leader coordinating programs across six African countries.', 'photo' => 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80', 'order' => 6, 'linkedin' => '#', 'twitter' => '#', 'created_at' => now(), 'updated_at' => now()],
+        $teamMembers = [
+            ['name' => 'Dr. Strive Masiyiwa', 'title' => 'Founder & Chairman', 'group' => 'Pembina', 'department' => 'Leadership', 'bio' => 'Visionary entrepreneur and philanthropist dedicated to transforming Africa through education and technology.', 'photo' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80', 'order' => 1, 'linkedin' => '#', 'twitter' => '#'],
+            ['name' => 'Tsitsi Masiyiwa', 'title' => 'Co-Founder & Executive Chair', 'group' => 'Pembina', 'department' => 'Leadership', 'bio' => 'Passionate advocate for education and community development across Africa.', 'photo' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80', 'order' => 2, 'linkedin' => '#', 'twitter' => null],
+            ['name' => 'James Okonkwo', 'title' => 'Chief Executive Officer', 'group' => 'Pengurus', 'department' => 'Leadership', 'bio' => 'Experienced leader with 20+ years in international development and nonprofit management.', 'photo' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', 'order' => 3, 'linkedin' => '#', 'twitter' => '#'],
+            ['name' => 'Sarah Johnson', 'title' => 'Head of Communications', 'group' => 'Pengurus', 'department' => 'Communications', 'bio' => 'Award-winning communicator specializing in nonprofit storytelling and brand strategy.', 'photo' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80', 'order' => 4, 'linkedin' => '#', 'twitter' => '#'],
+            ['name' => 'Michael Chen', 'title' => 'Director of Impact', 'group' => 'Pengurus', 'department' => 'Programs', 'bio' => 'Data-driven leader focused on measuring and maximizing program impact across communities.', 'photo' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80', 'order' => 5, 'linkedin' => '#', 'twitter' => null],
+            ['name' => 'Grace Mwangi', 'title' => 'Field Operations Director', 'group' => 'Pengurus', 'department' => 'Programs', 'bio' => 'On-the-ground leader coordinating programs across six African countries.', 'photo' => 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80', 'order' => 6, 'linkedin' => '#', 'twitter' => '#'],
+        ];
+        foreach ($teamMembers as $member) {
+            TeamMember::create($member);
+        }
+
+        $this->call([
+            OrgChartSeeder::class,
+            PageContentSeeder::class,
         ]);
     }
 }

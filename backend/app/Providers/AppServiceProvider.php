@@ -90,5 +90,17 @@ class AppServiceProvider extends ServiceProvider
         // Banners
         \App\Models\Banner::saved(fn () => Cache::forget('api.banners'));
         \App\Models\Banner::deleted(fn () => Cache::forget('api.banners'));
+
+        // Org Chart
+        \App\Models\OrgChartNode::saved(fn () => Cache::forget('api.org_chart'));
+        \App\Models\OrgChartNode::deleted(fn () => Cache::forget('api.org_chart'));
+
+        // Page Contents
+        \App\Models\PageContent::saved(function ($model) {
+            Cache::forget("api.page_contents.{$model->page}");
+        });
+        \App\Models\PageContent::deleted(function ($model) {
+            Cache::forget("api.page_contents.{$model->page}");
+        });
     }
 }

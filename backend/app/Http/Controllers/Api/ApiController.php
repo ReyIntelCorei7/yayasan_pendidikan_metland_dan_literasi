@@ -216,13 +216,14 @@ class ApiController extends Controller
     public function team(): JsonResponse
     {
         $data = Cache::remember('api.team', self::TTL, function () {
-            return TeamMember::select(['id','name','title','department','bio','photo','order','linkedin','twitter'])
+            return TeamMember::select(['id','name','title','group','department','bio','photo','order','linkedin','twitter'])
                 ->orderBy('order')
                 ->get()
                 ->map(fn ($t) => [
                     'id'         => (string) $t->id,
                     'name'       => $t->name,
                     'title'      => $t->title,
+                    'group'      => $t->group,
                     'department' => $t->department,
                     'bio'        => $t->bio,
                     'photo'      => $this->storageUrl($t->photo),
@@ -384,6 +385,46 @@ class ApiController extends Controller
                     'title'       => $s->getTranslations('title'),
                     'description' => $s->getTranslations('description'),
                 ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+    public function orgChart(): JsonResponse
+    {
+        $data = Cache::remember('api.org_chart', self::TTL, function () {
+            return \App\Models\OrgChartNode::with(['teamMembers' => function ($q) {
+                    $q->select(['id', 'name', 'title', 'photo', 'org_chart_node_id', 'order'])
+                      ->orderBy('order');
+                }])
+                ->orderBy('level')
+                ->orderBy('order')
+                ->get()
+                ->map(fn ($n) => [
+                    'id'        => (string) $n->id,
+                    'label'     => $n->label,
+                    'subtitle'  => $n->subtitle,
+                    'level'     => $n->level,
+                    'order'     => $n->order,
+                    'parent_id' => $n->parent_id ? (string) $n->parent_id : null,
+                    'members'   => $n->teamMembers->map(fn ($m) => [
+                        'id'    => (string) $m->id,
+                        'name'  => $m->name,
+                        'title' => $m->title,
+                        'photo' => $this->storageUrl($m->photo),
+                    ])->toArray(),
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function pageContents(string $page): JsonResponse
+    {
+        $data = Cache::remember("api.page_contents.{$page}", self::TTL, function () use ($page) {
+            return \App\Models\PageContent::where('page', $page)
+                ->get()
+                ->mapWithKeys(fn ($p) => [$p->section => $p->content])
+                ->toArray();
         });
 
         return $this->cachedJson($data);

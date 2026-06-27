@@ -20,7 +20,14 @@ class BannerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'title';
+    public static function getRecordTitle(?\Illuminate\Database\Eloquent\Model $record): \Illuminate\Contracts\Support\Htmlable|string|null
+    {
+        if (! $record) {
+            return null;
+        }
+        $title = $record->title;
+        return is_array($title) ? ($title['id'] ?? 'Banner') : ((string) $title ?: 'Banner');
+    }
 
     public static function getNavigationGroup(): ?string { return 'Halaman Beranda'; }
     public static function getNavigationSort(): ?int { return 1; }
