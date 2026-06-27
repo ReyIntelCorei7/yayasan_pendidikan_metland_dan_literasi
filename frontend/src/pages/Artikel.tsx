@@ -228,19 +228,19 @@ export default function Artikel() {
   return (
     <>
       {/* ═══ Page Hero ══════════════════════════════════════════ */}
-      <section className="relative h-[40vh] min-h-[280px] flex items-center justify-center bg-charcoal overflow-hidden">
+      <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <img
           src="/src/assets/sekolahsmkmetlandcibitung.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
-        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
+        <div className="relative z-10 text-center px-6 max-w-3xl mx-auto mt-4">
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-primary text-lg font-bold tracking-[3px] uppercase mb-4 block"
+            className="text-white text-lg font-bold tracking-[3px] uppercase block"
           >
             {i18n.t('articles.hero_title')}
           </motion.span>

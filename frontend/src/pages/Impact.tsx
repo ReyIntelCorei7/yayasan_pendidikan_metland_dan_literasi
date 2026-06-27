@@ -23,11 +23,20 @@ export default function Impact() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
-        <div className="relative z-10 text-center px-6">
-          <WordReveal text="Our Impact" tag="h1" className="text-4xl lg:text-6xl font-light text-white justify-center" delay={0.2} />
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">
+      <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
+        <div className="relative z-10 text-center px-6 mt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-white text-lg font-bold tracking-[3px] uppercase block"
+          >
+            Profil
+          </motion.span>
+          <WordReveal text="Our Impact" tag="h1" className="text-4xl lg:text-5xl font-light text-white" delay={0.2} />
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 max-w-2xl mx-auto">
             Measuring the change we're creating across communities and countries.
           </motion.p>
         </div>

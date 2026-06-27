@@ -58,19 +58,27 @@ export default function OurSchool() {
     <>
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-charcoal/80 z-10" />
         <img
           src={heroImg}
           alt="foto sekolah smk metland"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+          className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
-        <div className="relative z-20 text-center px-6 mt-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
+        <div className="relative z-10 text-center px-6 mt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-white text-lg font-bold tracking-[3px] uppercase block"
+          >
+            Unit Pendidikan
+          </motion.span>
           <WordReveal
             text={t('ourSchool.hero_tag')}
             tag="h1"
-            className="text-4xl lg:text-5xl font-light text-white mb-4"
+            className="text-4xl lg:text-5xl font-light text-white"
           />
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 mt-2 max-w-2xl mx-auto">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 max-w-2xl mx-auto">
             {t('ourSchool.hero_description')}
           </motion.p>
         </div>
