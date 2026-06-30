@@ -88,8 +88,14 @@ class AppServiceProvider extends ServiceProvider
         Partner::deleted(fn () => Cache::forget('api.partners'));
 
         // Experience / Impact Stats
-        ImpactStat::saved(fn () => Cache::forget('api.impact_stats'));
-        ImpactStat::deleted(fn () => Cache::forget('api.impact_stats'));
+        ImpactStat::saved(function () {
+            Cache::forget('api.impact_stats');
+            Cache::forget('api.experience_stats');
+        });
+        ImpactStat::deleted(function () {
+            Cache::forget('api.impact_stats');
+            Cache::forget('api.experience_stats');
+        });
 
         // Collection Stats
         \App\Models\CollectionStat::saved(fn () => Cache::forget('api.collection_stats'));
@@ -119,7 +125,7 @@ class AppServiceProvider extends ServiceProvider
     private function configureRateLimiters(): void
     {
         RateLimiter::for('api-public', function (Request $request) {
-            $limit = $request->is('api/v1/posts') || $request->is('api/v1/books') ? 30 : 90;
+            $limit = $request->is('api/v1/posts') || $request->is('api/v1/books') ? 120 : 180;
 
             return Limit::perMinute($limit)->by($request->ip());
         });
