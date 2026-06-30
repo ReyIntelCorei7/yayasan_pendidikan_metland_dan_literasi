@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { BookOpen, HeartPulse, Sprout } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import ScrollReveal from '../animations/ScrollReveal';
 import WordReveal from '../animations/WordReveal';
 import { usePrograms } from '../../hooks/usePrograms';
@@ -62,18 +61,7 @@ export default function WhatWeDo() {
                   {program.description?.[i18n.language] || program.description?.id || program.description}
                 </p>
 
-                <Link
-                  to={`/programs/${program.slug}`}
-                  className="relative z-10 inline-block text-sm font-medium text-charcoal"
-                >
-                  <span>{t('what_we_do.read_more')} &rarr;</span>
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px origin-left bg-charcoal"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </Link>
+                {/* Link and read-more removed as requested */}
               </motion.div>
             );
           })}
