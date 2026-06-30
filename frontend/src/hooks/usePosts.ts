@@ -1,6 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Post } from '../types';
 import api from '../services/api';
+
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 1500;
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export function usePosts() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -20,7 +27,7 @@ export function usePosts() {
     let cancelled = false;
     const currentFetchId = ++fetchIdRef.current;
 
-    async function fetchPosts() {
+    async function fetchPostsWithRetry(attempt = 0): Promise<void> {
       try {
         if (page === 1) setLoading(true);
         else setLoadingMore(true);
@@ -37,15 +44,23 @@ export function usePosts() {
         setPosts(prev => page === 1 ? response.data : [...prev, ...response.data]);
         setHasMore(response.current_page < response.last_page);
         setError(null);
-        
-        if (page === 1 && response.data.length === 0) {
-          setError('Gagal memuat artikel atau tidak ada artikel ditemukan.');
-        }
       } catch (err) {
-        console.error('Failed to fetch posts:', err);
         if (cancelled || currentFetchId !== fetchIdRef.current) return;
-        if (page === 1) setPosts([]);
-        setError('Gagal memuat artikel terbaru.');
+
+        // Retry on transient errors (network, 429, 5xx)
+        if (attempt < MAX_RETRIES) {
+          console.warn(`[usePosts] Attempt ${attempt + 1} failed, retrying in ${RETRY_DELAY_MS}ms...`, err);
+          await delay(RETRY_DELAY_MS);
+          if (!cancelled && currentFetchId === fetchIdRef.current) {
+            return fetchPostsWithRetry(attempt + 1);
+          }
+          return;
+        }
+
+        console.error('[usePosts] All retries failed:', err);
+        // DON'T clear existing posts on error — keep previous data visible
+        // Only set error message so the UI can show a non-destructive notification
+        setError('Gagal memuat artikel terbaru. Silakan coba refresh halaman.');
       } finally {
         if (!cancelled && currentFetchId === fetchIdRef.current) {
           setLoading(false);
@@ -54,27 +69,31 @@ export function usePosts() {
       }
     }
 
-    fetchPosts();
+    fetchPostsWithRetry();
     return () => { cancelled = true; };
   }, [page, activeCategory, searchQuery]);
 
-  const handleSetCategory = (cat: string) => {
-    if (cat === activeCategory) return;
-    setActiveCategory(cat);
-    setPage(1);
-  };
+  const handleSetCategory = useCallback((cat: string) => {
+    setActiveCategory(prev => {
+      if (prev === cat) return prev;
+      setPage(1);
+      return cat;
+    });
+  }, []);
 
-  const handleSetSearch = (query: string) => {
-    if (query === searchQuery) return;
-    setSearchQuery(query);
-    setPage(1);
-  };
+  const handleSetSearch = useCallback((query: string) => {
+    setSearchQuery(prev => {
+      if (prev === query) return prev;
+      setPage(1);
+      return query;
+    });
+  }, []);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (!loading && !loadingMore && hasMore) {
       setPage(p => p + 1);
     }
-  };
+  }, [loading, loadingMore, hasMore]);
 
   return { 
     posts, 
