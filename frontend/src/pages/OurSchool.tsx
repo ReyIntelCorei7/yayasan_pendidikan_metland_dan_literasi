@@ -1,59 +1,38 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import api from '../services/api';
 import WordReveal from '../components/animations/WordReveal';
 import ScrollReveal from '../components/animations/ScrollReveal';
-import { useTranslation } from 'react-i18next';
 
 import heroImg from '../assets/sekolahsmkmetland.webp';
 import tkSdImg from '../assets/tk_sdmetropolitan.jpeg';
 import smkPariwisataImg from '../assets/sekolahsmkmetland.webp';
 import smkMetlandImg from '../assets/sekolahsmkmetlandcibitung.webp';
 
-const schools = [
-  {
-    slug: 'tk-tunas-metropolitan',
-    name: 'TK Tunas Metropolitan',
-    levelKey: 'tk_tunas',
-    taglineKey: 'tk_tunas',
-    image: tkSdImg,
-    color: '#10B981',
-  },
-  {
-    slug: 'sd-tunas-metropolitan',
-    name: 'SD Tunas Metropolitan',
-    levelKey: 'sd_tunas',
-    taglineKey: 'sd_tunas',
-    image: tkSdImg,
-    color: '#E5A320',
-  },
-  {
-    slug: 'smk-pariwisata-metland-school',
-    name: 'SMK Pariwisata Metland Cileungsi',
-    levelKey: 'smk_pariwisata',
-    taglineKey: 'smk_pariwisata',
-    image: smkPariwisataImg,
-    color: '#3D8ABF',
-  },
-  {
-    slug: 'smk-metland',
-    name: 'SMK Pariwisata Metland Cibitung',
-    levelKey: 'smk_metland',
-    taglineKey: 'smk_metland',
-    image: smkMetlandImg,
-    color: '#2E6F9E',
-  },
-  {
-    slug: 'metland-college',
-    name: 'Metland College',
-    levelKey: 'metland_college',
-    taglineKey: 'metland_college',
-    image: smkPariwisataImg,
-    color: '#8B5CF6',
-  },
-];
+const fallbackImages: Record<string, string> = {
+  'tk-tunas-metropolitan': tkSdImg,
+  'sd-tunas-metropolitan': tkSdImg,
+  'smk-pariwisata-metland-school': smkPariwisataImg,
+  'smk-metland': smkMetlandImg,
+  'metland-college': smkPariwisataImg,
+};
 
 export default function OurSchool() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [schools, setSchools] = useState<any[]>([]);
+
+  useEffect(() => {
+    api.schools.list().then(setSchools).catch(console.error);
+  }, []);
+
+  const getLocalizedString = (field: any) => {
+    if (!field) return '';
+    if (typeof field === 'string') return field;
+    return field[i18n.language] || field.id || '';
+  };
+
   return (
     <>
       {/* Hero */}
@@ -98,15 +77,15 @@ export default function OurSchool() {
                   >
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <img
-                        src={school.image}
-                        alt={school.name}
+                        src={school.image || fallbackImages[school.slug]}
+                        alt={getLocalizedString(school.name)}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       <div className="absolute bottom-4 left-4">
                         <span className="text-xs px-3 py-1.5 rounded-full font-medium text-white shadow-sm" style={{ background: school.color }}>
-                          {t(`schools.${school.levelKey}.level`)}
+                          {getLocalizedString(school.level)}
                         </span>
                       </div>
                     </div>
@@ -116,9 +95,9 @@ export default function OurSchool() {
                         onMouseEnter={(e) => (e.currentTarget.style.color = school.color)}
                         onMouseLeave={(e) => (e.currentTarget.style.color = '')}
                       >
-                        {school.name}
+                        {getLocalizedString(school.name)}
                       </h3>
-                      <p className="text-sm text-gray-500 mt-2">{t(`schools.${school.taglineKey}.tagline`)}</p>
+                      <p className="text-sm text-gray-500 mt-2">{getLocalizedString(school.tagline)}</p>
                       <span className="inline-flex items-center gap-1 text-xs font-semibold mt-4 group-hover:gap-2 transition-all uppercase tracking-wide" style={{ color: school.color }}>
                         {t('common.read_more')} <span>→</span>
                       </span>

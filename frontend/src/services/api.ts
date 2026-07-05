@@ -61,6 +61,10 @@ export const api = {
   impactNumbers: {
     list: () => fetchApi<any[]>('/impact-numbers'),
   },
+  schools: {
+    list: () => fetchApi<any[]>('/schools'),
+    bySlug: (slug: string) => fetchApi<any>(`/schools/${slug}`),
+  },
   team: {
     list: () => fetchApi<any[]>('/team'),
   },

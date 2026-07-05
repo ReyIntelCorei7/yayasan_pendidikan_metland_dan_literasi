@@ -474,4 +474,53 @@ class ApiController extends Controller
 
         return $this->cachedJson($data);
     }
+
+    public function schools(): JsonResponse
+    {
+        $data = Cache::remember('api.schools', self::TTL, function () {
+            return \App\Models\School::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($s) => [
+                    'id'          => (string) $s->id,
+                    'slug'        => $s->slug,
+                    'name'        => $s->getTranslations('name'),
+                    'tagline'     => $s->getTranslations('tagline'),
+                    'level'       => $s->getTranslations('level'),
+                    'description' => $s->getTranslations('description'),
+                    'features'    => $s->features,
+                    'stats'       => $s->stats,
+                    'image'       => $this->storageUrl($s->image),
+                    'color'       => $s->color,
+                    'website'     => $s->website,
+                    'sortOrder'   => $s->sort_order,
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function schoolBySlug(string $slug): JsonResponse
+    {
+        $data = Cache::remember("api.school.{$slug}", self::TTL, function () use ($slug) {
+            $s = \App\Models\School::where('slug', $slug)->firstOrFail();
+            
+            return [
+                'id'          => (string) $s->id,
+                'slug'        => $s->slug,
+                'name'        => $s->getTranslations('name'),
+                'tagline'     => $s->getTranslations('tagline'),
+                'level'       => $s->getTranslations('level'),
+                'description' => $s->getTranslations('description'),
+                'features'    => $s->features,
+                'stats'       => $s->stats,
+                'image'       => $this->storageUrl($s->image),
+                'color'       => $s->color,
+                'website'     => $s->website,
+                'sortOrder'   => $s->sort_order,
+            ];
+        });
+
+        return $this->cachedJson($data);
+    }
 }

@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\ProgramStat;
 use App\Models\Scholar;
+use App\Models\School;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Support\AdminActivityLogger;
@@ -105,6 +106,16 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\ImpactNumber::saved(fn () => Cache::forget('api.impact_numbers'));
         \App\Models\ImpactNumber::deleted(fn () => Cache::forget('api.impact_numbers'));
 
+        // Schools
+        School::saved(function ($model) {
+            Cache::forget('api.schools');
+            Cache::forget("api.school.{$model->slug}");
+        });
+        School::deleted(function ($model) {
+            Cache::forget('api.schools');
+            Cache::forget("api.school.{$model->slug}");
+        });
+
         // Team Members
         TeamMember::saved(fn () => Cache::forget('api.team'));
         TeamMember::deleted(fn () => Cache::forget('api.team'));
@@ -156,6 +167,7 @@ class AppServiceProvider extends ServiceProvider
             HeroStat::class,
             \App\Models\CollectionStat::class,
             \App\Models\ImpactNumber::class,
+            School::class,
             \App\Models\Banner::class,
             OrgChartNode::class,
             PageContent::class,

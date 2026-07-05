@@ -1,62 +1,50 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import api from '../../services/api';
 import WordReveal from '../animations/WordReveal';
 import ScrollReveal from '../animations/ScrollReveal';
 
-const schoolsData = [
-  {
-    slug: 'tk-tunas-metropolitan',
-    name: 'TK Tunas Metropolitan',
-    transKey: 'tk_tunas',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#10B981', // Accent green
-  },
-  {
-    slug: 'sd-tunas-metropolitan',
-    name: 'SD Tunas Metropolitan',
-    transKey: 'sd_tunas',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#E5A320', // Secondary gold
-  },
-  {
-    slug: 'smk-pariwisata-metland-school',
-    name: 'SMK Pariwisata Metland Cileungsi',
-    transKey: 'smk_pariwisata',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#3D8ABF', // Primary blue
-  },
-  {
-    slug: 'smk-metland',
-    name: 'SMK Pariwisata Metland Cibitung',
-    transKey: 'smk_metland',
-    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
-    color: '#2E6F9E', // Darker blue
-  },
-  {
-    slug: 'metland-college',
-    name: 'Metland College',
-    transKey: 'metland_college',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#8B5CF6', // Purple
-  },
-];
+import tkSdImg from '../../assets/tk_sdmetropolitan.jpeg';
+import smkPariwisataImg from '../../assets/sekolahsmkmetland.webp';
+import smkMetlandImg from '../../assets/sekolahsmkmetlandcibitung.webp';
+
+const fallbackImages: Record<string, string> = {
+  'tk-tunas-metropolitan': tkSdImg,
+  'sd-tunas-metropolitan': tkSdImg,
+  'smk-pariwisata-metland-school': smkPariwisataImg,
+  'smk-metland': smkMetlandImg,
+  'metland-college': smkPariwisataImg,
+};
 
 export default function ProgramsGrid() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [schoolsData, setSchoolsData] = useState<any[]>([]);
+
+  useEffect(() => {
+    api.schools.list().then(setSchoolsData).catch(console.error);
+  }, []);
+
+  const getLocalizedString = (field: any) => {
+    if (!field) return '';
+    if (typeof field === 'string') return field;
+    return field[i18n.language] || field.id || '';
+  };
+
   return (
     <section className="bg-offwhite py-16 relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <ScrollReveal>
           <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
-                  <p
-                    className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
-                    style={{ fontFamily: "'Geist', Inter, sans-serif" }}
-                  >
-                    {t('programs_grid.subtitle')}
-                  </p>
-                </div>
+            <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
+            <p
+              className="text-base md:text-lg text-[#3D8ABF] uppercase tracking-[0.2em] mb-4 font-bold"
+              style={{ fontFamily: "'Geist', Inter, sans-serif" }}
+            >
+              {t('programs_grid.subtitle')}
+            </p>
+          </div>
         </ScrollReveal>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <WordReveal
@@ -86,8 +74,8 @@ export default function ProgramsGrid() {
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
                     <motion.img
-                      src={school.image}
-                      alt={school.name}
+                      src={school.image || fallbackImages[school.slug]}
+                      alt={getLocalizedString(school.name)}
                       className="w-full h-full object-cover group-hover:brightness-110 transition-all duration-700"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -99,7 +87,7 @@ export default function ProgramsGrid() {
                         className="text-xs px-3 py-1.5 rounded-full text-white font-medium shadow-md"
                         style={{ background: school.color }}
                       >
-                        {t(`schools.${school.transKey}.level`)}
+                        {getLocalizedString(school.level)}
                       </span>
                     </div>
                   </div>
@@ -112,9 +100,9 @@ export default function ProgramsGrid() {
                       onMouseEnter={(e) => (e.currentTarget.style.color = school.color)}
                       onMouseLeave={(e) => (e.currentTarget.style.color = '')}
                     >
-                      {school.name}
+                      {getLocalizedString(school.name)}
                     </h3>
-                    <p className="text-sm text-gray-400 mt-2">{t(`schools.${school.transKey}.tagline`)}</p>
+                    <p className="text-sm text-gray-400 mt-2">{getLocalizedString(school.tagline)}</p>
                     <span 
                       className="inline-flex items-center gap-1 text-xs font-semibold mt-5 group-hover:gap-2 transition-all uppercase tracking-wide"
                       style={{ color: school.color }}

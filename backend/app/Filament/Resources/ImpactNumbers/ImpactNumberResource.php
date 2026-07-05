@@ -20,6 +20,10 @@ class ImpactNumberResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    public static function getNavigationGroup(): ?string { return 'Halaman Beranda'; }
+    public static function getNavigationSort(): ?int { return 3; }
+    public static function getNavigationLabel(): string { return 'Impact Number'; }
+
     public static function form(Schema $schema): Schema
     {
         return ImpactNumberForm::configure($schema);

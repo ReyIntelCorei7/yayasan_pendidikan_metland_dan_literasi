@@ -124,6 +124,7 @@ class DatabaseSeeder extends Seeder
             HeroStatSeeder::class,
             CollectionStatSeeder::class,
             ImpactNumberSeeder::class,
+            SchoolSeeder::class,
         ]);
     }
 }
