@@ -11,14 +11,14 @@ Route::prefix('v1')->middleware('throttle:api-public')->group(function () {
     // Impact / Experience Stats
     Route::get('/impact-stats', [ApiController::class, 'impactStats']);
     Route::get('/collection-stats', [ApiController::class, 'collectionStats']);
-
     Route::get('/posts', [ApiController::class, 'posts']);
     Route::get('/posts/{slug}', [ApiController::class, 'postBySlug']);
 
     Route::get('/scholars', [ApiController::class, 'scholars']);
     Route::get('/partners', [ApiController::class, 'partners']);
-    Route::get('/experience-stats', [ApiController::class, 'experienceStats']);
     Route::get('/team', [ApiController::class, 'team']);
+    Route::get('/impact-numbers', [ApiController::class, 'impactNumbers']);
+    Route::get('/experience-stats', [ApiController::class, 'experienceStats']);
 
     Route::get('/books', [ApiController::class, 'books']);
     Route::get('/books/{id}', [ApiController::class, 'bookById']);

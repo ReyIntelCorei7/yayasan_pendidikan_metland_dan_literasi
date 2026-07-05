@@ -101,6 +101,10 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\CollectionStat::saved(fn () => Cache::forget('api.collection_stats'));
         \App\Models\CollectionStat::deleted(fn () => Cache::forget('api.collection_stats'));
 
+        // Impact Numbers
+        \App\Models\ImpactNumber::saved(fn () => Cache::forget('api.impact_numbers'));
+        \App\Models\ImpactNumber::deleted(fn () => Cache::forget('api.impact_numbers'));
+
         // Team Members
         TeamMember::saved(fn () => Cache::forget('api.team'));
         TeamMember::deleted(fn () => Cache::forget('api.team'));
@@ -151,6 +155,7 @@ class AppServiceProvider extends ServiceProvider
             ImpactStat::class,
             HeroStat::class,
             \App\Models\CollectionStat::class,
+            \App\Models\ImpactNumber::class,
             \App\Models\Banner::class,
             OrgChartNode::class,
             PageContent::class,

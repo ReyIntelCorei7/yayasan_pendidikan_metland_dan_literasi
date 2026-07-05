@@ -5,10 +5,7 @@ import type { Book } from '../../hooks/useBooks';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../../styles/book-animation.css';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 interface Props { book: Book; onClose: () => void; }
 
@@ -167,7 +164,8 @@ export default function FlipbookReader({ book, onClose }: Props) {
       setPdfRatio(ratio);
       
       setLoading(false);
-    }).catch(() => { 
+    }).catch((err) => { 
+      console.error('PDF Load Error:', err);
       if (!cancelled) { 
         setError(true); 
         setLoading(false); 

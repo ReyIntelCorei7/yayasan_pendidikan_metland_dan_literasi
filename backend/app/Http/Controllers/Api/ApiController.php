@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\Scholar;
 use App\Models\TeamMember;
+use App\Models\ImpactNumber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -450,6 +451,25 @@ class ApiController extends Controller
                 ->get()
                 ->mapWithKeys(fn ($p) => [$p->section => $p->content])
                 ->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function impactNumbers(): JsonResponse
+    {
+        $data = Cache::remember('api.impact_numbers', self::TTL, function () {
+            return \App\Models\ImpactNumber::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($n) => [
+                    'id'          => (string) $n->id,
+                    'value'       => $n->value,
+                    'suffix'      => $n->suffix,
+                    'label'       => $n->getTranslations('label'),
+                    'heading'     => $n->getTranslations('heading'),
+                    'description' => $n->getTranslations('description'),
+                ])->toArray();
         });
 
         return $this->cachedJson($data);

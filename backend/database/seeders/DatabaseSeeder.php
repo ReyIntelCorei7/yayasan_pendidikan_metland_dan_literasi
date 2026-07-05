@@ -121,6 +121,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OrgChartSeeder::class,
             PageContentSeeder::class,
+            HeroStatSeeder::class,
+            CollectionStatSeeder::class,
+            ImpactNumberSeeder::class,
         ]);
     }
 }
