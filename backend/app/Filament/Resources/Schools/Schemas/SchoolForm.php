@@ -21,13 +21,22 @@ class SchoolForm
                     ->label('Name (Indonesian)')
                     ->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(function (string $operation, $state, $set) {
+                        $slug = \Illuminate\Support\Str::slug($state);
+                        if (!empty($slug)) {
+                            $set('slug', \App\Models\School::generateUniqueSlug($state));
+                        }
+                    }),
                 TextInput::make('name.en')
                     ->label('Name (English)')
                     ->required(),
                 TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true),
+                    ->unique(ignoreRecord: true)
+                    ->label('Slug URL')
+                    ->helperText('Otomatis terisi dari nama. Bisa diedit manual jika perlu.')
+                    ->placeholder('otomatis-dari-nama')
+                    ->prefix(fn () => url('/schools') . '/')
+                    ->suffixIcon('heroicon-o-link'),
                 TextInput::make('tagline.id')
                     ->label('Tagline (Indonesian)')
                     ->required(),

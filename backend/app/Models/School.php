@@ -5,10 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+use App\Traits\HasAutoSlug;
 
 class School extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, HasAutoSlug;
+
+    public function getSlugSource(): string
+    {
+        // $this->name could be an array or string depending on HasTranslations behavior
+        $name = $this->getTranslations('name');
+        return $name['id'] ?? $name['en'] ?? (is_string($this->name) ? $this->name : '');
+    }
 
     protected $fillable = [
         'slug',

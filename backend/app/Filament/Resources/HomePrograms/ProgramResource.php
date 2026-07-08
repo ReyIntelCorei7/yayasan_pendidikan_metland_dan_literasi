@@ -42,14 +42,20 @@ class ProgramResource extends Resource
                     ->maxLength(255)
                     ->label('Judul Program')
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, $set) =>
-                        $operation === 'create' ? $set('slug', Str::slug($state)) : null
-                    ),
+                    ->afterStateUpdated(function (string $operation, $state, $set) {
+                        $slug = \Illuminate\Support\Str::slug($state);
+                        if (!empty($slug)) {
+                            $set('slug', \App\Models\Program::generateUniqueSlug($state));
+                        }
+                    }),
                 TextInput::make('slug')
-                    ->required()
                     ->maxLength(255)
-                    ->unique(Program::class, 'slug', ignoreRecord: true)
-                    ->label('Slug URL'),
+                    ->unique(\App\Models\Program::class, 'slug', ignoreRecord: true)
+                    ->label('Slug URL')
+                    ->helperText('Otomatis terisi dari judul. Bisa diedit manual jika perlu.')
+                    ->placeholder('otomatis-dari-judul')
+                    ->prefix(fn () => url('/programs') . '/')
+                    ->suffixIcon('heroicon-o-link'),
                 TextInput::make('tagline')
                     ->maxLength(255)
                     ->label('Tagline'),

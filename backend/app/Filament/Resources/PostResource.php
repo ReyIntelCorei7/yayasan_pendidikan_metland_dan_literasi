@@ -37,10 +37,13 @@ class PostResource extends Resource
         return $schema->components([
             Section::make('Informasi Artikel')->schema([
                 TextInput::make('slug')
-                    ->required()
                     ->maxLength(255)
                     ->unique(Post::class, 'slug', ignoreRecord: true)
-                    ->label('Slug URL'),
+                    ->label('Slug URL')
+                    ->helperText('Otomatis terisi dari judul. Bisa diedit manual jika perlu.')
+                    ->placeholder('otomatis-dari-judul')
+                    ->prefix(fn () => url('/artikel') . '/')
+                    ->suffixIcon('heroicon-o-link'),
                 Select::make('category')
                     ->options([
                         'Berita'      => 'Berita',
@@ -62,9 +65,12 @@ class PostResource extends Resource
                             ->maxLength(255)
                             ->label('Judul Artikel (ID)')
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, $state, $set) =>
-                                $operation === 'create' ? $set('slug', Str::slug($state)) : null
-                            ),
+                            ->afterStateUpdated(function (string $operation, $state, $set) {
+                                $slug = \Illuminate\Support\Str::slug($state);
+                                if (!empty($slug)) {
+                                    $set('slug', \App\Models\Post::generateUniqueSlug($state));
+                                }
+                            }),
                         Textarea::make('excerpt.id')
                             ->required()
                             ->rows(3)
