@@ -24,7 +24,7 @@ export function useOrgChart() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/org-chart`)
+    fetch(`${API_BASE}/org-chart?_t=${Date.now()}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch org chart');
         return res.json();

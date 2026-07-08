@@ -16,20 +16,12 @@ function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; col
   );
 }
 
-/* ─── Mini Member Avatar ─── */
+/* ─── Mini Member Badge (name only) ─── */
 function MemberBadge({ member }: { member: OrgChartMember }) {
   return (
-    <div className="flex items-center gap-1 mt-1 px-1 py-0.5 rounded-md bg-gray-50/80 border border-gray-100 text-left">
-      <div className="w-3.5 h-3.5 rounded-full overflow-hidden ring-1 ring-gray-200 flex-shrink-0">
-        <img
-          src={member.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&size=56&background=3D8ABF&color=fff'}
-          alt={member.name}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
+    <div className="flex items-center gap-1 mt-1 px-1.5 py-1 rounded-md bg-gray-50/80 border border-gray-100 text-left">
       <div className="min-w-0 flex-1">
-        <p className="text-[8px] font-medium text-charcoal truncate leading-none">{member.name}</p>
+        <p className="text-[10px] sm:text-xs font-medium text-charcoal truncate leading-none">{member.name}</p>
       </div>
     </div>
   );
@@ -45,7 +37,7 @@ function ChartNode({
   variant?: 'primary' | 'accent' | 'default' | 'muted';
   className?: string;
 }) {
-  const base = 'rounded-md px-1.5 py-1 text-center transition-all duration-300';
+  const base = 'rounded-md px-2 py-1.5 sm:px-3 sm:py-2 text-center transition-all duration-300';
   const variants = {
     primary: 'bg-charcoal text-white shadow-sm shadow-charcoal/10',
     accent: 'bg-[#3D8ABF] text-white shadow-sm shadow-[#3D8ABF]/20',
@@ -97,16 +89,16 @@ function TreeNode({ node, isFirst, isLast, hasSiblings }: { node: any, isFirst?:
 
       {/* The node card itself */}
       <div className={`z-10 ${hasSiblings ? 'mt-3' : 'mt-0'}`}>
-        <ChartNode variant={node.level === 1 ? 'primary' : node.level >= 5 ? 'muted' : 'default'} className={node.level >= 5 ? "w-20 sm:w-24" : "w-24 sm:w-28"}>
+        <ChartNode variant={node.level === 1 ? 'primary' : node.level >= 5 ? 'muted' : 'default'} className={node.level >= 5 ? "w-28 sm:w-36" : "w-36 sm:w-48"}>
            {node.level === 1 && (
-             <p className="text-[7px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-0.5 font-medium">
+             <p className="text-[9px] sm:text-[10px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-1 font-medium">
                 Yayasan Metland
              </p>
            )}
-           <p className={`${node.level === 1 ? 'text-[10px]' : 'text-[9px]'} font-semibold ${node.level === 1 ? 'text-white' : 'text-charcoal'} leading-[1.1]`}>{node.label}</p>
-           {node.subtitle && <p className={`text-[7px] mt-0.5 leading-[1.1] ${node.level === 1 ? 'text-gray-300' : 'text-gray-500'}`}>{node.subtitle}</p>}
+           <p className={`${node.level === 1 ? 'text-sm sm:text-base' : 'text-xs sm:text-sm'} font-semibold ${node.level === 1 ? 'text-white' : 'text-charcoal'} leading-[1.2]`}>{node.label}</p>
+           {node.subtitle && <p className={`text-[9px] sm:text-[10px] mt-1 leading-[1.2] ${node.level === 1 ? 'text-gray-300' : 'text-gray-500'}`}>{node.subtitle}</p>}
            {node.members?.length > 0 && (
-             <div className="mt-1 space-y-0.5">
+             <div className="mt-2 space-y-1">
                {node.members.map((m: any) => <MemberBadge key={m.id} member={m} />)}
              </div>
            )}
@@ -216,12 +208,12 @@ export default function StrukturOrganisasi() {
                   <div className="flex flex-col items-center">
                     {/* LEVEL 1: ROOT */}
                     <div className="z-10">
-                      <ChartNode variant="primary" className="w-24 sm:w-28">
-                         <p className="text-[7px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-0.5 font-medium">Yayasan Metland</p>
-                         <p className="text-[10px] font-semibold text-white leading-[1.1]">{tree.label}</p>
-                         {tree.subtitle && <p className="text-[7px] mt-0.5 leading-[1.1] text-gray-300">{tree.subtitle}</p>}
+                      <ChartNode variant="primary" className="w-36 sm:w-48">
+                         <p className="text-[9px] sm:text-[10px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-1 font-medium">Yayasan Metland</p>
+                         <p className="text-sm sm:text-base font-semibold text-white leading-[1.2]">{tree.label}</p>
+                         {tree.subtitle && <p className="text-[9px] sm:text-[10px] mt-1 leading-[1.2] text-gray-300">{tree.subtitle}</p>}
                          {tree.members?.length > 0 && (
-                           <div className="mt-1 space-y-0.5">
+                           <div className="mt-2 space-y-1">
                              {tree.members.map((m: any) => <MemberBadge key={m.id} member={m} />)}
                            </div>
                          )}
@@ -235,13 +227,13 @@ export default function StrukturOrganisasi() {
                     <div className="relative w-full flex justify-center z-0">
                       {/* L2 Nodes wrappers with integrated line */}
                       {l2Nodes.length > 0 && (
-                        <div className="absolute top-0 w-[550px] flex justify-between -translate-x-1/2 left-1/2">
+                        <div className="absolute top-0 w-[700px] lg:w-[850px] flex justify-between -translate-x-1/2 left-1/2">
                           
                           {/* Absolute connecting line perfectly spanning the centers of the two nodes */}
-                          <div className="absolute top-0 left-[60px] right-[60px] h-[2px] bg-[#3D8ABF]/30 z-0" />
+                          <div className="absolute top-0 left-[90px] right-[90px] h-[2px] bg-[#3D8ABF]/30 z-0" />
 
                           {l2Nodes.map((d: any) => (
-                            <div key={d.id} className="flex flex-col items-center w-[120px] z-10">
+                            <div key={d.id} className="flex flex-col items-center w-[180px] z-10">
                               <div className="w-[2px] h-4 bg-[#3D8ABF]/30" />
                               <TreeNode node={d} hasSiblings={false} />
                             </div>

@@ -1,6 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 
+function useDebouncedValue<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
 export interface Book {
   id: string;
   title: string;
@@ -23,6 +32,8 @@ export default function useBooks() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const debouncedSearch = useDebouncedValue(searchQuery, 400);
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -42,22 +53,13 @@ export default function useBooks() {
         if (activeCategory && activeCategory !== 'Semua') {
           params.category = activeCategory;
         }
-        if (searchQuery) {
-          params.search = searchQuery;
+        if (debouncedSearch) {
+          params.search = debouncedSearch;
         }
-
-        console.log('[useBooks] Fetching with params:', params);
 
         const response = await api.books.list(params);
 
         if (controller.signal.aborted) return;
-
-        console.log('[useBooks] Response received:', {
-          dataLength: response?.data?.length,
-          currentPage: response?.current_page,
-          lastPage: response?.last_page,
-          total: response?.total,
-        });
 
         if (response && response.data) {
           setBooks(prev => page === 1 ? response.data : [...prev, ...response.data]);
@@ -83,7 +85,7 @@ export default function useBooks() {
 
     fetchBooks();
     return () => { controller.abort(); };
-  }, [page, activeCategory, searchQuery]);
+  }, [page, activeCategory, debouncedSearch]);
 
   // Reset when filters change
   const handleSetCategory = useCallback((cat: string) => {

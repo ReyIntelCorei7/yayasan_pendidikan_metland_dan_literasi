@@ -117,16 +117,28 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Team Members
-        TeamMember::saved(fn () => Cache::forget('api.team'));
-        TeamMember::deleted(fn () => Cache::forget('api.team'));
+        TeamMember::saved(function () {
+            Cache::forget('api.team');
+            Cache::forget('api.org_chart');
+        });
+        TeamMember::deleted(function () {
+            Cache::forget('api.team');
+            Cache::forget('api.org_chart');
+        });
 
         // Banners
         \App\Models\Banner::saved(fn () => Cache::forget('api.banners'));
         \App\Models\Banner::deleted(fn () => Cache::forget('api.banners'));
 
         // Org Chart
-        \App\Models\OrgChartNode::saved(fn () => Cache::forget('api.org_chart'));
-        \App\Models\OrgChartNode::deleted(fn () => Cache::forget('api.org_chart'));
+        \App\Models\OrgChartNode::saved(function () {
+            Cache::forget('api.org_chart');
+            Cache::forget('api.team');
+        });
+        \App\Models\OrgChartNode::deleted(function () {
+            Cache::forget('api.org_chart');
+            Cache::forget('api.team');
+        });
 
         // Page Contents
         \App\Models\PageContent::saved(function ($model) {

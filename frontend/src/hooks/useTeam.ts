@@ -23,7 +23,7 @@ export function useTeam() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_BASE}/team`)
+    fetch(`${API_BASE}/team?_t=${Date.now()}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch team data');
         return res.json();
