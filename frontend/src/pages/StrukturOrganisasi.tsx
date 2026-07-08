@@ -19,10 +19,8 @@ function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; col
 /* ─── Mini Member Badge (name only) ─── */
 function MemberBadge({ member }: { member: OrgChartMember }) {
   return (
-    <div className="flex items-center gap-1 mt-1 px-1.5 py-1 rounded-md bg-gray-50/80 border border-gray-100 text-left">
-      <div className="min-w-0 flex-1">
-        <p className="text-[10px] sm:text-xs font-medium text-charcoal truncate leading-none">{member.name}</p>
-      </div>
+    <div className="flex justify-center items-center gap-1 mt-1 px-1.5 py-1 rounded-md bg-gray-50/80 border border-gray-100 text-center">
+        <p className="text-[10px] sm:text-xs font-medium text-charcoal leading-tight text-center break-words">{member.name}</p>
     </div>
   );
 }
@@ -89,7 +87,7 @@ function TreeNode({ node, isFirst, isLast, hasSiblings }: { node: any, isFirst?:
 
       {/* The node card itself */}
       <div className={`z-10 ${hasSiblings ? 'mt-3' : 'mt-0'}`}>
-        <ChartNode variant={node.level === 1 ? 'primary' : node.level >= 5 ? 'muted' : 'default'} className={node.level >= 5 ? "w-28 sm:w-36" : "w-36 sm:w-48"}>
+        <ChartNode variant={node.level === 1 ? 'primary' : node.level >= 5 ? 'muted' : 'default'} className={node.level >= 5 ? "w-32 sm:w-44" : "w-40 sm:w-56"}>
            {node.level === 1 && (
              <p className="text-[9px] sm:text-[10px] text-[#8AC1E5] uppercase tracking-[0.15em] mb-1 font-medium">
                 Yayasan Metland
