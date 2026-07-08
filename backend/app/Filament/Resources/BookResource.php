@@ -65,10 +65,8 @@ class BookResource extends Resource
                     ->directory('covers')
                     ->disk('public')
                     ->maxSize(2048) // Max 2MB
-                    ->removable()
                     ->openable()
-                    ->previewable()
-                    ->imagePreviewHeight('200')
+                    ->imagePreviewHeight('250')
                     ->saveUploadedFileUsing(SafeImageUpload::toWebp('covers', 82, 800, 1100))
                     ->deleteUploadedFileUsing(function (?string $file) {
                         if ($file && \Illuminate\Support\Facades\Storage::disk('public')->exists($file)) {
