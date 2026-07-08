@@ -60,8 +60,6 @@ export default function WhatWeDo() {
                 <p className="relative z-10 mb-6 text-sm leading-relaxed text-gray-500 line-clamp-4">
                   {program.description?.[i18n.language] || program.description?.id || program.description}
                 </p>
-
-                {/* Link and read-more removed as requested */}
               </motion.div>
             );
           })}
