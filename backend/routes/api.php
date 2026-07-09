@@ -30,4 +30,5 @@ Route::prefix('v1')->middleware('throttle:api-public')->group(function () {
 
     Route::get('/org-chart', [ApiController::class, 'orgChart']);
     Route::get('/page-contents/{page}', [ApiController::class, 'pageContents']);
+    Route::get('/literasi-programs', [ApiController::class, 'literasiPrograms']);
 });

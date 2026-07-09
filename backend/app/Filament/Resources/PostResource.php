@@ -28,8 +28,8 @@ class PostResource extends Resource
     protected static ?string $model = Post::class;
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-newspaper'; }
-    public static function getNavigationGroup(): ?string { return 'Konten & Pustaka'; }
-    public static function getNavigationSort(): ?int { return 2; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Artikel'; }
+    public static function getNavigationSort(): ?int { return 1; }
     public static function getNavigationLabel(): string { return 'Artikel / Berita'; }
 
     public static function form(Schema $schema): Schema

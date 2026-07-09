@@ -9,6 +9,7 @@ import type { Book } from '../hooks/useBooks';
 import { useImpactStats } from '../hooks/useImpactStats';
 import { useCollectionStats } from '../hooks/useCollectionStats';
 import FlipbookReader from '../components/sections/FlipbookReader';
+import useLiterasiPrograms from '../hooks/useLiterasiPrograms';
 
 function getText(val: any, lang: string): string {
   if (!val) return '';
@@ -85,8 +86,9 @@ export default function Literasi() {
   const { t, i18n } = useTranslation();
   const literasiData = t('literasi', { returnObjects: true }) as any;
   const koleksi: KoleksiItem[] = literasiData.koleksi ?? [];
-  const programs: ProgramItem[] = literasiData.programs ?? [];
-  
+
+  const { programs } = useLiterasiPrograms();
+
   const { stats } = useImpactStats();
   const { stats: collectionStatsData } = useCollectionStats();
   
