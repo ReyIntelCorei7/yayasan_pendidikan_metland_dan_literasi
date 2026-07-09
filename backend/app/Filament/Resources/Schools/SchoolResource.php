@@ -20,8 +20,8 @@ class SchoolResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
-    public static function getNavigationGroup(): ?string { return 'Halaman Beranda'; }
-    public static function getNavigationSort(): ?int { return 4; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Sekolah'; }
+    public static function getNavigationSort(): ?int { return 1; }
     public static function getNavigationLabel(): string { return 'Unit Sekolah'; }
 
     public static function form(Schema $schema): Schema

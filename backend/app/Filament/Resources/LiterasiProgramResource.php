@@ -23,8 +23,8 @@ class LiterasiProgramResource extends Resource
 {
     protected static ?string $model = LiterasiProgram::class;
 
-    public static function getNavigationGroup(): ?string { return 'Konten & Pustaka'; }
-    public static function getNavigationSort(): ?int { return 6; }
+    public static function getNavigationGroup(): ?string { return 'Halaman Literasi'; }
+    public static function getNavigationSort(): ?int { return 3; }
     public static function getNavigationLabel(): string { return 'Program Literasi'; }
     public static function getModelLabel(): string { return 'Program Literasi'; }
     public static function getPluralModelLabel(): string { return 'Program Literasi'; }

@@ -24,7 +24,7 @@ class ExperienceStatResource extends Resource
 
     public static function getNavigationIcon(): string|null { return 'heroicon-o-chart-bar'; }
     public static function getNavigationGroup(): ?string { return 'Halaman Dampak'; }
-    public static function getNavigationSort(): ?int { return 1; }
+    public static function getNavigationSort(): ?int { return 3; }
     public static function getNavigationLabel(): string { return 'Statistik Dampak (Pengalaman)'; }
 
     public static function form(Schema $schema): Schema
