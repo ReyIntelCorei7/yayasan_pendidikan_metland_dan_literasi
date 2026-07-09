@@ -8,10 +8,10 @@ import { usePageContent } from '../hooks/usePageContent';
 import { useTeam } from '../hooks/useTeam';
 
 /* ─── Connector Components ─── */
-function VerticalLine({ height = 32, color = '#3D8ABF' }: { height?: number; color?: string }) {
+function VerticalLine({ height = 32, color = '#2563EB' }: { height?: number; color?: string }) {
   return (
     <div className="flex justify-center">
-      <div style={{ width: 2, height, background: color, borderRadius: 1 }} />
+      <div style={{ width: 2, height, background: color, borderRadius: 0 }} />
     </div>
   );
 }
@@ -74,14 +74,14 @@ function TreeNode({ node, isFirst, isLast, hasSiblings }: { node: any, isFirst?:
     <div className="flex flex-col items-center relative px-[2px] sm:px-1">
       {/* Top vertical connector from horizontal line to this node */}
       {hasSiblings && (
-        <div className="absolute top-0 left-1/2 w-[2px] h-3 bg-[#3D8ABF]/30 -translate-x-1/2" />
+        <div className="absolute top-0 left-1/2 w-[2px] h-3 bg-[#2563EB] -translate-x-1/2" />
       )}
       
       {/* Horizontal lines */}
       {hasSiblings && (
         <>
-          {!isFirst && <div className="absolute top-0 right-1/2 w-1/2 h-[2px] bg-[#3D8ABF]/30" />}
-          {!isLast && <div className="absolute top-0 left-1/2 w-1/2 h-[2px] bg-[#3D8ABF]/30" />}
+          {!isFirst && <div className="absolute top-0 right-1/2 w-1/2 h-[2px] bg-[#2563EB]" />}
+          {!isLast && <div className="absolute top-0 left-1/2 w-1/2 h-[2px] bg-[#2563EB]" />}
         </>
       )}
 
@@ -107,7 +107,7 @@ function TreeNode({ node, isFirst, isLast, hasSiblings }: { node: any, isFirst?:
       {node.children_nodes?.length > 0 && (
         <>
           {/* Vertical line going down from this node */}
-          <div className="w-[2px] h-3 bg-[#3D8ABF]/30" />
+          <div className="w-[2px] h-3 bg-[#2563EB]" />
           
           <div className="flex flex-row justify-center items-start w-full">
             {node.children_nodes.map((child: any, idx: number) => (
@@ -285,7 +285,7 @@ export default function StrukturOrganisasi() {
                     </div>
 
                     {/* Main vertical line from Root (Top Half) */}
-                    <div className="w-[2px] h-5 bg-[#3D8ABF]/30" />
+                    <div className="w-[2px] h-5 bg-[#2563EB]" />
 
                     {/* Level 2 Nodes Container */}
                     <div className="relative w-full flex justify-center z-0">
@@ -294,11 +294,11 @@ export default function StrukturOrganisasi() {
                         <div className="absolute top-0 w-[700px] lg:w-[850px] flex justify-between -translate-x-1/2 left-1/2">
                           
                           {/* Absolute connecting line perfectly spanning the centers of the two nodes */}
-                          <div className="absolute top-0 left-[90px] right-[90px] h-[2px] bg-[#3D8ABF]/30 z-0" />
+                          <div className="absolute top-0 left-[90px] right-[90px] h-[2px] bg-[#2563EB] z-0" />
 
                           {l2Nodes.map((d: any) => (
                             <div key={d.id} className="flex flex-col items-center w-[180px] z-10">
-                              <div className="w-[2px] h-4 bg-[#3D8ABF]/30" />
+                              <div className="w-[2px] h-4 bg-[#2563EB]" />
                               <TreeNode node={d} hasSiblings={false} />
                             </div>
                           ))}
@@ -307,7 +307,7 @@ export default function StrukturOrganisasi() {
                     </div>
 
                     {/* Main vertical line from Root (Bottom Half) */}
-                    <div className="w-[2px] h-6 bg-[#3D8ABF]/30" />
+                    <div className="w-[2px] h-6 bg-[#2563EB]" />
 
                     {/* Level 3 Node (Pengurus Yayasan) */}
                     {l3Node && (

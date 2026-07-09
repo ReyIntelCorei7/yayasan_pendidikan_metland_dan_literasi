@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen } from 'lucide-react';
 import { useNavScroll } from '../../hooks/useNavScroll';
 import logoYayasan from '../../assets/logoyayasan.png';
 import type { NavItem } from '../../types';
@@ -179,7 +179,7 @@ export default function Navbar() {
                   className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#3D8ABF]"
                   whileTap={{ scale: 0.97 }}
                 >
-                  <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
+                  <BookOpen className="w-4 h-4 text-white" />
                   <span className="text-white font-bold">{t('navbar.literacy')}</span>
                 </motion.span>
               </Link>
@@ -332,9 +332,10 @@ export default function Navbar() {
               <Link
                 to="/literasi"
                 onClick={() => setIsMobileOpen(false)}
-                className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-medium text-sm mt-3"
+                className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-bold text-sm mt-3 flex items-center justify-center gap-2"
               >
-                → {t('navbar.literacy')}
+                <BookOpen className="w-4 h-4" />
+                {t('navbar.literacy')}
               </Link>
             </div>
           </motion.div>
