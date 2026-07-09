@@ -397,7 +397,7 @@ export default function Literasi() {
       </section>
 
       {/* section 6 e-library feature */}
-      <section className="bg-primary py-24 lg:py-32 overflow-hidden">
+      <section className="bg-white py-24 lg:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left — text */}
