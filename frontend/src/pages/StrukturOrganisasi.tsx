@@ -187,6 +187,72 @@ export default function StrukturOrganisasi() {
         </div>
       </section>
 
+      {/* ════════════ TEAM SECTIONS ════════════ */}
+      <section className="bg-offwhite py-24">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          {/* Section Header */}
+          <ScrollReveal>
+            <div className="text-center mb-20">
+              <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
+              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{teamTitle}</h2>
+            </div>
+          </ScrollReveal>
+
+          {/* Team Groups */}
+          <div className="space-y-20">
+            {teamGroups.map((group, gi) => (
+              <ScrollReveal key={group.category} delay={gi * 0.1}>
+                <div>
+                  {/* Group Label */}
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="text-5xl font-extralight text-[#3D8ABF]/15 leading-none select-none">
+                      {String(gi + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-medium text-charcoal">{group.category}</h3>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-px bg-gray-200 mb-8" />
+
+                  {/* Members Grid */}
+                  <div className={`grid gap-6 ${group.members.length <= 2 ? 'sm:grid-cols-2 max-w-2xl' : 'sm:grid-cols-2 lg:grid-cols-4'}`}>
+                    {group.members.map((member, mi) => (
+                      <motion.div
+                        key={member.name}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: mi * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="group"
+                      >
+                        <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#3D8ABF]/25 hover:shadow-lg hover:shadow-[#3D8ABF]/5 transition-all duration-500">
+                          {/* Photo */}
+                          <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-[#3D8ABF]/30 transition-all duration-500">
+                            <img
+                              src={member.photo || 'https://via.placeholder.com/150'}
+                              alt={member.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                              loading="lazy"
+                            />
+                          </div>
+                          {/* Info */}
+                          <div className="text-center">
+                            <h4 className="font-medium text-charcoal text-sm leading-snug">{member.name}</h4>
+                            <p className="text-[11px] text-[#3D8ABF] mt-1.5 font-medium tracking-wide uppercase">{member.title}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ════════════ ORG CHART ════════════ */}
       <section className="bg-[#FCFCFC] py-24 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -256,72 +322,6 @@ export default function StrukturOrganisasi() {
               <div className="text-center text-gray-400 py-12">Memuat bagan organisasi...</div>
             )}
           </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ════════════ TEAM SECTIONS ════════════ */}
-      <section className="bg-offwhite py-24">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          {/* Section Header */}
-          <ScrollReveal>
-            <div className="text-center mb-20">
-              <div className="w-12 h-[3px] bg-[#3D8ABF] mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-light text-charcoal mb-3">{teamTitle}</h2>
-            </div>
-          </ScrollReveal>
-
-          {/* Team Groups */}
-          <div className="space-y-20">
-            {teamGroups.map((group, gi) => (
-              <ScrollReveal key={group.category} delay={gi * 0.1}>
-                <div>
-                  {/* Group Label */}
-                  <div className="flex items-center gap-4 mb-3">
-                    <span className="text-5xl font-extralight text-[#3D8ABF]/15 leading-none select-none">
-                      {String(gi + 1).padStart(2, '0')}
-                    </span>
-                    <div>
-                      <h3 className="text-xl font-medium text-charcoal">{group.category}</h3>
-                    </div>
-                  </div>
-
-                  {/* Divider */}
-                  <div className="h-px bg-gray-200 mb-8" />
-
-                  {/* Members Grid */}
-                  <div className={`grid gap-6 ${group.members.length <= 2 ? 'sm:grid-cols-2 max-w-2xl' : 'sm:grid-cols-2 lg:grid-cols-4'}`}>
-                    {group.members.map((member, mi) => (
-                      <motion.div
-                        key={member.name}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: mi * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="group"
-                      >
-                        <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#3D8ABF]/25 hover:shadow-lg hover:shadow-[#3D8ABF]/5 transition-all duration-500">
-                          {/* Photo */}
-                          <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-gray-100 group-hover:ring-[#3D8ABF]/30 transition-all duration-500">
-                            <img
-                              src={member.photo || 'https://via.placeholder.com/150'}
-                              alt={member.name}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                              loading="lazy"
-                            />
-                          </div>
-                          {/* Info */}
-                          <div className="text-center">
-                            <h4 className="font-medium text-charcoal text-sm leading-snug">{member.name}</h4>
-                            <p className="text-[11px] text-[#3D8ABF] mt-1.5 font-medium tracking-wide uppercase">{member.title}</p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
       </section>
     </>
