@@ -11,13 +11,17 @@ use Throwable;
 
 class SafeImageUpload
 {
-    public static function toWebp(string $directory, int $quality = 82): Closure
+    public static function toWebp(string $directory, int $quality = 82, ?int $maxWidth = null, ?int $maxHeight = null): Closure
     {
         $directory = self::normalizeDirectory($directory);
 
-        return function ($file) use ($directory, $quality): string {
+        return function ($file) use ($directory, $quality, $maxWidth, $maxHeight): string {
             try {
                 $image = Image::decode(file_get_contents($file->getRealPath()));
+                
+                if ($maxWidth || $maxHeight) {
+                    $image = $image->scaleDown($maxWidth, $maxHeight);
+                }
                 $encoded = $image->encode(new WebpEncoder($quality));
             } catch (Throwable) {
                 throw ValidationException::withMessages([

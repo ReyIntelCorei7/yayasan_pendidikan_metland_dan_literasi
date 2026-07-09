@@ -4,6 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles, Users, Award, Calendar, BookOpen, Globe, Palette, Code, GraduationCap, UtensilsCrossed, Building2, Briefcase, Heart, Shield, TreePine, Monitor } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import CTABanner from '../components/sections/CTABanner';
+import { useState, useEffect } from 'react';
+import api from '../services/api';
+
+import tkSdImg from '../assets/tk_sdmetropolitan.jpeg';
+import smkPariwisataImg from '../assets/sekolahsmkmetland.webp';
+import smkMetlandImg from '../assets/sekolahsmkmetlandcibitung.webp';
+
+const fallbackImages: Record<string, string> = {
+  'tk-tunas-metropolitan': tkSdImg,
+  'sd-tunas-metropolitan': tkSdImg,
+  'smk-pariwisata-metland-school': smkPariwisataImg,
+  'smk-metland': smkMetlandImg,
+  'metland-college': smkPariwisataImg,
+};
 
 function FloatingShapes() {
   return (
@@ -27,55 +41,39 @@ function FloatingShapes() {
   );
 }
 
-// Keep base non-translatable fields here
-const schools = [
-  {
-    slug: 'tk-tunas-metropolitan',
-    keyName: 'tk_tunas',
-    name: 'TK Tunas Metropolitan',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#FDE68A',
-    website: 'https://www.sekolahtunasmetropolitan.net/',
-  },
-  {
-    slug: 'sd-tunas-metropolitan',
-    keyName: 'sd_tunas',
-    name: 'SD Tunas Metropolitan',
-    image: '/src/assets/tk_sdmetropolitan.jpeg',
-    color: '#BBF7D0',
-    website: 'https://www.sekolahtunasmetropolitan.net/',
-  },
-  {
-    slug: 'smk-pariwisata-metland-school',
-    keyName: 'smk_pariwisata',
-    name: 'SMK Pariwisata Metland Cileungsi',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#BFDBFE',
-    website: 'https://www.smkmetland.net/',
-  },
-  {
-    slug: 'smk-metland',
-    keyName: 'smk_metland',
-    name: 'SMK Pariwisata Metland Cibitung',
-    image: '/src/assets/sekolahsmkmetlandcibitung.webp',
-    color: '#FED7AA',
-    website: 'https://www.smkmetlandcibitung.net/',
-  },
-  {
-    slug: 'metland-college',
-    keyName: 'metland_college',
-    name: 'Metland College',
-    image: '/src/assets/sekolahsmkmetland.webp',
-    color: '#E9D5FF',
-    website: 'https://metlandcollege.com/',
-  },
-];
-
 export default function SchoolDetail() {
   const { slug } = useParams();
-  const { t } = useTranslation();
-  
-  const school = schools.find((s) => s.slug === slug);
+  const { t, i18n } = useTranslation();
+  const [school, setSchool] = useState<any>(null);
+  const [schools, setSchools] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      api.schools.list(),
+      slug ? api.schools.bySlug(slug) : Promise.resolve(null)
+    ])
+    .then(([allSchools, currentSchool]) => {
+      setSchools(allSchools);
+      setSchool(currentSchool);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setLoading(false);
+    });
+  }, [slug]);
+
+  const getLocalizedString = (field: any) => {
+    if (!field) return '';
+    if (typeof field === 'string') return field;
+    return field[i18n.language] || field.id || '';
+  };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>;
+  }
 
   if (!school) {
     return (
@@ -90,21 +88,20 @@ export default function SchoolDetail() {
 
   const others = schools.filter((s) => s.slug !== school.slug);
 
-  // Retrieve translatable fields dynamically
-  const levelText = t(`schools.${school.keyName}.level`);
-  const taglineText = t(`schools.${school.keyName}.tagline`);
-  const schoolData = t(`schoolDetail.schools.${school.slug}`, { returnObjects: true }) as any;
-  
-  const description = schoolData?.description || '';
-  const features = (schoolData?.features || []) as string[];
-  const stats = (schoolData?.stats || []) as { value: string, label: string }[];
+  const nameText = getLocalizedString(school.name);
+  const levelText = getLocalizedString(school.level);
+  const taglineText = getLocalizedString(school.tagline);
+  const descriptionText = getLocalizedString(school.description);
+  const features = school.features || [];
+  const stats = school.stats || [];
+  const imageSrc = school.image || fallbackImages[school.slug];
 
   return (
     <>
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
         <FloatingShapes />
-        <img src={school.image} alt={school.name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+        <img src={imageSrc} alt={nameText} className="absolute inset-0 w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         <div className="relative z-10 text-center px-6">
           <motion.h1
@@ -113,7 +110,7 @@ export default function SchoolDetail() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-white mb-2 tracking-wide"
           >
-            {school.name}
+            {nameText}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -137,13 +134,14 @@ export default function SchoolDetail() {
               transition={{ duration: 0.8 }}
               className="w-12 h-[2px] bg-primary mb-6 origin-left"
             />
-            <h2 className="text-3xl font-light text-charcoal mb-6">{t('schoolDetail.about_prefix')} {school.name}</h2>
-            <p className="text-gray-500 leading-relaxed text-base">{description}</p>
+            <h2 className="text-3xl font-light text-charcoal mb-6">{t('schoolDetail.about_prefix')} {nameText}</h2>
+            <p className="text-gray-500 leading-relaxed text-base">{descriptionText}</p>
           </ScrollReveal>
           <ScrollReveal direction="right">
             <h3 className="text-lg font-semibold text-charcoal mb-8 tracking-tight">{t('schoolDetail.featured_programs')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {features.map((f, i) => {
+              {features.map((featureObj: any, i: number) => {
+                const f = getLocalizedString(featureObj);
                 // Pick a contextual icon based on keywords
                 const iconMap: Record<string, typeof BookOpen> = {
                   'Kurikulum': BookOpen, 'Bilingual': Globe, 'DKV': Palette,
@@ -197,12 +195,13 @@ export default function SchoolDetail() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <h2 className="text-3xl font-light text-white mb-3 text-center">{t('schoolDetail.facts_title')}</h2>
-            <p className="text-center text-gray-400 mb-14 max-w-2xl mx-auto text-sm md:text-base">{t('schoolDetail.facts_desc_prefix')} {school.name}</p>
+            <p className="text-center text-gray-400 mb-14 max-w-2xl mx-auto text-sm md:text-base">{t('schoolDetail.facts_desc_prefix')} {nameText}</p>
           </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {stats.map((stat, i) => {
+            {stats.map((stat: any, i: number) => {
               const Icon = i === 0 ? Users : i === 1 ? Award : Calendar;
+              const statLabel = getLocalizedString(stat.label);
               
               return (
                 <motion.div
@@ -228,7 +227,7 @@ export default function SchoolDetail() {
                         {stat.value}
                       </h3>
                       <p className="text-gray-400 font-medium text-xs md:text-sm uppercase tracking-wider">
-                        {stat.label}
+                        {statLabel}
                       </p>
                     </div>
                   </div>
@@ -264,21 +263,21 @@ export default function SchoolDetail() {
                     className="aspect-[4/3] overflow-hidden relative mb-4 rounded-2xl"
                   >
                     <img
-                      src={s.image}
-                      alt={s.name}
+                      src={s.image || fallbackImages[s.slug]}
+                      alt={getLocalizedString(s.name)}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <motion.div>
-                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{t(`schools.${s.keyName}.level`)}</p>
+                      <p className="text-white text-xs font-bold bg-primary/80 inline-block px-3 py-1 rounded-full">{getLocalizedString(s.level)}</p>
                     </motion.div>
                   </motion.div>
                   <motion.h3
                     whileHover={{ color: '#3D8ABF' }}
                     className="text-sm font-semibold text-charcoal transition-colors group-hover:text-primary"
                   >
-                    {s.name}
+                    {getLocalizedString(s.name)}
                   </motion.h3>
                 </Link>
               </motion.div>
@@ -293,9 +292,9 @@ export default function SchoolDetail() {
         <div className="relative z-10">
           <CTABanner 
             link={school.website} 
-            buttonText={school.website ? `Kunjungi Website ${school.name}` : undefined}
+            buttonText={school.website ? `Kunjungi Website ${nameText}` : undefined}
             title={school.website ? `Kunjungi Website Kami` : undefined}
-            subtitle={school.website ? `Jelajahi informasi lebih lanjut mengenai pendaftaran dan program di ${school.name}.` : undefined}
+            subtitle={school.website ? `Jelajahi informasi lebih lanjut mengenai pendaftaran dan program di ${nameText}.` : undefined}
           />
         </div>
       </section>

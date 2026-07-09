@@ -14,6 +14,11 @@ class SecurityHeaders
 
         $response = $next($request);
 
+        // Skip CSP for Livewire upload endpoint
+        if ($request->is('livewire/upload-file') || $request->is('livewire/*')) {
+            return $response;
+        }
+
         $response->headers->remove('X-Powered-By');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
@@ -29,8 +34,8 @@ class SecurityHeaders
             "img-src 'self' data: blob: https:; ".
             "font-src 'self' data: https://fonts.gstatic.com; ".
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ".
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; ".
-            "connect-src 'self' http://localhost:* http://127.0.0.1:* ws: wss:; ".
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; ".
+            "connect-src 'self' http://localhost:* http://127.0.0.1:* ws: wss: blob:; ".
             "frame-src 'self' https://maps.google.com https://www.google.com"
         );
 

@@ -65,10 +65,14 @@ class BookResource extends Resource
                     ->directory('covers')
                     ->disk('public')
                     ->maxSize(2048) // Max 2MB
-                    ->imageResizeTargetWidth('800')
-                    ->imageResizeTargetHeight('1100')
-                    ->imageResizeMode('cover')
-                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('covers', 82))
+                    ->openable()
+                    ->imagePreviewHeight('250')
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('covers', 82, 800, 1100))
+                    ->deleteUploadedFileUsing(function (?string $file) {
+                        if ($file && \Illuminate\Support\Facades\Storage::disk('public')->exists($file)) {
+                            \Illuminate\Support\Facades\Storage::disk('public')->delete($file);
+                        }
+                    })
                     ->label('Cover Buku'),
                 FileUpload::make('pdf_file')
                     ->acceptedFileTypes(['application/pdf'])

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, ExternalLink, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import CountUpTrigger from '../components/animations/CountUpTrigger';
 import ScrollReveal from '../components/animations/ScrollReveal';
 import { useTranslation } from 'react-i18next';
@@ -417,13 +417,6 @@ export default function Literasi() {
                 <p className="text-[#1C1C1C]/70 text-lg leading-[1.7] mb-8 max-w-lg">
                   {t('literasi.digital_desc')}
                 </p>
-                <a
-                  href="#koleksi-buku"
-                  className="group inline-flex items-center gap-3 bg-[#1C1C1C] text-white px-10 py-5 text-sm font-medium tracking-wide hover:bg-[#333] transition-colors duration-300"
-                >
-                  {t('literasi.digital_btn')}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
               </div>
             </ScrollReveal>
 
@@ -609,54 +602,7 @@ export default function Literasi() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          Section 7 — CTA PENUTUP (hitam)
-          ═══════════════════════════════════════════════════════════════ */}
-      <section className="bg-[#1C1C1C] py-24 lg:py-32">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-          <ScrollReveal>
-            <h2
-              className="font-black text-white mb-6"
-              style={{
-                fontSize: 'clamp(36px, 7vw, 80px)',
-                letterSpacing: '-3px',
-                lineHeight: '0.95',
-              }}
-            >
-              {t('literasi.cta_title1')}{' '}
-              <span className="font-serif italic">{t('literasi.cta_title2')}</span>
-            </h2>
-          </ScrollReveal>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto"
-          >
-            {t('literasi.cta_desc')}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.7 }}
-          >
-            <a href="/contact">
-              <motion.span
-                className="inline-flex items-center gap-3 bg-primary text-[#1C1C1C] px-12 py-5 text-sm font-bold tracking-wide cursor-pointer"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {t('literasi.cta_btn')}
-                <ExternalLink className="w-4 h-4" />
-              </motion.span>
-            </a>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ─── Flipbook Reader Modal ─── */}
       {selectedBook && (

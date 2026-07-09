@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\Banners\Tables;
+namespace App\Filament\Resources\ImpactNumbers\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class BannersTable
+class ImpactNumbersTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('title.id')->label('Judul')
+                TextColumn::make('value')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('suffix')
                     ->searchable(),
-                ImageColumn::make('image')
-                    ->disk('public'),
-                TextColumn::make('order')
+                TextColumn::make('label')
+                    ->formatStateUsing(fn ($state) => is_array($state) ? ($state['id'] ?? '') : $state)
+                    ->searchable(),
+                TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('is_active')

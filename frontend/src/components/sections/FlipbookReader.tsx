@@ -5,10 +5,7 @@ import type { Book } from '../../hooks/useBooks';
 import * as pdfjsLib from 'pdfjs-dist';
 import '../../styles/book-animation.css';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 interface Props { book: Book; onClose: () => void; }
 
@@ -167,7 +164,8 @@ export default function FlipbookReader({ book, onClose }: Props) {
       setPdfRatio(ratio);
       
       setLoading(false);
-    }).catch(() => { 
+    }).catch((err) => { 
+      console.error('PDF Load Error:', err);
       if (!cancelled) { 
         setError(true); 
         setLoading(false); 
@@ -212,7 +210,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
     if (dblRef.current && sp + 1 <= np) critical.push(sp + 1);
     await Promise.all(critical.map(p => renderPageToCache(p)));
     // Pre-fetch nearby pages in background (don't await)
-    const nearby = [sp - 1, sp - 2, sp + 2, sp + 3];
+    const nearby = [sp - 1, sp - 2, sp - 3, sp + 2, sp + 3, sp + 4];
     nearby.forEach(p => { if (p >= 1 && p <= np) renderPageToCache(p); });
   }, [renderPageToCache]);
 
@@ -334,7 +332,7 @@ export default function FlipbookReader({ book, onClose }: Props) {
         {/* HEADER */}
         <header className="shrink-0 flex items-center justify-between px-4 md:px-6 py-3
           bg-black/50 backdrop-blur-md border-b border-white/[0.07]">
-          <a href={book.pdfUrl} download target="_blank" rel="noopener noreferrer"
+          <a href={`${book.pdfUrl}?download=1`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 text-gray-500 hover:text-emerald-400 text-sm transition-colors">
             <Download className="w-4 h-4" /><span className="hidden sm:inline">Download</span>
           </a>

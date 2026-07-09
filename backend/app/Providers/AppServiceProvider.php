@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\ProgramStat;
 use App\Models\Scholar;
+use App\Models\School;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Support\AdminActivityLogger;
@@ -101,17 +102,43 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\CollectionStat::saved(fn () => Cache::forget('api.collection_stats'));
         \App\Models\CollectionStat::deleted(fn () => Cache::forget('api.collection_stats'));
 
+        // Impact Numbers
+        \App\Models\ImpactNumber::saved(fn () => Cache::forget('api.impact_numbers'));
+        \App\Models\ImpactNumber::deleted(fn () => Cache::forget('api.impact_numbers'));
+
+        // Schools
+        School::saved(function ($model) {
+            Cache::forget('api.schools');
+            Cache::forget("api.school.{$model->slug}");
+        });
+        School::deleted(function ($model) {
+            Cache::forget('api.schools');
+            Cache::forget("api.school.{$model->slug}");
+        });
+
         // Team Members
-        TeamMember::saved(fn () => Cache::forget('api.team'));
-        TeamMember::deleted(fn () => Cache::forget('api.team'));
+        TeamMember::saved(function () {
+            Cache::forget('api.team');
+            Cache::forget('api.org_chart');
+        });
+        TeamMember::deleted(function () {
+            Cache::forget('api.team');
+            Cache::forget('api.org_chart');
+        });
 
         // Banners
         \App\Models\Banner::saved(fn () => Cache::forget('api.banners'));
         \App\Models\Banner::deleted(fn () => Cache::forget('api.banners'));
 
         // Org Chart
-        \App\Models\OrgChartNode::saved(fn () => Cache::forget('api.org_chart'));
-        \App\Models\OrgChartNode::deleted(fn () => Cache::forget('api.org_chart'));
+        \App\Models\OrgChartNode::saved(function () {
+            Cache::forget('api.org_chart');
+            Cache::forget('api.team');
+        });
+        \App\Models\OrgChartNode::deleted(function () {
+            Cache::forget('api.org_chart');
+            Cache::forget('api.team');
+        });
 
         // Page Contents
         \App\Models\PageContent::saved(function ($model) {
@@ -151,6 +178,8 @@ class AppServiceProvider extends ServiceProvider
             ImpactStat::class,
             HeroStat::class,
             \App\Models\CollectionStat::class,
+            \App\Models\ImpactNumber::class,
+            School::class,
             \App\Models\Banner::class,
             OrgChartNode::class,
             PageContent::class,

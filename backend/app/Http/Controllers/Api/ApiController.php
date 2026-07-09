@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Program;
 use App\Models\Scholar;
 use App\Models\TeamMember;
+use App\Models\ImpactNumber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -450,6 +451,74 @@ class ApiController extends Controller
                 ->get()
                 ->mapWithKeys(fn ($p) => [$p->section => $p->content])
                 ->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function impactNumbers(): JsonResponse
+    {
+        $data = Cache::remember('api.impact_numbers', self::TTL, function () {
+            return \App\Models\ImpactNumber::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($n) => [
+                    'id'          => (string) $n->id,
+                    'value'       => $n->value,
+                    'suffix'      => $n->suffix,
+                    'label'       => $n->getTranslations('label'),
+                    'heading'     => $n->getTranslations('heading'),
+                    'description' => $n->getTranslations('description'),
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function schools(): JsonResponse
+    {
+        $data = Cache::remember('api.schools', self::TTL, function () {
+            return \App\Models\School::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($s) => [
+                    'id'          => (string) $s->id,
+                    'slug'        => $s->slug,
+                    'name'        => $s->getTranslations('name'),
+                    'tagline'     => $s->getTranslations('tagline'),
+                    'level'       => $s->getTranslations('level'),
+                    'description' => $s->getTranslations('description'),
+                    'features'    => $s->features,
+                    'stats'       => $s->stats,
+                    'image'       => $this->storageUrl($s->image),
+                    'color'       => $s->color,
+                    'website'     => $s->website,
+                    'sortOrder'   => $s->sort_order,
+                ])->toArray();
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function schoolBySlug(string $slug): JsonResponse
+    {
+        $data = Cache::remember("api.school.{$slug}", self::TTL, function () use ($slug) {
+            $s = \App\Models\School::where('slug', $slug)->firstOrFail();
+            
+            return [
+                'id'          => (string) $s->id,
+                'slug'        => $s->slug,
+                'name'        => $s->getTranslations('name'),
+                'tagline'     => $s->getTranslations('tagline'),
+                'level'       => $s->getTranslations('level'),
+                'description' => $s->getTranslations('description'),
+                'features'    => $s->features,
+                'stats'       => $s->stats,
+                'image'       => $this->storageUrl($s->image),
+                'color'       => $s->color,
+                'website'     => $s->website,
+                'sortOrder'   => $s->sort_order,
+            ];
         });
 
         return $this->cachedJson($data);

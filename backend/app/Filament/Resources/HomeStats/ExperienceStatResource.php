@@ -47,17 +47,10 @@ class ExperienceStatResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->label('Label (English)'),
-                TextInput::make('icon')
-                    ->maxLength(100)
-                    ->label('Icon (heroicon name, misal: heroicon-o-trophy)')
-                    ->placeholder('heroicon-o-trophy'),
                 TextInput::make('sort_order')
                     ->numeric()
                     ->default(0)
                     ->label('Sort Order'),
-                \Filament\Forms\Components\Toggle::make('is_active')
-                    ->default(true)
-                    ->label('Is Active'),
             ])->columns(2),
 
             Section::make('Deskripsi')->schema([
@@ -93,15 +86,9 @@ class ExperienceStatResource extends Resource
                     ->limit(60)
                     ->label('Deskripsi')
                     ->formatStateUsing(fn ($state) => is_array($state) ? ($state['id'] ?? '') : $state),
-                Tables\Columns\TextColumn::make('icon')
-                    ->label('Icon')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->sortable()
                     ->label('Order'),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean()
-                    ->label('Active'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

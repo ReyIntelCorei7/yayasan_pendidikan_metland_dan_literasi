@@ -42,14 +42,20 @@ class ProgramResource extends Resource
                     ->maxLength(255)
                     ->label('Judul Program')
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, $set) =>
-                        $operation === 'create' ? $set('slug', Str::slug($state)) : null
-                    ),
+                    ->afterStateUpdated(function (string $operation, $state, $set) {
+                        $slug = \Illuminate\Support\Str::slug($state);
+                        if (!empty($slug)) {
+                            $set('slug', \App\Models\Program::generateUniqueSlug($state));
+                        }
+                    }),
                 TextInput::make('slug')
-                    ->required()
                     ->maxLength(255)
-                    ->unique(Program::class, 'slug', ignoreRecord: true)
-                    ->label('Slug URL'),
+                    ->unique(\App\Models\Program::class, 'slug', ignoreRecord: true)
+                    ->label('Slug URL')
+                    ->helperText('Otomatis terisi dari judul. Bisa diedit manual jika perlu.')
+                    ->placeholder('otomatis-dari-judul')
+                    ->prefix(fn () => url('/programs') . '/')
+                    ->suffixIcon('heroicon-o-link'),
                 TextInput::make('tagline')
                     ->maxLength(255)
                     ->label('Tagline'),
@@ -63,20 +69,12 @@ class ProgramResource extends Resource
                     ->label('Kategori'),
             ])->columns(2),
 
-            Section::make('Deskripsi & Gambar')->schema([
+            Section::make('Deskripsi')->schema([
                 Textarea::make('description')
                     ->required()
                     ->rows(4)
                     ->label('Deskripsi Program')
                     ->columnSpanFull(),
-                FileUpload::make('image')
-                    ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->directory('programs')
-                    ->disk('public')
-                    ->maxSize(3072)
-                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('programs', 82))
-                    ->label('Gambar Program'),
             ]),
 
             Section::make('Pengaturan')->schema([
@@ -89,22 +87,7 @@ class ProgramResource extends Resource
                     ->label('Tampilkan di Fokus Utama (Beranda)'),
             ])->columns(2),
 
-            Section::make('Statistik Program')->schema([
-                Repeater::make('stats')
-                    ->relationship('stats')
-                    ->schema([
-                        TextInput::make('label')
-                            ->required()
-                            ->label('Label (misal: Siswa)'),
-                        TextInput::make('value')
-                            ->required()
-                            ->label('Nilai (misal: 3000+)'),
-                    ])
-                    ->columns(2)
-                    ->label('Statistik')
-                    ->addActionLabel('Tambah Statistik')
-                    ->defaultItems(0),
-            ]),
+
         ]);
     }
 
@@ -112,11 +95,6 @@ class ProgramResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->disk('public')
-                    ->label('Gambar')
-                    ->square()
-                    ->size(48),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable()

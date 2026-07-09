@@ -10,7 +10,7 @@ import useBanners from "../../hooks/useBanners";
 
 const defaultHeroImages = [hero1, hero2, hero3];
 const metlandTitleFont =
-  "'Eras Bold ITC', 'Eras Demi ITC', 'Eras Medium ITC', 'Eras ITC', sans-serif";
+  "'ITCErasBold', 'Eras Bold ITC', 'Eras Demi ITC', 'Eras Medium ITC', 'Eras ITC', sans-serif";
 
 /* ──────────────── Animated Counter ──────────────── */
 function AnimatedCounter({
