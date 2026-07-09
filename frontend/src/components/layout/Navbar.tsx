@@ -180,7 +180,7 @@ export default function Navbar() {
                   whileTap={{ scale: 0.97 }}
                 >
                   <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
-                  <span className="text-white">{t('navbar.literacy')}</span>
+                  <span className="text-white font-bold">{t('navbar.literacy')}</span>
                 </motion.span>
               </Link>
             </div>
@@ -330,11 +330,11 @@ export default function Navbar() {
                 </div>
               </div>
               <Link
-                to="/contact"
+                to="/literasi"
                 onClick={() => setIsMobileOpen(false)}
                 className="block w-full text-white bg-[#3D8ABF] text-center py-4 rounded-md font-medium text-sm mt-3"
               >
-                → {t('navbar.contact')}
+                → {t('navbar.literacy')}
               </Link>
             </div>
           </motion.div>
