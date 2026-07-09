@@ -18,7 +18,8 @@ class BannersTable
             ->columns([
                 TextColumn::make('title.id')->label('Judul')
                     ->searchable(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->disk('public'),
                 TextColumn::make('order')
                     ->numeric()
                     ->sortable(),
