@@ -76,6 +76,9 @@ export const api = {
   heroStats: {
     list: () => fetchApi<any[]>('/hero-stats'),
   },
+  literasiPrograms: {
+    list: () => fetchApi<any[]>('/literasi-programs'),
+  },
 };
 
 export default api;

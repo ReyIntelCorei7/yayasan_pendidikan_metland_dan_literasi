@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\ImpactStat;
+use App\Models\LiterasiProgram;
 use App\Models\Partner;
 use App\Models\Post;
 use App\Models\Program;
@@ -519,6 +520,24 @@ class ApiController extends Controller
                 'website'     => $s->website,
                 'sortOrder'   => $s->sort_order,
             ];
+        });
+
+        return $this->cachedJson($data);
+    }
+
+    public function literasiPrograms(): JsonResponse
+    {
+        $data = Cache::remember('api.literasi_programs', self::TTL, function () {
+            return LiterasiProgram::active()
+                ->orderBy('order')
+                ->get()
+                ->map(fn ($p) => [
+                    'id'          => (string) $p->id,
+                    'title'       => $p->title,
+                    'description' => $p->description,
+                    'order'       => $p->order,
+                ])
+                ->toArray();
         });
 
         return $this->cachedJson($data);
