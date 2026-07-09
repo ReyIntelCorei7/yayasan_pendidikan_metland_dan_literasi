@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Sparkles, Users, Award, Calendar, BookOpen, Globe, Palette, Code, GraduationCap, UtensilsCrossed, Building2, Briefcase, Heart, Shield, TreePine, Monitor } from 'lucide-react';
 import ScrollReveal from '../components/animations/ScrollReveal';
-import CTABanner from '../components/sections/CTABanner';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 
@@ -120,6 +119,19 @@ export default function SchoolDetail() {
           >
             {taglineText}
           </motion.p>
+          {school.website && (
+            <motion.a
+              href={school.website}
+              target="_blank"
+              rel="noreferrer"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center justify-center mt-8 rounded-full bg-[#3D8ABF] px-8 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#2d76b5]"
+            >
+              Kunjungi Website {nameText}
+            </motion.a>
+          )}
         </div>
       </section>
 
@@ -286,18 +298,6 @@ export default function SchoolDetail() {
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="relative bg-gradient-to-r from-primary via-blue-400 to-primary py-12 overflow-hidden">
-        <FloatingShapes />
-        <div className="relative z-10">
-          <CTABanner 
-            link={school.website} 
-            buttonText={school.website ? `Kunjungi Website ${nameText}` : undefined}
-            title={school.website ? `Kunjungi Website Kami` : undefined}
-            subtitle={school.website ? `Jelajahi informasi lebih lanjut mengenai pendaftaran dan program di ${nameText}.` : undefined}
-          />
-        </div>
-      </section>
     </>
   );
 }
