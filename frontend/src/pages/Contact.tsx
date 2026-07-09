@@ -17,16 +17,33 @@ export default function Contact() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center bg-charcoal overflow-hidden">
-        <img src="/src/assets/sekolahsmkmetland.webp" alt="" className="absolute inset-0 w-full h-full object-cover opacity-25" />
-        <div className="relative z-10 text-center px-6">
-          <p className="text-[#3aabf0] text-lg font-bold tracking-widest uppercase mb-1">{t('contact.hero_tag')}</p>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-gray-300 mt-1 max-w-2xl mx-auto">
-            {t('contact.hero_subtitle')}
-          </motion.p>
-        </div>
-      </section>
+      {/* ═══ Page Hero ══════════════════════════════════════════ */}
+            <section className="relative h-[55vh] min-h-[380px] flex items-center justify-center bg-charcoal overflow-hidden">
+              <img
+                src="/src/assets/sekolahsmkmetlandcibitung.webp"
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover opacity-25"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-transparent to-charcoal/80" />
+              <div className="relative z-10 text-center px-6 mt-4">
+                <motion.span
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-white text-lg font-bold tracking-[3px] uppercase block"
+                >
+                  {t('contact.hero_tag')}
+                </motion.span>
+                <WordReveal
+                  text={t('contact.hero_title')}
+                  tag="h1"
+                  className="text-4xl lg:text-5xl font-light text-white"
+                />
+                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="text-gray-300 max-w-2xl mx-auto">
+                  {t('contact.hero_subtitle')}
+                </motion.p>
+              </div>
+            </section>
 
       {/* Contact Grid */}
       <section className="bg-[#FCFCFC] py-24">
@@ -75,7 +92,6 @@ export default function Contact() {
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02, backgroundColor: 'var(--secondary)' }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-primary text-white px-8 py-4 rounded-lg text-sm font-medium w-full sm:w-auto shadow-md"
               >

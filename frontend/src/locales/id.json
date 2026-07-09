@@ -5,7 +5,7 @@
     "our_school": "Unit Pendidikan",
     "articles": "Aktivitas",
     "literacy": "Literasi",
-    "contact": "Contact",
+    "contact": "Kontak",
     "language": "Bahasa",
     "vision_mission": "Visi & Misi",
     "vision_mission_desc": "Visi, misi, dan nilai-nilai yayasan",
@@ -104,7 +104,7 @@
     ]
   },
   "news_insights": {
-    "subtitle": "Artikel",
+    "subtitle": "Aktivitas",
     "title": "Berita & Artikel",
     "read_more": "Baca Selengkapnya",
     "view_all": "Lihat Semua",
@@ -137,6 +137,7 @@
   "contact": {
     "alert_success": "Terima kasih atas pesan Anda! Kami akan segera menghubungi Anda kembali.",
     "hero_tag": "Kontak",
+    "hero_title": "Hubungi Kami",
     "hero_subtitle": "Untuk informasi lebih lanjut mengenai Yayasan Pendidikan Metland",
     "form_title": "Kirim Pesan",
     "form_name": "Nama Anda",
@@ -318,7 +319,7 @@
     ]
   },
   "articles": {
-    "hero_label": "Artikel",
+    "hero_label": "Aktivitas",
     "hero_title": "Berita & Informasi",
     "hero_subtitle": "Berita, cerita, dan informasi terkini dari Yayasan Pendidikan Metland.",
     "search_placeholder": "Cari artikel...",

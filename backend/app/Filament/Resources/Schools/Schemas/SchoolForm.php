@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Schools\Schemas;
 
 use Filament\Forms\Components\ColorPicker;
+use App\Support\SafeImageUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -75,8 +76,8 @@ class SchoolForm
                     ->columnSpanFull(),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('schools')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->saveUploadedFileUsing(SafeImageUpload::toWebp('schools', 82)),
                 ColorPicker::make('color')
                     ->required(),
                 TextInput::make('website')

@@ -182,7 +182,7 @@ export default function NewsInsights() {
 
   if (pages.length === 0) {
     return (
-      <section className="relative bg-[#FCFCFC] py-24 overflow-hidden">
+      <section className="relative bg-[#FCFCFC] py-8 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col items-center px-4">
             <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-blue-300/20 flex items-center justify-center mb-6">
@@ -198,7 +198,7 @@ export default function NewsInsights() {
   }
 
   return (
-    <section className="bg-[#FCFCFC] py-24">
+    <section className="bg-[#FCFCFC] py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Header */}
@@ -208,7 +208,7 @@ export default function NewsInsights() {
               <div className='flex items-center gap-3'>
                 <div className="w-2 h-2 bg-[#3D8ABF] animate-pulse mb-4" />
                 <p
-                  className="text-sm text-[#3D8ABF] uppercase tracking-[0.2em] mb-4"
+                  className="mb-4 text-base font-bold uppercase tracking-[0.2em] text-[#3D8ABF] md:text-lg"
                   style={{ fontFamily: "'Geist', Inter, sans-serif" }}
                 >
                   {t('news_insights.subtitle')}

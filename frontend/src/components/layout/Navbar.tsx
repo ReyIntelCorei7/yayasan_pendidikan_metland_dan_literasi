@@ -42,7 +42,7 @@ export default function Navbar() {
       ],
     },
     { label: t('navbar.articles'), href: '/artikel' },
-    { label: t('navbar.literacy'), href: '/literasi' },
+    { label: t('navbar.contact'), href: '/contact' },
   ];
 
   // Pages where the hero has a light/white background — navbar text must be dark from start
@@ -174,13 +174,13 @@ export default function Navbar() {
                   EN
                 </button>
               </div>
-              <Link to="/contact">
+              <Link to="/literasi">
                 <motion.span
                   className="inline-flex items-center gap-2 text-charcoal px-5 py-2.5 rounded-md text-sm font-medium cursor-pointer bg-[#3D8ABF]"
                   whileTap={{ scale: 0.97 }}
                 >
                   <motion.span whileHover={{ x: 4 }} className="inline-block text-white">→</motion.span>
-                  <span className="text-white">{t('navbar.contact')}</span>
+                  <span className="text-white">{t('navbar.literacy')}</span>
                 </motion.span>
               </Link>
             </div>

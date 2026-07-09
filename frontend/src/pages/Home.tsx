@@ -7,6 +7,7 @@ import ExperienceNumbers from '../components/sections/ImpactNumbers';
 import NewsInsights from '../components/sections/NewsInsights';
 import PartnerLogos from '../components/sections/PartnerLogos';
 import CTABanner from '../components/sections/CTABanner';
+import ImpactSpotlight from '../components/sections/ImpactSpotlight';
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <HeroSection />
       <MarqueeStrip />
       <NewsInsights />
-      <ExperienceSpotlight />
+      <ImpactSpotlight/>
       <WhatWeDo />
       <ExperienceNumbers />
       <ProgramsGrid />
